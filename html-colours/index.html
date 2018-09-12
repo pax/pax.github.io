@@ -192,7 +192,7 @@ body.grid .color .info .color-name {
 		font-size: 16px;
 		display: inline-block;
 		top: 6.6em;
-		right: -5.5em;
+		right: -6em;
 		z-index: 33;
 		transform: rotate(90deg);
 		background-color: WhiteSmoke;
@@ -200,19 +200,25 @@ body.grid .color .info .color-name {
 		border-radius: 2px;
 		box-shadow: 1px 1px 1px rgba(0,0,0,.2);
 	}
+		#switch  label{
+			cursor: hand;
+		}
+ #switch  label:hover {
+ 	opacity: .75;
+ }
 	</style>
 </head>
 
 <body class="grid">
 	<form action="" id="switch">
 		<input id="list" type="radio" name="gender" value="list" onclick="document.body.className = 'list'">
-		<label for="list">list</label>
+		<label for="list">List</label>
 	  &nbsp;
 		<input id="grid" type="radio" name="gender" value="grid" onclick="document.body.className = 'grid'" checked>
-		<label for="grid">grid</label>
+		<label for="grid">Grid</label>
 		 &nbsp;
 		<input id="squares" type="radio" name="gender" value="grid" onclick="document.body.className = 'grid squares'">
-		<label for="squares">squares</label>
+		<label for="squares">Squares</label>
 	</form>
 	<div id="wrapper">
 		<section id="cyan">
