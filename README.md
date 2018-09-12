@@ -1,1 +1,2 @@
-misc repository
+- [emojiBro](/emojibro/) 
+- [html named colors](/htmlcolors/) 
