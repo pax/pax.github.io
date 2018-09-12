@@ -1,2 +1,2 @@
-- [emojiBro](/emojibro/) 
-- [html named colors](/htmlcolors/) 
+- [emojiBro](/emojibro/) – copy paste emojie thingie
+- [HTML named colours](/htmlColors.html) – HTML colours cheat sheet
