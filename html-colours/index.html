@@ -2,11 +2,10 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>&#9673; HTML color names</title>
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<title>&#9673; HTML colour names</title>
 	<style>
 	body {
-		font: 12px Arial, Helvetica, sans-serif;
+		font: 15px Arial, Helvetica, sans-serif;
 	}
 
 	.js-color {
@@ -93,7 +92,8 @@
 		padding: 0;
 		border: 0 none;
 		display: inline-block;
-		width: 170px;
+		width: 12vw;
+		margin-bottom: 5px;
 	}
 
 	body.grid div.color-swatch,
@@ -106,14 +106,23 @@
 
 	body.grid .color .info {
 		position: absolute;
-		margin-top: 1.5em;
-		margin-left: -150px;
+		margin-top: 1em;
+		margin-left: -200px;
 		z-index: 22;
 		opacity: 0.3;
 		padding: 2ex;
-		border-radius: 1ex;
+		border-radius: 2px;
+		/*border:1px solid #DDD; */
+		/*box-shadow: 0 0 5px rgba(0,0,0,.2);*/
+	
+		/*text-shadow: 0 0 1px rgba(255,255,255,.75);  */
 	}
-
+body.grid .color .info .color-name {
+		background-color: rgba(255,255,255,.85); 
+		display: inline-block;
+		border-radius: 2px;
+		padding: 0 2px;
+}
 	body.grid .color:hover .info {
 		opacity: 0.75;
 		background-color: White;
@@ -180,13 +189,16 @@
 
 	#switch {
 		position: fixed;
+		font-size: 16px;
 		display: inline-block;
-		top: 1em;
-		right: 1em;
+		top: 6.6em;
+		right: -5.5em;
 		z-index: 33;
+		transform: rotate(90deg);
 		background-color: WhiteSmoke;
 		padding: 1ex 1em;
-		border-radius: 1ex
+		border-radius: 2px;
+		box-shadow: 1px 1px 1px rgba(0,0,0,.2);
 	}
 	</style>
 </head>
@@ -195,10 +207,10 @@
 	<form action="" id="switch">
 		<input id="list" type="radio" name="gender" value="list" onclick="document.body.className = 'list'">
 		<label for="list">list</label>
-		<br>
+	  &nbsp;
 		<input id="grid" type="radio" name="gender" value="grid" onclick="document.body.className = 'grid'" checked>
 		<label for="grid">grid</label>
-		<br>
+		 &nbsp;
 		<input id="squares" type="radio" name="gender" value="grid" onclick="document.body.className = 'grid squares'">
 		<label for="squares">squares</label>
 	</form>
