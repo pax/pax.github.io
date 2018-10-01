@@ -20,14 +20,15 @@
 <style>
 body {
   background-color: #F3E5F5;
+  padding: 0; margin: 0;
 }
 ::selection{
   background-color: transparent;
 }
   #wrapper {
     text-align: center;
-    position: relative;
-    top: 40vh;
+    /*position: relative;*/
+    margin-top: 40vh;
     font-size: 64px;
         line-height: 1;
   }
@@ -58,8 +59,8 @@ body {
     display: block;
     font-size: 64px;
     opacity: 0;
-    position: relative;
-    top: -3em;
+    position: absolute;
+    margin-top: -3em;
     font-style: italic;
   }
 
@@ -84,7 +85,7 @@ body {
     border-color: #FFFFFC;
   }
   #counter {
-    position: absolute;
+    position: fixed;
     bottom: 1ex;
     text-align: center;
     width: 98%;
@@ -128,6 +129,26 @@ body {
     color: LightYellow;
     text-shadow: 1px 1px 1px #666;
   }
+
+@media screen and (max-width: 640px) {
+  #wrapper{
+    font-size: 32px;
+    /*top: 30vh;*/
+  }
+  input[type=checkbox]:before{
+    font-size: 16px;
+     top: -.75ex;
+    left: -.75ex;
+    padding: 0 .5ex;
+  }
+  #counter {
+    /*bottom: 15em;*/
+    border:1px dotted #999; 
+  }
+}
+
+/* ANIMATIONs */
+
 @keyframes dearsanta {
   0% {
     color: red;
