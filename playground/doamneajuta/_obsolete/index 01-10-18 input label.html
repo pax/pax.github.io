@@ -1,0 +1,192 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Doamne-ajută!</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+<link rel="manifest" href="assets/favicon/site.webmanifest">
+<link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#ffd700">
+<link rel="shortcut icon" href="assets/favicon/favicon.ico">
+<meta name="msapplication-TileColor" content="#ffd700">
+<meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
+<meta name="theme-color" content="#ffd700">
+<meta property="og:image:height" content="520">
+<meta property="og:image:width" content="993">
+<meta property="og:description" content="Hopes &amp; Prayers">
+<meta property="og:image" content="assets/favicon/og-image.jpg">
+<meta property="og:title" content="🙏 Doamne-ajută!">
+<style>
+body {
+  background-color: #F3E5F5;
+  padding: 0; margin: 0;
+}
+::selection{
+  background-color: transparent;
+}
+  #wrapper {
+    text-align: center;
+    /*position: relative;*/
+    margin-top: 40vh;
+    font-size: 64px;
+        line-height: 1;
+  }
+  input[type=checkbox] {
+    transform: scale(1.5);
+  }
+  input[type=checkbox]:before{
+     background-color: #FAFAFF;
+    content: '\26F6';
+    color: #666;
+    text-shadow: 1px 1px 1px #DDD;
+    font-size: 32px;
+    position: relative;
+    top: -1.5ex;
+    left: -1em;
+    padding: 0 .5ex;
+
+  }
+  input[type=checkbox]:checked:before{
+    content: '\26DD';
+    color: Red;
+    text-shadow: none;
+  }
+  label:hover{
+    cursor: hand;
+  }
+  label small {
+    display: block;
+    font-size: 64px;
+    opacity: 0;
+    position: absolute;
+    margin-top: -3em;
+    font-style: italic;
+  }
+
+  input[type=checkbox]:checked + label small{
+    animation: dearsanta 1.5s 1 ;
+  }
+  small img{
+    height: 2em;
+    width: auto;
+  }
+  #gbu {
+    display: inline-block;
+    border:4px solid #FEFEFF;
+    box-shadow: 1px 1px 1.5em rgba(0,0,0,.075);
+    background-color: #FAFAFF;
+    border-radius: 1em;
+    height: 1em;
+    padding: .33ex 1ex .5ex 2ex;
+  }
+  #gbu:hover{
+    box-shadow: 1px 1px .25em rgba(0,0,0,.1);
+    border-color: #FFFFFC;
+  }
+  #counter {
+    position: fixed;
+    bottom: 1ex;
+    text-align: center;
+    width: 98%;
+    margin-left: .5%;
+    color: #666;
+    font-size: 14px;
+    font-family: sans-serif;
+    opacity: .45;
+    border-top: 1px dashed #999;
+    padding-top: .75ex;
+  }
+  #counter:hover{
+    opacity: 1;
+  }
+
+  #counter b {
+    color: Black;
+  }
+  #counter img {
+    height: 1.2em;
+    vertical-align: middle;
+    margin-bottom: 2px;
+    background-color: WhiteSmoke;
+    padding: 0 2px;
+    /*transition: all .2s ease-in-out; */
+  }
+/*  #counter a.spread:hover img{
+    transform: scale(1.1);
+  }*/
+  a {
+    text-decoration: none;
+  }
+  #counter a {
+    padding: 0 .5ex;
+  }
+  #counter a.spread{
+    padding-right: 0;
+  }
+  #counter a:hover {
+    background-color: Red;
+    color: LightYellow;
+    text-shadow: 1px 1px 1px #666;
+  }
+
+@media screen and (max-width: 640px) {
+  #wrapper{
+    font-size: 32px;
+    /*top: 30vh;*/
+  }
+  input[type=checkbox]:before{
+    font-size: 16px;
+     top: -.75ex;
+    left: -.75ex;
+    padding: 0 .5ex;
+  }
+  #counter {
+    /*bottom: 15em;*/
+    border:1px dotted #999; 
+  }
+}
+
+/* ANIMATIONs */
+
+@keyframes dearsanta {
+  0% {
+    color: red;
+    transform: scale(1.5);
+  }
+  23% {
+    color: green;
+    opacity: .2;
+  }
+
+  66% {
+     color: blue;
+    opacity: 0;
+  }
+
+  90% {
+    opacity:0;
+    transform: translate(-1ex, -45vh) scale(.5);
+  }
+}
+@keyframes hopesandprayers {
+  5% {
+        opacity: .78;
+    }
+  95% {
+        opacity: .8;
+    }
+}
+
+</style>
+</head>
+<body>
+<div id="wrapper">
+  <span id="gbu">
+    <input id="doamneajuta" type="checkbox" name="checkbox" value="value">
+    <label for="doamneajuta">Doamne-ajută!<small><img src="assets/images/noun_Prayer_197866.svg"><br/>Doamne-ajută!</small></label>
+  </span>
+</div>
+<div id="counter">You've sent: <b>4</b> prayers and inspired <b>2</b> others. <a class="spread" href=#>Spread the blessings &rarr; <img src="assets/images/fb.svg"><img src="assets/images/tw.svg"></a> &nbsp; &middot; &nbsp; Total prayers:  <b>3464</b> sent, <b>2862</b> received.  &nbsp; &middot; &nbsp; <a class="also" href="stats.html">stats</a> &nbsp; &middot; &nbsp; <a class="also" target=_"blank" href="https://safielumina.ro/cum-functioneaza/?ref=doamneajuta">🖐 more than prayers</a></div>
+ </body>
+</html>
