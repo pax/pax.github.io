@@ -1,0 +1,37 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>&#9673;</title>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="results"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+// ID of the Google Spreadsheet
+var spreadsheetID = "1tmVRQZEHjUNQTDLgGkr6k6wWVg9vi9AqObzNmJUZikE";
+
+// Make sure it is public or set to Anyone with link can view
+var url = "https://spreadsheets.google.com/feeds/list/" + spreadsheetID + "/1/public/values?alt=json"; //this is the part that's changed
+
+$.getJSON(url, function(data) {
+
+    var entry = data.feed.entry;
+
+    $(entry).each(function(){
+    //make sure this matches your column labels when you change the source sheet
+    $('.results').prepend('<h2>'+this.gsx$title.$t+'</h2><p>'+this.gsx$url.$t+'</p>');
+      });
+
+    });
+
+</script>
+
+ </body>
+</html>

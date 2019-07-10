@@ -1,0 +1,167 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>WP-CLI cheatsheet</title>
+<!--
+
+TODO:
+- concatenate vars, replace in dom
+- copy to clipboard
+- add localStorage
+
+ -->
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<style>
+  body {
+    font-family: sans-serif;
+    background-color: #FAFAFA;
+  }
+  .main-wrapper{
+    width: 80vw;
+    margin: 2em auto 0 auto;
+    padding: 2em;
+    background-color: White;
+    box-shadow: 1ex 1.25em 2.5em rgba(0,0,0,.05);
+  }
+  span[contenteditable],
+  span[contenteditable=true]{
+  }
+  td.value {
+    background-color: #FAFAFA;
+    border:1px solid #EEE;
+    padding: 2px 3px;
+  }
+  .varname{
+    text-align: right;
+    font-size: .9em;
+    color: #999;
+
+  }
+  table.generator {
+    font-size: 18px;
+    margin: 2em;
+    font-family: monospace;
+  }
+  .clipboard{
+    border:1px dashed #CCC;
+    padding: 1em;
+    width: auto;
+    display: inline-block;
+  }
+  .btn{
+    padding: 1ex;
+    font-size: 16px;
+    color: WhiteSMoke;
+    background-color: RoyalBlue;
+    box-shadow: .5ex .5ex 0 rgba(0,0,0,.2);
+    text-shadow: 1px 2px 0 rgba(0,0,0,.5);
+  }
+  hr {
+    border: none;
+    border-top: 1px dashed #CCC;
+    margin: 1em 0;
+  }
+  .clipboard_source {
+    height: 8em;
+    width: 80em;
+    padding: 1em;
+    overflow: hidden;
+  }
+  .main-wrapper .section-title {
+    margin: 0;
+    padding-bottom: 1ex;
+    border-bottom: 1px dashed #DDD;
+  }
+</style>
+<script>
+function copyToClipboard(targetID) {
+  var target= document.getElementById(targetID);
+  /* Select the text field */
+  target.select();
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+  target.blur();
+
+  // target.focus();
+  document.getElementById("msg").innerHTML='copied';
+  document.getElementById("msg").classList.toggle('show');
+  document.getElementById("msg").classList.toggle('hide');
+  // var storedActivity = localStorage.getItem("activity") ? JSON.parse(localStorage.getItem("activity")) : {};
+  // storedActivity[target.value] = storedActivity[target.value] ? storedActivity[target.value] + 1 : 1;
+  // localStorage.setItem("activity", JSON.stringify(storedActivity));
+  // localStorage.clear();
+  console.log(target.value + ' → localStorage');
+  showActivity(); // update
+}
+function renderCanvas(){
+
+}
+</script>
+</head>
+<body>
+<div class="main-wrapper">
+  <h2 class="section-title">Fresh WP installation</h2>
+  <table class="generator">
+    <thead>
+      <tr>
+        <th class="varname">var</th>
+        <th>value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="varname">--dbname</td><td class="value"><span data-name="dbname" contenteditable>test_db</span></td></tr>
+      <tr><td class="varname">--dbuser</td><td class="value"><span data-name="dbuser" contenteditable>root</span></td></tr>
+      <tr><td class="varname">--dbpass</td><td class="value"><span data-name="dbpass" contenteditable>pwd</span></td></tr>
+      <tr><td class="varname">--dbhost</td><td class="value"><span data-name="dbhost" contenteditable>127.0.0.1</span></td></tr>
+      <tr><td class="varname">--dbprefix</td><td class="value"><span data-name="dbprefix" contenteditable>zx_</span></td></tr>
+      <tr><td class="varname">--url</td><td class="value"><span data-name="url" contenteditable>example.com</span></td></tr>
+      <tr><td class="varname">--title</td><td class="value"><span data-name="title" contenteditable>New App</span></td></tr>
+      <tr><td class="varname">--admin_user</td><td class="value"><span data-name="admin_user" contenteditable>hadmin</span></td></tr>
+      <tr><td class="varname">--admin_password</td><td class="value"><span data-name="admin_password" contenteditable>hahdmin</span></td></tr>
+      <tr><td class="varname">--admin_email</td><td class="value"><span data-name="admin_email" contenteditable>hahdmin@mailinator.com</span></td></tr>
+    </tbody>
+  </table>
+  <textarea class="clipboard_source" name="clipboard_source" onkeyup="renderCanvas();" onclick="copyToClipboard('clipboard_source')" >
+    wp core download
+    wp core config --dbname=leopard --dbuser=root --dbpass=pwd --dbhost=127.0.0.1 --dbprefix=lpd_
+    wp db create
+    wp core install --url=app.lpd.to  --title="the title" --admin_user="hadmin" --admin_password="hahdmin" --admin_email=email@domain.com
+  </textarea>
+  <pre class="clipboard_preview">
+    wp core download
+    wp core config --dbname=<mark>leopard</mark> --dbuser=<mark>root</mark> --dbpass=<mark>pwd</mark> --dbhost=<mark>127.0.0.1</mark> --dbprefix=<mark>lpd_</mark>
+    wp db create
+    wp core install --url=<mark>app.lpd.to</mark>  --title="<mark>the title</mark>" --admin_user="<mark>hadmin</mark>" --admin_password="<mark>hahdmin</mark>" --admin_email=<mark>email@domain.com</mark>
+  </pre>
+  <hr>  <button class="btn" onclick="copyToClipboard('clipboard_source')">COPY</button>
+</div>
+
+<div class="main-wrapper">
+  <h2 class="section-title">_underscores scaffolding</h2>
+  <table class="generator">
+    <thead>
+      <tr>
+        <th class="varname">var</th>
+        <th>value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="varname">--theme_name</td><td class="value"><span data-name="theme_name" contenteditable>theme name</span></td></tr>
+      <tr><td class="varname">--author</td><td class="value"><span data-name="author" contenteditable>Ion Popescu</span></td></tr>
+      <tr><td class="varname">--author_uri</td><td class="value"><span data-name="author_uri" contenteditable>http://ion.popescu.me</span></td></tr>
+      <tr><td class="varname"><label for="sassify">Sassify </label></td><td class="value"><input id="sassify" type="checkbox" checked="checked" /></td></tr>
+      <tr><td class="varname"><label for="activate">Activate </label></td><td class="value"><input id="activate" type="checkbox" checked="checked" /></td></tr>
+    </tbody>
+  </table>
+  <textarea class="clipboard_source" name="clipboard_source" onkeyup="renderCanvas();" onclick="copyToClipboard('clipboard_source')" >
+    wp scaffold _s leopard --activate --theme_name="Leopard Tech" --author="=TheMine.io --author_uri=http://themine.io --sassify
+  </textarea>
+
+  <pre class="clipboard_preview">
+    wp scaffold _s <mark>leopard</mark> --activate --theme_name="<mark>Leopard Tech</mark>" --author="=<mark>TheMine.io</mark> --author_uri=<mark>http://themine.io</mark> --sassify
+  </pre>
+  <hr>  <button class="btn" onclick="copyToClipboard('clipboard_source')">COPY</button>
+</div>
+ </body>
+</html>
+ 
