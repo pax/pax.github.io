@@ -92,8 +92,6 @@
     padding: .33ex 1ex .5ex .33ex;
   }
 
-
-
   #counter {
     position: fixed;
     bottom: 1ex;
@@ -184,14 +182,24 @@
 
 <body>
   <div id="wrapper">
-    <span id="gbu" onclick="this.classList.toggle('clicked')" onmouseout="this.classList.remove('clicked')" >Doamne-ajută!<small><img src="assets/images/noun_Prayer_197866.svg"><br/>Doamne-ajută!</small>
+    <span id="gbu" onclick="this.classList.toggle('clicked'); playAudio()" onmouseout="this.classList.remove('clicked')" >Doamne-ajută!<small><img src="assets/images/noun_Prayer_197866.svg"><br/>Doamne-ajută!</small>
     </span>
   </div>
   <div id="counter">
     You've sent: <b>4</b> prayers and inspired <b>2</b> others. <a class="spread" href=#>Spread the blessings &rarr; <img src="assets/images/fb.svg"><img src="assets/images/tw.svg"></a> &nbsp; &middot; &nbsp; Total prayers: <b>3464</b> sent, <b>2862</b> received. &nbsp; &middot; &nbsp; <a class="also" href="stats.html">stats</a> &nbsp; &middot; &nbsp; <a class="also" target=_ "blank" href="https://safielumina.ro/cum-functioneaza/?ref=doamneajuta">🖐 more than prayers</a>
   </div>
+  <audio id="alelujah">
+    <source src="assets/horse.ogg" type="audio/ogg">
+    <source src="assets/horse.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 <script>
-  
+  var x = document.getElementById("alelujah");
+
+    function playAudio() {
+      x.play();
+    } 
+
 </script>
 </body>
 </html>
