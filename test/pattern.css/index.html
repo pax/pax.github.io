@@ -53,14 +53,16 @@
    .zx-type.alfa-slab-one {
       font-family: 'Alfa Slab One', cursive;
     }
-    #wrapper {
-      border-radius: 1em;
-      border: 1ex solid transparent;  
-    }
+ #wrapper {
+   height: 100vh;
+ }
     #wrapper.zx-bckg {
       background-color: rgba(0,0,0,.66) !important;
-      border-color: rgba(255,255,255,.5);  
-      box-shadow: 0 0 2em black;
+ 
+      /* box-shadow: 0 0 2em black; */
+    }
+    body #wrapper.zx-white {
+      background-color: white !important;
     }
     #footer {
       position: fixed;
@@ -81,7 +83,7 @@
   </style>
 </head>
 <body class="bg-dark gloop">
-  <div id="wrapper" class="container mt-5 pt-5 text-center">
+  <div id="wrapper" class="container-fluid  py-5 text-center">
     <h1 id="xloop" class="mt-5 pt-5 bg-green-light green-darkest pattern-diagonal-lines-sm text-pattern   fw-800"
       contenteditable="true">
      cine se<br>scoala<br>departe<br>ajunge<br><u>EDIT ME</u>
@@ -89,12 +91,16 @@
   </div>
 <footer id="footer" class="border pt-2 pl-3 pr-1 d-inline-block text-light rounded">
   <div class="form-check form-check-inline ">
+    <input type="checkbox" id="zx-white" name="bckg" class="form-check-input" onclick="setoption('zx-white')">
+    <label for="zx-white" class="form-check-label">light</label>
+  </div>
+  <div class="form-check form-check-inline ">
     <input type="checkbox" id="zx-bckg" name="bckg" class="form-check-input" onclick="setoption('zx-bckg')" >
-    <label for="zx-bckg" class="form-check-label">BCKG</label>
+    <label for="zx-bckg" class="form-check-label">dark</label>
   </div>
   <div class="form-check form-check-inline">
     <input type="checkbox" id="zx-type" name="type" class="form-check-input " onclick="setoption('zx-type')">
-    <label for="zx-type" class="form-check-label">TYPE</label>
+    <label for="zx-type" class="form-check-label">type</label>
   </div>
 <a href="https://bansal.io/pattern-css" target="_blank" class="text-light d-inline-block" style="position: fixed; right: 1em; bottom: 1em;">pattern.css</a>
 </footer>
@@ -184,6 +190,7 @@
     else { log(0, z) }
   }
   log(0, 0);
+
   function setoption(option) {
     var element = document.getElementById("wrapper");
     element.classList.toggle(option);
