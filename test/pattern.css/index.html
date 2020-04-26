@@ -2,7 +2,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>&#9673;</title>
+  <title>KRKRK - KraKraOK</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -13,6 +13,7 @@
     rel="stylesheet">
   <style>
     body {
+      font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-family: 'Luckiest Guy', cursive;
       text-shadow: 2px 4px 1ex rgba(0, 0, 0, .4);
     }
@@ -29,42 +30,74 @@
       }
     }
 
-    .luckiest-guy {
+   .zx-type.luckiest-guy {
       font-family: 'Luckiest Guy', cursive;
     }
 
-    .bevan {
+   .zx-type.bevan {
       font-family: 'Bevan', cursive;
     }
 
-    .rammetto-one {
+   .zx-type.rammetto-one {
       font-family: 'Rammetto One', cursive;
     }
 
-    .bowlby-one {
+   .zx-type.bowlby-one {
       font-family: 'Bowlby One', cursive;
     }
 
-    .fascinate-inline {
+   .zx-type.fascinate-inline {
       font-family: 'Fascinate Inline', cursive;
     }
 
-    .alfa-slab-one {
+   .zx-type.alfa-slab-one {
       font-family: 'Alfa Slab One', cursive;
+    }
+    #wrapper {
+      border-radius: 1em;
+      border: 1ex solid transparent;  
+    }
+    #wrapper.zx-bckg {
+      background-color: rgba(0,0,0,.66) !important;
+      border-color: rgba(255,255,255,.5);  
+      box-shadow: 0 0 2em black;
+    }
+    #footer {
+      position: fixed;
+      left: 1em; bottom: 1em;
+      background-color: rgba(0,0,0,.4); 
+      opacity: .5;
+      font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    #footer:hover{
+      opacity: 1;
+    }
+    #footer label, #footer input {
+      vertical-align: middle;
+      display: inline-block;
+      line-height: 1;
+      height: 1em;
     }
   </style>
 </head>
-
 <body class="bg-dark gloop">
-
   <div id="wrapper" class="container mt-5 pt-5 text-center">
     <h1 id="xloop" class="mt-5 pt-5 bg-green-light green-darkest pattern-diagonal-lines-sm text-pattern   fw-800"
       contenteditable="true">
-      heeey hooo THIS THAT <br> <u>click</u> to edit
+     cine se<br>scoala<br>departe<br>ajunge<br><u>EDIT ME</u>
     </h1>
   </div>
-
-
+<footer id="footer" class="border pt-2 pl-3 pr-1 d-inline-block text-light rounded">
+  <div class="form-check form-check-inline ">
+    <input type="checkbox" id="zx-bckg" name="bckg" class="form-check-input" onclick="setoption('zx-bckg')" >
+    <label for="zx-bckg" class="form-check-label">BCKG</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input type="checkbox" id="zx-type" name="type" class="form-check-input " onclick="setoption('zx-type')">
+    <label for="zx-type" class="form-check-label">TYPE</label>
+  </div>
+<a href="https://bansal.io/pattern-css" target="_blank" class="text-light d-inline-block" style="position: fixed; right: 1em; bottom: 1em;">pattern.css</a>
+</footer>
 </body>
 <script>
   let patterns = [
@@ -144,19 +177,17 @@
         i++;
         if (Math.round(i / 20) == i / 20) {
           z++;
-
         }
-
         log(i, z);
       }, 150);
     }
     else { log(0, z) }
-
   }
-
-
   log(0, 0);
-  // setTimeout(() => { console.log("World!"); }, 2000);
+  function setoption(option) {
+    var element = document.getElementById("wrapper");
+    element.classList.toggle(option);
+  }
 </script>
 
 </html>
