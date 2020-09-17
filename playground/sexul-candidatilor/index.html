@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sexul candidaților</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+    crossorigin="" />
+
+  <style type="text/css">
+    body,
+    html {
+      /* height: 100%; */
+      border: 0;
+      padding: 0;
+      ]
+    }
+
+    #map-container {
+      height: 100vh;
+      width: 100%;
+    }
+
+    .leaflet-container {
+      background-color: transparent;
+    }
+
+    .male {
+      background-color: blue;
+      color: white;
+      padding: 3px 5px;
+      border-right: 2px solid rgba(255, 255, 255, .5);
+    }
+
+    .female {
+      background-color: red;
+      color: white;
+      padding: 3px 5px;
+    }
+
+    .leaflet-popup-content {
+      font-size: 15px;
+    }
+
+    .leaflet-popup-content h3 {
+      margin: 2px 0;
+      font-size: 18px;
+      display: inline-block;
+    }
+
+    table.sexrendert {
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    table.sexrendert td {
+      padding: 0;
+    }
+
+    table.sexrendert thead th {
+      text-align: center;
+    }
+
+    table.sexrendert tr td:not(.partid) {
+      text-align: right;
+      padding: 0 2px;
+    }
+
+    #kontrol {
+      position: absolute;
+      display: inline-block;
+ 
+      top: 1em;
+      font-size: 18px;
+      right: 1em;
+      z-index: 118;
+      line-height: 1;
+      background-color: rgba(255, 255, 255, .75);
+    }
+    #kontrol a {
+      padding: 1ex 1.5ex; margin: 1px 1px 0 0 ; background-color: #333; color : yellow;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div id="map-container"></div>
+
+  <div id="kontrol">
+    <a href="#" id="zze1">1</a><a href="#" id="zze2">2</a><a href="#" id="zze3">3</a>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+    integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+    crossorigin=""></script>
+
+  <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+
+  <script>
+    let map = L.map('map-container');
+    // map.setView([52.268, 4.998], 7);
+    map.setView([46, 25], 7);
+
+        // let Stamen_TonerLite = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
+        //     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        //     subdomains: 'abcd',
+        //     minZoom: 0,
+        //     maxZoom: 20,
+        //     ext: 'png'
+        //   });
+    
+        // Stamen_TonerLite.addTo(map); 
+
+
+    //extend Leaflet to create a GeoJSON layer from a TopoJSON file
+    L.TopoJSON = L.GeoJSON.extend({
+      addData: function (data) {
+        var geojson, key;
+        if (data.type === "Topology") {
+          for (key in data.objects) {
+            if (data.objects.hasOwnProperty(key)) {
+              geojson = topojson.feature(data, data.objects[key]);
+              L.GeoJSON.prototype.addData.call(this, geojson);
+            }
+          }
+          return this;
+        }
+        L.GeoJSON.prototype.addData.call(this, data);
+        return this;
+      }
+    });
+    L.topoJson = function (data, options) {
+      return new L.TopoJSON(data, options);
+    };
+    //create an empty geojson layer
+    //with a style and a popup on click
+    var geojson = L.topoJson(null, {
+      style: shapeStyle,
+      onEachFeature: function (feature, layer) {
+        layer.bindPopup(renderUAT(feature))
+      }
+    }).addTo(map);
+
+    mySelectedElement = document.getElementById('zze1')
+   
+    mySelectedElement.onclick = function (e) {
+      geojson.setStyle(shapeStyle2)
+    }
+    
+    mySelectedElement2 = document.getElementById('zze2')
+    mySelectedElement2.onclick = function (e) {
+      geojson.setStyle(shapeStyle3)
+    }
+
+    mySelectedElement3 = document.getElementById('zze3')
+    mySelectedElement3.onclick = function (e) {
+      geojson.setStyle(shapeStyle)
+    }
+
+    function shapeStyle(feature) {
+      let sxr = feature.properties.uatstats
+      let colorr = 100 * (sxr['M'] - sxr['F'])/sxr['all'] + 150
+      return {
+        color: "whitesmoke",
+        opacity: .5,
+        weight: 1,
+        fillColor: 'hsl(' + colorr + ', 66%, 50%)',
+        fillOpacity: 0.9
+      }
+    }
+     function shapeStyle2(feature) {
+        let sxr = feature.properties.uatstats
+        let colorr = 50 * sxr['M']/sxr['F'] + 50
+        return {
+          color: "whitesmoke",
+          opacity: .5,
+          weight: 1,
+          fillColor: 'hsl(' + colorr + ', 66%, 50%)',
+          fillOpacity: 0.9
+        }
+      }
+     function shapeStyle3(feature) {
+        let sxr = feature.properties.uatstats
+        let colorr = 100 * (sxr.qM - sxr.qF) / (sxr.qM + sxr.qF) + 150
+        return {
+          color: "whitesmoke",
+          opacity: .5,
+          weight: 1,
+          fillColor: 'hsl(' + colorr + ', 66%, 50%)',
+          fillOpacity: 0.9
+        }
+      }
+    function renderUAT(feature) {
+      let sxr = feature.properties.uatstats
+      let idsex1 = 100 * (sxr.qM - sxr.qF) / (sxr.qM + sxr.qF)
+      let idsex2 = 100 * (sxr['M'] - sxr['F']) / sxr['all']
+      let idsex3 = 100 * (1 - sxr['F'] / sxr['M'])
+      let idsex4 = (sxr.qM - sxr.qF / sxr.qM)
+
+      let out = feature.properties.nume + ', <small>' + feature.properties.judet + '</small></div><div>  <h3>' + idsex3.toFixed(1) + '%</h3> <span class="male">' + sxr['M'] + '&#9794;</span><span class="female">' + sxr['F'] + '&#9792;</span> <small><sup>' + idsex4.toFixed(1) + '</sup></small> '
+      xtbl = ''
+      xpartide = feature.properties.partide
+      for (var partyd in xpartide) {
+        if (xpartide.hasOwnProperty(partyd)) {
+          let sxp0 = xpartide[partyd]
+          let sxp1 = sxp0.partystats
+          // console.log(sxp1)
+
+          // let idsexp1 = 100 * (sxp1qM - sxp1qF) / (sxp1qM + sxp1qF)
+
+          if (sxp1 && 'M' in sxp1 && 'F' in sxp1) {
+            let idsexp2 = 100 * (sxp1['M'] - sxp1['F']) / sxp1['all']
+            let idsexp3 = 100 * (1 - sxp1['F'] / sxp1['M'])
+            let idsexp4 = (sxp1.qM - sxp1.qF / sxp1.qM)
+            xtbl += '<tr><td class="partid">' + partyd + '</td><td>' + sxp1.F + '</td><td>' + sxp1.M + '</td><td>' + idsexp2.toFixed() + '</td><td>' + idsexp3.toFixed() + '</td></tr>'
+          }
+
+          // console.log(partyd + " -> " + xpartide[partyd]);
+        }
+
+      }
+      xtbl = '<table class="sexrendert"><thead><tr><th>- p -</th><th>F</th><th>M</th><th>%1</th><th>%2</th></tr></thead><tbody>         ' + xtbl + '       </tbody></table>'
+      return out + ' <hr>' + xtbl
+    }
+
+    //define a function to get and parse geojson from URL
+    async function getGeoData(url) {
+      let response = await fetch(url);
+      let data = await response.json();
+      // console.log(data)
+      return data;
+    }
+
+    //fetch the geojson and add it to our geojson layer
+    getGeoData('data/liste-candidati.topo.json').then(data => geojson.addData(data));
+    
+  </script>
+</body>
+
+</html>
