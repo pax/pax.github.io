@@ -299,9 +299,8 @@
     }
 
     //fetch the geojson and add it to our geojson layer
-    getGeoData('../data/liste-candidati.topo.json').then(data => geojson.addData(data));
-    // getGeoData('data/liste-candidati.topo.json').then(data => geojson.addData(data));
-
+    getGeoData('data/liste-candidati.topo.json').then(data => geojson.addData(data));
+    
     function sluggify(Text) {
         return Text
           .toLowerCase()
