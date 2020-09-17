@@ -77,7 +77,7 @@
       line-height: 1;
       background-color: rgba(255, 255, 255, .75);
       z-index: 99;
-      font-size: 15px;
+     font-size: 18px;
       max-width: 23em;
       text-align: right;
     }
@@ -87,24 +87,42 @@
       padding: 1ex 1.5ex;
       
       background-color: whitesmoke;
+      color: #444;
+      text-shadow: 1px 1px 0 white;
       /* color: yellow; */
       text-decoration: none;
       margin: 1px 1px 0 0 ;
     }
     #kontrol a:hover{
-      background-color: lightgreen;
+      color: whitesmoke;
+      background-color: #335;
+      text-shadow: 1px 1px 1px rgba(0,0,0,.2);  
+ 
+      /* background-color: rgb(226, 225, 225);  */
     }
       #kontrol a.active {
       background-color: darkslategray;
       color: white;
     }
+    .pudmr .pudmr td,
+    .ppmp .ppmp td,
+    .ppmp .ppmp td,
+    .pplus .pplus td,
+    .pindependent .pindependent td,
+    .ppro-ro .ppro-ro td,
+    .ppnl .ppnl td,
+    .pusr .pusr td,
+    .ppsd .ppsd td 
+    {background-color: Beige; border-bottom: 1px solid MistyRose;}
   </style>
 </head>
 
 <body>
 
 
-  <div id="map-container"></div>
+  <div id="map-wrapper">
+    <div id="map-container"></div>
+  </div>
 
   <div id="kontrol">
     <!-- <a href="#" id="zze1">1</a>  
@@ -112,7 +130,7 @@
     <a href="#" id="zze3">3</a> -->
 
     <div class="k_partide">
-      <a href="#" id="pUDMR" data-target="UDMR">UDMR</a><a href="#" id="pUSR" data-target="USR">USR</a><a href="#" id="pPNL" data-target="PNL">PNL</a><a href="#" id="pPSD" data-target="PSD">PSD</a><a href="#" id="pPMP" data-target="PMP">PMP</a><a href="#" id="pPLUS" data-target="PLUS">PLUS</a><a href="#" id="pPRM" data-target="PRM">PRM</a><a href="#" id="pProRO" data-target="Pro RO">Pro RO</a><a href="#" id="pIndependent" data-target="Independent">Independent</a> </div>
+       <a href="#" id="pUDMR" data-target="UDMR">UDMR</a><a href="#" id="pUSR" data-target="USR">USR</a><a href="#" id="pPNL" data-target="PNL">PNL</a><a href="#" id="pPSD" data-target="PSD">PSD</a><a href="#" id="pPMP" data-target="PMP">PMP</a><a href="#" id="pPLUS" data-target="PLUS">PLUS</a><a href="#" id="pPRM" data-target="PRM">PRM</a><a href="#" id="pProRO" data-target="Pro RO">Pro RO</a><a href="#" id="pIndependent" data-target="Independent">Independent</a> </div>
   </div>
   <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
     integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
@@ -184,6 +202,8 @@
       });
     }
     function resetActives(){
+
+      document.getElementById("map-wrapper").className = 'p' + sluggify(queriedparty);
       var elements2 = document.querySelectorAll("#kontrol a");
       for (var ix = 0; ix < elements2.length; ix++) {  
         elements[ix].classList.remove('active');
@@ -215,7 +235,8 @@
     }
     function shapeStyle(feature) {
       let sxr = feature.properties.uatstats
-      let colorr = 50 * sxr['M'] / sxr['F'] + 50
+      // let colorr = 50 * sxr['M'] / sxr['F'] + 50
+      let colorr = 100 * (sxr['M'] - sxr['F']) / sxr['all'] + 150 
       return {
         color: "whitesmoke",
         opacity: .5,
@@ -257,7 +278,7 @@
             let idsexp2 = 100 * (sxp1['M'] - sxp1['F']) / sxp1['all']
             let idsexp3 = 100 * (1 - sxp1['F'] / sxp1['M'])
             let idsexp4 = (sxp1.qM - sxp1.qF / sxp1.qM)
-            xtbl += '<tr><td class="partid">' + partyd + '</td><td>' + sxp1.F + '</td><td>' + sxp1.M + '</td><td>' + idsexp2.toFixed() + '</td><td>' + idsexp3.toFixed() + '</td></tr>'
+            xtbl += '<tr class="p'+ sluggify(partyd) +'"><td class="partid">' + partyd + '</td><td>' + sxp1.F + '</td><td>' + sxp1.M + '</td><td>' + idsexp2.toFixed() + '</td><td>' + idsexp3.toFixed() + '</td></tr>'
           }
 
           // console.log(partyd + " -> " + xpartide[partyd]);
@@ -278,8 +299,17 @@
     }
 
     //fetch the geojson and add it to our geojson layer
-    getGeoData('data/liste-candidati.topo.json').then(data => geojson.addData(data));
-   </script>
+    getGeoData('../data/liste-candidati.topo.json').then(data => geojson.addData(data));
+    // getGeoData('data/liste-candidati.topo.json').then(data => geojson.addData(data));
+
+    function sluggify(Text) {
+        return Text
+          .toLowerCase()
+          .replace(/[^\w ]+/g, '')
+          .replace(/ +/g, '-')
+          ;
+      }
+  </script>
 </body>
 
 </html>
