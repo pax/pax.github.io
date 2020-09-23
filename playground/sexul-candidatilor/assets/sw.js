@@ -29,9 +29,15 @@ workbox.routing.registerRoute(
   // Cache CSS files
   /.*\.json/,
   // Use cache but update in the background ASAP
-  workbox.strategies.staleWhileRevalidate({
+  workbox.strategies.cacheFirst({
     // Use a custom cache name
     cacheName: 'json-cache',
+    plugins: [
+      new workbox.expiration.Plugin({
+        // Cache for a maximum 2 weeks
+        maxAgeSeconds: 14 * 24 * 60 * 60,
+      })
+    ],
   })
 );
 
