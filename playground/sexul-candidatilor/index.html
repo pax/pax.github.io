@@ -325,9 +325,10 @@
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('assets/sw.js');
       });
+       console.log('we have sw')
     }
     else {
-      console.log('nada')
+      console.log('sw ioc')
     }
   </script>
 </body>
