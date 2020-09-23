@@ -8,7 +8,7 @@ if (workbox) {
 }
 
 workbox.precaching.precacheAndRoute([
-  'data/liste-candidati.topo.json',
+  '../data/liste-candidati.topo.json',
   { url: 'index.html', revision: '383670' },
 ]);
 
