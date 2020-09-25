@@ -8,7 +8,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
     integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
     crossorigin="" />
-
+  <meta property="og:image"
+    content="https://pax.github.io/playground/sexul-candidatilor/sexul-candidatilor.jpg" />
   <style type="text/css">
     body,
     html {
@@ -118,6 +119,18 @@
     .ppsd .ppsd td {
       background-color: Beige;
       border-bottom: 1px solid MistyRose;
+    }
+    td.missingF{
+      background-color: darkgoldenrod; color: white;
+    }
+    td.missingM{
+      background-color: blue; color: white;
+    }
+    tr.missingF{
+      color: red;  
+    }
+    tr.missingM{
+      color: blue;  
     }
   </style>
 </head>
@@ -287,7 +300,9 @@
             let idsexp2 = 100 * (sxp1['M'] - sxp1['F']) / sxp1['all']
             let idsexp3 = 100 * (1 - sxp1['F'] / sxp1['M'])
             let idsexp4 = (sxp1.qM - sxp1.qF / sxp1.qM)
-            xtbl += '<tr class="p' + sluggify(partyd) + '"><td class="partid">' + partyd + '</td><td>' + sxp1.F + '</td><td>' + sxp1.M + '</td><td>' + idsexp2.toFixed() + '</td><td>' + idsexp3.toFixed() + '</td></tr>'
+            hasF = sxp1.F ? '' : 'missing missingF';
+            hasM = sxp1.M ? '' : 'missing missingM';
+            xtbl += '<tr class="p' + sluggify(partyd) + ' ' + hasM + ' ' + hasF + '"><td class="partid">' + partyd + '</td><td class="' + hasF + '">' + sxp1.F + '</td><td class="' + hasM + '">' + sxp1.M + '</td><td>' + idsexp2.toFixed() + '</td><td>' + idsexp3.toFixed() + '</td></tr>'
           }
 
           // console.log(partyd + " -> " + xpartide[partyd]);
