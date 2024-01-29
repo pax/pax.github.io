@@ -8,8 +8,9 @@
 
 <body>
     <div id="wrapper">
+        
         <div id="drop-area">
-            <p><u id="upicon">&#8679;</u> <b>raport tranzacții</b> ING (.xls/x) <br> <small>(or click to browse)</small></p>
+            <p><u class="upicon">&#8679;</u> <b>raport tranzacții</b> ING (.xls/x) <br> <small>(or click to browse)</small></p>
             <input type="file" id="fileInput" class="hidden" accept=".xls,.xlsx" />
             <p id="file-name"></p> <!-- Element to display the file name -->
         </div>
@@ -18,6 +19,7 @@
             <select id="outputFormat"><option value="xlsx" selected>XLSX</option><option value="csv">CSV</option><option value="json">JSON</option></select>
             <button id="convertButton">Convert</button>
         </div>
+        <div id="guide"><a href="index.html" download="ING-parser.html"><b class="upicon">&#8681;</b></a> <a href="index.html" download="ING-parser.html">Descarcă pagina HTML</a> și <mark>folosește offline</mark>.</div>
         <small id="credits"><a href="https://github.com/pax/ing-parser/">info &rarr; github</a></small>    
     </div>
 
@@ -112,6 +114,16 @@
         #iimg {text-align: center;    width: 90vw; margin: 1ex auto;}
         #iimg img { max-width: 640px; width: 90%; margin: 1ex auto; filter: grayscale(50%) opacity(50%); border-radius: 2em; border:1px dotted #CCC; }
         #iimg img:hover { filter: grayscale(10%) opacity(80%); }
+        #guide {text-align: center; margin-top: 2.5vh; font-size: .85em;}
+        .upicon {display: inline-block;}
+        #guide:hover .upicon, #drop-area:hover .upicon {transform: scale(1.2);} 
+        #guide .upicon, #drop-area .upicon {
+            transition: transform 0.3s ease;
+        }
+        #guide:hover .upicon,
+        #drop-area:hover .upicon {
+            transform: scale(1.1);
+        }
     </style>
 </body>
 
