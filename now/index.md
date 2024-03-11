@@ -8,6 +8,9 @@
 
 ## Working
 - Obs VC
+- Taxes
 
 
 ----
+
+<small>see [aboutideasnow.com](https://aboutideasnow.com/) </small>

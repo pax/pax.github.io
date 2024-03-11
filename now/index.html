@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>pwx /now</title>
+</head>
+
+<body>
+    <div id="content"></div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        const mdsource = 'index.md'
+        fetch(mdsource)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('content').innerHTML = marked.parse(data);
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+<style>
+    body {
+        font-family: sans-serif;
+    }
+
+    #content {
+        width: 60em;
+        margin: 2em auto;
+        
+    }
+    h1,h2,h3 {font-weight: normal; margin-top: 1.25em;}
+    h1 {font-size: 24px; background-color: aliceblue; padding: .25ex 1ex; border-radius: 1em; color: #99C; display: inline-block; border:1px solid #EEF; }
+    h2 {font-size: 20px; color: #669}
+    h3 {font-size: 18px;}
+    h4 {font-size: 16px;}
+    hr {border-top: none; }
+</style>
+
+</html>
