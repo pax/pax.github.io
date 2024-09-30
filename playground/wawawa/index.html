@@ -44,11 +44,7 @@
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 3px;
         }
-        #audio-list:not(:empty) {
-            margin-bottom: .75em;
-            padding-bottom: .75em;
-            border-bottom: 2px solid #DDE;
-        }
+     
 
       
 
@@ -173,7 +169,27 @@
             color: whitesmoke; display: inline-block; line-height: 1; text-align: center; border-radius: .75em; width: 1.75ex;  padding: 2px;
         }
         a#reset:hover {background-color: rgba(255,0,0,1);}
-   /*  
+   #wrapper {  display:flex;
+    flex-flow: column;}
+    
+    @media screen and (max-width: 760px) {
+        #audio-list:not(:empty) {
+            margin-bottom: .75em;
+            padding-bottom: .75em;
+            border-bottom: 2px solid #DDE;
+        }
+    }
+    @media screen and (min-width: 760px) {
+        #audio-wrapper{
+        order:2;
+    }
+    #tag-wrapper{
+       margin-bottom: 1em;
+       padding-bottom: 1em;
+       border-bottom: 1px solid #DDD;
+    }
+    }
+        /*  
         #tag-wrapper,
         #audio-wrapper {
             display: inline-block;
@@ -205,7 +221,7 @@
         }
  */
         /* body:not(._filtered) a#reset {display: none;} */
-        #tag-list span:before {position: relative; margin-left: -1.25ex; margin-right: .85ex; transform: scale(1.75); display: inline-block; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
+        #tag-list span:before { position: relative; margin-left: -1.25ex; margin-right: .85ex; margin-top: -1em; transform: scale(1.75); display: inline-block; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
         #tag-list span[data-tag="action"]:before {content:"\1F918";}
         #tag-list span[data-tag="no"]:before {content:"👎";}
         #tag-list span[data-tag="yes"]:before {content:"👍";}
@@ -403,8 +419,10 @@
         resetTags.innerHTML = '#';
         resetTags.dataset.tag = '';
 
+        tagList.insertBefore(resetTags, tagList.firstChild);
         tagList.appendChild(allTag);
-        tagList.appendChild(resetTags);
+        // tagList.appendChild(resetTags);
+        
 
         // Add event listeners to tags
         document.querySelectorAll('.tag').forEach(tag => {
@@ -434,7 +452,7 @@
         scrollToAudioList(); // Add this line to trigger scrolling
     }
     function updateTitle() {
-        const baseTitle = "Enhanced Audio Player";
+        const baseTitle = "WAWAWA";
         if (activeTags.size === 0) {
             document.title = baseTitle;
         } else {
