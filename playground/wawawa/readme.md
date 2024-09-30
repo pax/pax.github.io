@@ -28,7 +28,7 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 ### Enhancements
 
 Desktop
-- [ ] keybord shortcuts
+- [ ] keybord shortcuts - keyboard only nav
 
 Mobile
 - [ ] category slider
