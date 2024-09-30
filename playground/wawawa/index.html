@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 80em;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 1em;
         }
@@ -17,7 +17,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 20px;
+            /* margin-bottom: 20px; */
         }
 
         .tag {
@@ -46,9 +46,9 @@
         }
 
         #audio-list:not(:empty) {
-            margin-bottom: 2em;
-            padding-bottom: 2em;
-            border-bottom: 2px solid #DDD;
+            /* margin-bottom: 2em; */
+            /* padding-bottom: 2em; */
+            /* border-bottom: 2px solid #DDD; */
         }
 
         .audio-item {
@@ -66,14 +66,29 @@
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
             border: 1px solid #f0f0f0;
+            position: relative;
 
         }
+
         .audio-item:before {
-            content: "\25B6"; position: absolute; color: white; margin-left: -1.2em; margin-top: .8ex; text-shadow: -1px -1px 2px rgba(0,0,0,.2);  background-color: red; border-radius: 5px; display: inline-block; padding: 1px 3px; box-shadow: -1px -1px 2px rgba(0,0,0,.2);  font-size: 13px;
+            content: "\25B6";
+            position: absolute;
+            color: white;
+            margin-left: -1.2em;
+            margin-top: .8ex;
+            text-shadow: -1px -1px 2px rgba(0, 0, 0, .2);
+            background-color: red;
+            border-radius: 5px;
+            display: inline-block;
+            padding: 1px 3px;
+            box-shadow: -1px -1px 2px rgba(0, 0, 0, .2);
+            font-size: 13px;
         }
+
         .audio-item.playing:before {
             background-color: #007bff;
         }
+
         .audio-item:not(.playing) {
             text-shadow: 0 0 1px white, -1px -1px 2px white, 1px 1px 2px white;
         }
@@ -82,14 +97,14 @@
             margin: 0 0 10px 0;
             padding: 5px;
             /* background-color: rgba(255, 66, 66, .75); */
-            background-image: linear-gradient(rgba(255, 66, 66, .75) 66%, transparent );
+            background-image: linear-gradient(rgba(255, 66, 66, .75) 66%, transparent);
             display: inline-block;
         }
 
         .audio-item.playing h3 {
             /* background-color: #007bff; */
-            text-shadow: 1px 2px 3px rgba(0,0,0,.4); 
-            background-image: linear-gradient(#007bff 66%, transparent );
+            text-shadow: 1px 2px 3px rgba(0, 0, 0, .4);
+            background-image: linear-gradient(#007bff 66%, transparent);
             color: white;
         }
 
@@ -106,7 +121,7 @@
         }
 
         #selected-tags {
-            margin-bottom: 20px;
+            /* margin-bottom: 20px; */
             font-size: 1.2em;
         }
 
@@ -148,18 +163,57 @@
             background-color: #007bff;
             transition: width 0.1s linear;
         }
-        a#reset {font-size: .85em;}
-        /* body:not(._filtered) a#reset {display: none;} */
 
+        a#reset {
+            font-size: .85em;
+        }
+
+        #tag-wrapper,
+        #audio-wrapper {
+            display: inline-block;
+            vertical-align: top;
+            width: 48%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #tag-wrapper {
+            padding-right: 1em;
+            padding-top: 1ex;
+            max-width: 30vw;
+        }
+
+        #audio-wrapper {
+            padding-left: 1ex;
+            max-width: 69vw;
+        }
+
+        @media screen and (max-width: 760px) {
+            #tag-wrapper {
+                max-width: 33vw;
+            }
+
+            #audio-wrapper {
+                max-width: 66vw;
+            }
+        }
+
+        /* body:not(._filtered) a#reset {display: none;} */
     </style>
 </head>
 
 <body>
-<div id="top"></div>
-    <div id="selected-tags"></div>
-    <div id="child-themes"></div>
-    <div id="audio-list"></div>
-    <div id="tag-list"></div>
+    <div id="top"></div>
+    <div id="wrapper">
+        <div id="tag-wrapper">
+            <div id="tag-list"></div>
+        </div>
+        <div id="audio-wrapper">
+            <div id="selected-tags"></div>
+            <div id="child-themes"></div>
+            <div id="audio-list"></div>
+        </div>
+    </div>
     <div id="progress-bar-container">
         <div id="progress-bar"></div>
     </div>
@@ -283,9 +337,15 @@
         const allTag = document.createElement('span');
         allTag.className = 'tag';
         allTag.textContent = 'All';
-        // allTag.innerHTML = 'All ' + ' &emsp; <a id="reset" href="?">&#215; reset</a>';
         allTag.dataset.tag = 'all';
+        
+        const resetTags = document.createElement('span');
+        resetTags.className = 'tag';
+        resetTags.innerHTML = '#';
+        resetTags.dataset.tag = '';
+
         tagList.appendChild(allTag);
+        tagList.appendChild(resetTags);
 
         // Add event listeners to tags
         document.querySelectorAll('.tag').forEach(tag => {
@@ -323,7 +383,7 @@
             document.title = `${tagString} - ${baseTitle}`;
             document.body.className = `${tagString}` + ' _filtered ';
         }
-        
+
     }
     // Function to update tag highlights
     function updateTagHighlights() {

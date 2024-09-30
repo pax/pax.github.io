@@ -23,6 +23,7 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 - [x] add thumbs
 - [ ] log played sounds + categories to browser cache - display popular choices
 - [ ] add sounds / ctgs to favorites in browser cache
+- [ ] add collections?
 
 
 ## Features
