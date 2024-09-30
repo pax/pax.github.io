@@ -47,15 +47,21 @@
 
         .audio-item {
             background-color: #f9f9f9;
+            background-size: contain; background-position: right; background-repeat: no-repeat;
             padding: 10px;
             border-radius: 5px;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,.2); border:  1px solid #f0f0f0;
+            
+            
         }
-
+        .audio-item:not(.playing) {
+            text-shadow: 0 0 1px white, -1px -1px 2px white, 1px 1px 2px white;
+        }
         .audio-item h3 {
             margin: 0 0 10px 0;
             padding: 5px;
+            background-color: rgba(255,255,255,.75);  display: inline-block;
         }
 
         .audio-item.playing h3 {
@@ -178,8 +184,13 @@ let progressBar = document.getElementById('progress-bar');
             audioList.innerHTML = items.map(item => {
                 const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
                 const displayTags = itemTags.filter(t => !activeTags.has(t));
+                // check if item has 'thumb' and is not null, if so add style background-image to audio-item
+                let thebcg = ''
+                if (item.thumb && item.thumb !== 'null') {
+                    thebcg = ` style="background-image: url(${dataRoot}thumbs/${item.thumb}); " `;
+                }
                 return `
-                    <div class="audio-item" data-tags="${item.tags || ''}" data-slug="${item.slug}">
+                    <div class="audio-item" data-tags="${item.tags || ''}" data-slug="${item.slug}" ${thebcg}>
                         <h3>${item.title}</h3>
                         <div class="item-tags">
                             ${displayTags.map(tag => `<span class="item-tag">${tag}</span>`).join('')}

@@ -18,7 +18,8 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 - [x] url hash for ctg filter or file
 - [x] when clicking a tag where children have other tags, higlight those tags, when clicked, filter down. when other tag is clicked, reset to that one
 - [x] show sound tags, other than the selection
-- [ ] add thumbs
+- [ ] how to minimise clicks - shorten tag list?
+- [x] add thumbs
 - [ ] log played sounds + categories to browser cache - display popular choices
 - [ ] add sounds / ctgs to favorites in browser cache
 
