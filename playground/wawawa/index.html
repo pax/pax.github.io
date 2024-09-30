@@ -8,9 +8,9 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            max-width: 80em;
             margin: 0 auto;
-            padding: 20px;
+            padding: 1em;
         }
 
         #tag-list {
@@ -41,7 +41,7 @@
 
         #audio-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 20px;
         }
 
@@ -52,18 +52,28 @@
         }
 
         .audio-item {
-            background-color: #f9f9f9;
-            background-size: contain;
+            background-color: #F66;
+            background-image: linear-gradient(#F55, rgba(99, 0, 0, 0.6), rgba(255, 0, 0, 0.8));
+            /* background-size: contain; */
+            background-size: cover;
             background-position: right;
             background-repeat: no-repeat;
-            padding: 10px;
-            border-radius: 1em;
+            padding: .5ex;
+            border-bottom-left-radius: 1ex;
+            border-bottom-right-radius: 1ex;
+            border-top-left-radius: .7ex;
+            border-top-right-radius: .7ex;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
             border: 1px solid #f0f0f0;
 
         }
-
+        .audio-item:before {
+            content: "\25B6"; position: absolute; color: white; margin-left: -1.2em; margin-top: .8ex; text-shadow: -1px -1px 2px rgba(0,0,0,.2);  background-color: red; border-radius: 5px; display: inline-block; padding: 1px 3px; box-shadow: -1px -1px 2px rgba(0,0,0,.2);  font-size: 13px;
+        }
+        .audio-item.playing:before {
+            background-color: #007bff;
+        }
         .audio-item:not(.playing) {
             text-shadow: 0 0 1px white, -1px -1px 2px white, 1px 1px 2px white;
         }
@@ -71,12 +81,15 @@
         .audio-item h3 {
             margin: 0 0 10px 0;
             padding: 5px;
-            background-color: rgba(255, 255, 255, .75);
+            /* background-color: rgba(255, 66, 66, .75); */
+            background-image: linear-gradient(rgba(255, 66, 66, .75) 66%, transparent );
             display: inline-block;
         }
 
         .audio-item.playing h3 {
-            background-color: #007bff;
+            /* background-color: #007bff; */
+            text-shadow: 1px 2px 3px rgba(0,0,0,.4); 
+            background-image: linear-gradient(#007bff 66%, transparent );
             color: white;
         }
 
@@ -142,9 +155,7 @@
 </head>
 
 <body>
-
-
-
+<div id="top"></div>
     <div id="selected-tags"></div>
     <div id="child-themes"></div>
     <div id="audio-list"></div>
@@ -387,7 +398,8 @@
     }
     function scrollToAudioList() {
         if (window.location.hash) {
-            const audioListElement = document.getElementById('audio-list');
+            // const audioListElement = document.getElementById('audio-list');
+            const audioListElement = document.getElementById('top');
             if (audioListElement) {
                 audioListElement.scrollIntoView({ behavior: 'smooth' });
             }
