@@ -1,19 +1,26 @@
 # Like reaction gifs / memes, but for sound
 
+Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa/) 
+
 ## Prior art
 - [Myinstants](https://www.myinstants.com/) 
 - [soundboard.com](https://www.soundboard.com/) 
 - [AKAspanion/music-app](https://github.com/AKAspanion/music-app) 
 - see also: [YT mixer / mash-up](https://docs.google.com/document/d/1bWTh5fIsHL3iAnIx1BTs_ersVWhNiOSs) 
 
-## Roadmap - html prototype
+## Roadmap - HTML prototype
+
+[pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa/) 
+
 - [x] download sample mp3s
 - [x] create index file w tags
 - [x] basic filtered list
-- [ ] url hash for ctg filter or file
-- [ ] when clicking a tag where children have other tags, higlight those tags, when clicked, filter down. when other tag is clicked, reset to that one
-- [ ] show sound tags, other than the selection
+- [x] url hash for ctg filter or file
+- [x] when clicking a tag where children have other tags, higlight those tags, when clicked, filter down. when other tag is clicked, reset to that one
+- [x] show sound tags, other than the selection
 - [ ] add thumbs
+- [ ] log played sounds + categories to browser cache - display popular choices
+- [ ] add sounds / ctgs to favorites in browser cache
 
 
 ## Features
