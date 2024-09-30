@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,74 +12,119 @@
             margin: 0 auto;
             padding: 20px;
         }
+
         #tag-list {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 20px;
         }
+
         .tag {
             background-color: #f0f0f0;
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
         }
+
         .tag.active {
             background-color: #007bff;
             color: white;
         }
+
         .tag.highlighted {
             border: 2px solid #007bff;
         }
+
         #audio-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
         }
+
         .audio-item {
             background-color: #f9f9f9;
             padding: 10px;
             border-radius: 5px;
             cursor: pointer;
         }
+
         .audio-item h3 {
             margin: 0 0 10px 0;
             padding: 5px;
         }
+
         .audio-item.playing h3 {
             background-color: #007bff;
             color: white;
         }
+
         .item-tags {
             font-size: 0.8em;
             color: #666;
         }
+
         .item-tag {
             background-color: #e0e0e0;
             padding: 2px 5px;
             border-radius: 3px;
             margin-right: 5px;
         }
+
         #selected-tags {
             margin-bottom: 20px;
             font-size: 1.2em;
         }
+
         #child-themes {
             font-size: 0.9em;
+            display: inline-block;
             color: #666;
             margin-top: 5px;
         }
+
+        #child-themes:not(:empty) {
+            margin-bottom: 20px;
+            padding: .4ex;
+            /* background-color: whitesmoke; */
+        }
+
+        #child-themes:not(:empty)::before {
+            content: '🏷️ ';
+            font-weight: bold;
+        }
+
         .audio-item.playing {
             background-color: #007bff;
+        }        #progress-bar-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #f0f0f0;
+            z-index: 1000;
         }
+        #progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: #007bff;
+            transition: width 0.1s linear;
+        }
+
     </style>
 </head>
+
 <body>
 
+
+    <div id="tag-list"></div>
     <div id="selected-tags"></div>
     <div id="child-themes"></div>
-    <div id="tag-list"></div>
     <div id="audio-list"></div>
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
 
     <script>
         const dataRoot = 'audio/myinstants/';
@@ -91,17 +137,19 @@
         let allTags = new Set();
         let currentlyPlaying = null;
         let activeTags = new Set();
+         
+let progressBar = document.getElementById('progress-bar');
 
         // Function to parse CSV data
         function parseCSV(csv) {
             const lines = csv.split('\n').filter(line => line.trim() !== '');
             const headers = lines[0].split(',').map(h => h.trim());
-            
+
             return lines.slice(1).map(line => {
                 const values = [];
                 let inQuotes = false;
                 let currentValue = '';
-                
+
                 for (let char of line) {
                     if (char === '"') {
                         inQuotes = !inQuotes;
@@ -150,24 +198,34 @@
         // Function to toggle audio play/pause
         function toggleAudio(item) {
             const audio = item.querySelector('audio');
-            
+
             if (currentlyPlaying && currentlyPlaying !== audio) {
                 currentlyPlaying.pause();
                 currentlyPlaying.currentTime = 0;
                 currentlyPlaying.parentNode.classList.remove('playing');
+                currentlyPlaying.removeEventListener('timeupdate', updateProgressBar);
             }
 
             if (audio.paused) {
                 audio.play();
                 item.classList.add('playing');
                 currentlyPlaying = audio;
+                currentlyPlaying.addEventListener('timeupdate', updateProgressBar);
             } else {
                 audio.pause();
                 audio.currentTime = 0;
                 item.classList.remove('playing');
                 currentlyPlaying = null;
+                progressBar.style.width = '0%';
             }
         }
+
+        function updateProgressBar() {
+    if (currentlyPlaying && progressBar) {
+        const progress = (currentlyPlaying.currentTime / currentlyPlaying.duration) * 100;
+        progressBar.style.width = `${progress}%`;
+    }
+}
 
         // Function to render tags
         function renderTags() {
@@ -208,6 +266,7 @@
             updateTagHighlights();
             updateSelectedTags();
             updateUrlHash();
+            scrollToAudioList(); // Add this line to trigger scrolling
         }
 
         // Function to update tag highlights
@@ -247,9 +306,10 @@
                     const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
                     return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
                 });
-                
-                selectedTagsDiv.textContent = `${tagArray.join(' + ')} (${filteredItems.length})`;
-                
+
+                // selectedTagsDiv.textContent = `${tagArray.join(' + ')} (${filteredItems.length})`;
+                selectedTagsDiv.innerHTML = `<b>${tagArray.join(' + ')}</b>` + ` ` + `<small>(${filteredItems.length})</small>`;
+
                 const childThemes = new Set();
                 filteredItems.forEach(item => {
                     const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
@@ -257,8 +317,10 @@
                         if (!activeTags.has(tag)) childThemes.add(tag);
                     });
                 });
-                
-                childThemesDiv.textContent = `Child themes: ${Array.from(childThemes).join(', ')}`;
+
+                // childThemesDiv.textContent = `${Array.from(childThemes).join(', ')}`;
+                // add span in betwheen childThemesDiv content items
+                childThemesDiv.innerHTML = Array.from(childThemes).map(tag => `<span class="item-tag">${tag}</span>`).join('');
             }
         }
 
@@ -277,7 +339,14 @@
             const hashValue = Array.from(activeTags).join('+');
             window.history.replaceState(null, null, hashValue ? `#${hashValue}` : '#');
         }
-
+        function scrollToAudioList() {
+            if (window.location.hash) {
+                const audioListElement = document.getElementById('audio-list');
+                if (audioListElement) {
+                    audioListElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
         // Function to apply filter from URL hash
         function applyFilterFromHash() {
             const hash = window.location.hash.substring(1);
@@ -287,9 +356,9 @@
                 filterAudioItems();
                 updateTagHighlights();
                 updateSelectedTags();
+                scrollToAudioList(); // Add this line to trigger scrolling on page load
             }
         }
-
         // Fetch and process CSV data
         fetch(listfile)
             .then(response => response.text())
@@ -319,6 +388,17 @@
 
         // Listen for hash changes
         window.addEventListener('hashchange', applyFilterFromHash);
+
+        
+        document.querySelectorAll('.audio-item').forEach(item => {
+            const audio = item.querySelector('audio');
+            audio.addEventListener('ended', () => {
+                item.classList.remove('playing');
+                currentlyPlaying = null;
+                progressBar.style.width = '0%';
+            });
+        });
     </script>
 </body>
+
 </html>
