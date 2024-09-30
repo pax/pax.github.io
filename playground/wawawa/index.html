@@ -168,7 +168,11 @@
 
         a#reset {
             font-size: .85em;
+            text-decoration: none; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+            background-color: rgba(255,0,0,.66);
+            color: whitesmoke; display: inline-block; line-height: 1; text-align: center; border-radius: .75em; width: 1.75ex;  padding: 2px;
         }
+        a#reset:hover {background-color: rgba(255,0,0,1);}
    /*  
         #tag-wrapper,
         #audio-wrapper {
@@ -201,6 +205,28 @@
         }
  */
         /* body:not(._filtered) a#reset {display: none;} */
+        #tag-list span[data-tag="meme"],
+        #tag-list span[data-tag="fake-enthusiasm"],
+        #tag-list span[data-tag="failure-expected"],
+        #tag-list span[data-tag="relief"],
+        #tag-list span[data-tag="the-office"],
+        #tag-list span[data-tag="natural"],
+        #tag-list span[data-tag="movies"],
+        #tag-list span[data-tag="misc"],
+        #tag-list span[data-tag="games"],
+        #tag-list span[data-tag="futurama"],
+        #tag-list span[data-tag="confirmation"],
+        #tag-list span[data-tag="computer"],
+        #tag-list span[data-tag="circus"],
+        #tag-list span[data-tag="cartoons"],
+        #tag-list span[data-tag="Uncategorized"],
+        #tag-list span[data-tag="donald-trump"],
+        #tag-list span[data-tag="lets-do-it"],
+        #tag-list span[data-tag="robot-voice"],
+        #tag-list span[data-tag="female-voice"],
+        #tag-list span[data-tag="male-voice"] {
+            display: none;
+        }
     </style>
 </head>
 
