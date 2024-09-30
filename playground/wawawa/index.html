@@ -25,18 +25,18 @@
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
-            
+
         }
 
         .tag.active {
             background-color: #007bff;
             color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
         }
 
         .tag.highlighted {
             outline: 2px solid #007bff;
-            box-shadow: 0 2px 4px rgba(0,0,0,.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
         }
 
         #audio-list {
@@ -45,23 +45,34 @@
             gap: 20px;
         }
 
+        #audio-list:not(:empty) {
+            margin-bottom: 2em;
+            padding-bottom: 2em;
+            border-bottom: 2px solid #DDD;
+        }
+
         .audio-item {
             background-color: #f9f9f9;
-            background-size: contain; background-position: right; background-repeat: no-repeat;
+            background-size: contain;
+            background-position: right;
+            background-repeat: no-repeat;
             padding: 10px;
             border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,.2); border:  1px solid #f0f0f0;
-            
-            
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+            border: 1px solid #f0f0f0;
+
         }
+
         .audio-item:not(.playing) {
             text-shadow: 0 0 1px white, -1px -1px 2px white, 1px 1px 2px white;
         }
+
         .audio-item h3 {
             margin: 0 0 10px 0;
             padding: 5px;
-            background-color: rgba(255,255,255,.75);  display: inline-block;
+            background-color: rgba(255, 255, 255, .75);
+            display: inline-block;
         }
 
         .audio-item.playing h3 {
@@ -106,7 +117,9 @@
 
         .audio-item.playing {
             background-color: #007bff;
-        }        #progress-bar-container {
+        }
+
+        #progress-bar-container {
             position: fixed;
             bottom: 0;
             left: 0;
@@ -115,12 +128,14 @@
             background-color: #f0f0f0;
             z-index: 1000;
         }
+
         #progress-bar {
             height: 100%;
             width: 0;
             background-color: #007bff;
             transition: width 0.1s linear;
         }
+        body:not(._filtered) a#reset {display: none;}
 
     </style>
 </head>
@@ -128,292 +143,316 @@
 <body>
 
 
-    <div id="tag-list"></div>
+
     <div id="selected-tags"></div>
     <div id="child-themes"></div>
     <div id="audio-list"></div>
+    <div id="tag-list"></div>
     <div id="progress-bar-container">
         <div id="progress-bar"></div>
     </div>
 
-    <script>
-        const dataRoot = 'audio/myinstants/';
-        const listfile = dataRoot + 'sounds.csv';
-        const tagList = document.getElementById('tag-list');
-        const audioList = document.getElementById('audio-list');
-        const selectedTagsDiv = document.getElementById('selected-tags');
-        const childThemesDiv = document.getElementById('child-themes');
-        let audioData = [];
-        let allTags = new Set();
-        let currentlyPlaying = null;
-        let activeTags = new Set();
-         
-let progressBar = document.getElementById('progress-bar');
 
-        // Function to parse CSV data
-        function parseCSV(csv) {
-            const lines = csv.split('\n').filter(line => line.trim() !== '');
-            const headers = lines[0].split(',').map(h => h.trim());
+</body>
+<script>
+    const dataRoot = 'audio/myinstants/';
+    const listfile = dataRoot + 'sounds.csv';
+    const tagList = document.getElementById('tag-list');
+    const audioList = document.getElementById('audio-list');
+    const selectedTagsDiv = document.getElementById('selected-tags');
+    const childThemesDiv = document.getElementById('child-themes');
+    let audioData = [];
+    let allTags = new Set();
+    let currentlyPlaying = null;
+    let activeTags = new Set();
 
-            return lines.slice(1).map(line => {
-                const values = [];
-                let inQuotes = false;
-                let currentValue = '';
+    let progressBar = document.getElementById('progress-bar');
 
-                for (let char of line) {
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        values.push(currentValue.trim());
-                        currentValue = '';
-                    } else {
-                        currentValue += char;
-                    }
+    // Function to parse CSV data
+    function parseCSV(csv) {
+        const lines = csv.split('\n').filter(line => line.trim() !== '');
+        const headers = lines[0].split(',').map(h => h.trim());
+
+        return lines.slice(1).map(line => {
+            const values = [];
+            let inQuotes = false;
+            let currentValue = '';
+
+            for (let char of line) {
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    values.push(currentValue.trim());
+                    currentValue = '';
+                } else {
+                    currentValue += char;
                 }
-                values.push(currentValue.trim());
-
-                return headers.reduce((obj, header, index) => {
-                    obj[header] = values[index].replace(/^"(.*)"$/, '$1');
-                    return obj;
-                }, {});
-            }).filter(item => item.slug && item.title);
-        }
-
-        // Function to render audio items
-        function renderAudioItems(items) {
-            audioList.innerHTML = items.map(item => {
-                const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
-                const displayTags = itemTags.filter(t => !activeTags.has(t));
-                // check if item has 'thumb' and is not null, if so add style background-image to audio-item
-                let thebcg = ''
-                if (item.thumb && item.thumb !== 'null') {
-                    thebcg = ` style="background-image: url(${dataRoot}thumbs/${item.thumb}); " `;
-                }
-                return `
-                    <div class="audio-item" data-tags="${item.tags || ''}" data-slug="${item.slug}" ${thebcg}>
-                        <h3>${item.title}</h3>
-                        <div class="item-tags">
-                            ${displayTags.map(tag => `<span class="item-tag">${tag}</span>`).join('')}
-                        </div>
-                        <audio preload="auto">
-                            <source src="${dataRoot}ogg/${item.slug}.ogg" type="audio/ogg">
-                            <source src="${dataRoot}mp3/${item.slug}.mp3" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                `;
-            }).join('');
-
-            // Add click event listeners to audio items
-            document.querySelectorAll('.audio-item').forEach(item => {
-                item.addEventListener('click', () => toggleAudio(item));
-            });
-        }
-
-        // Function to toggle audio play/pause
-        function toggleAudio(item) {
-            const audio = item.querySelector('audio');
-
-            if (currentlyPlaying && currentlyPlaying !== audio) {
-                currentlyPlaying.pause();
-                currentlyPlaying.currentTime = 0;
-                currentlyPlaying.parentNode.classList.remove('playing');
-                currentlyPlaying.removeEventListener('timeupdate', updateProgressBar);
             }
+            values.push(currentValue.trim());
 
-            if (audio.paused) {
-                audio.play();
-                item.classList.add('playing');
-                currentlyPlaying = audio;
-                currentlyPlaying.addEventListener('timeupdate', updateProgressBar);
-            } else {
-                audio.pause();
-                audio.currentTime = 0;
-                item.classList.remove('playing');
-                currentlyPlaying = null;
-                progressBar.style.width = '0%';
-            }
-        }
-
-        function updateProgressBar() {
-    if (currentlyPlaying && progressBar) {
-        const progress = (currentlyPlaying.currentTime / currentlyPlaying.duration) * 100;
-        progressBar.style.width = `${progress}%`;
+            return headers.reduce((obj, header, index) => {
+                obj[header] = values[index].replace(/^"(.*)"$/, '$1');
+                return obj;
+            }, {});
+        }).filter(item => item.slug && item.title);
     }
-}
 
-        // Function to render tags
-        function renderTags() {
-            const sortedTags = Array.from(allTags).sort();
-            tagList.innerHTML = sortedTags.map(tag => `
-                <span class="tag" data-tag="${tag}">${tag}</span>
-            `).join('');
-
-            // Add "All" tag at the end
-            const allTag = document.createElement('span');
-            allTag.className = 'tag';
-            allTag.textContent = 'All';
-            allTag.dataset.tag = 'all';
-            tagList.appendChild(allTag);
-
-            // Add event listeners to tags
-            document.querySelectorAll('.tag').forEach(tag => {
-                tag.addEventListener('click', () => handleTagClick(tag));
-            });
-        }
-
-        // Function to handle tag clicks
-        function handleTagClick(clickedTag) {
-            const tag = clickedTag.dataset.tag;
-
-            if (tag === 'all') {
-                activeTags.clear();
-            } else if (clickedTag.classList.contains('active')) {
-                activeTags.delete(tag);
-            } else if (clickedTag.classList.contains('highlighted')) {
-                activeTags.add(tag);
-            } else {
-                activeTags.clear();
-                activeTags.add(tag);
+    // Function to render audio items
+    function renderAudioItems(items) {
+        audioList.innerHTML = items.map(item => {
+            const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+            const displayTags = itemTags.filter(t => !activeTags.has(t));
+            // check if item has 'thumb' and is not null, if so add style background-image to audio-item
+            let thebcg = ''
+            if (item.thumb && item.thumb !== 'null') {
+                thebcg = ` style="background-image: url(${dataRoot}thumbs/${item.thumb}); " `;
             }
+            return `
+                <div class="audio-item" data-tags="${item.tags || ''}" data-slug="${item.slug}" ${thebcg}>
+                    <h3>${item.title}</h3>
+                    <div class="item-tags">
+                        ${displayTags.map(tag => `<span class="item-tag">${tag}</span>`).join('')}
+                    </div>
+                    <audio preload="auto">
+                        <source src="${dataRoot}ogg/${item.slug}.ogg" type="audio/ogg">
+                        <source src="${dataRoot}mp3/${item.slug}.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            `;
+        }).join('');
 
-            filterAudioItems();
-            updateTagHighlights();
-            updateSelectedTags();
-            updateUrlHash();
-            scrollToAudioList(); // Add this line to trigger scrolling
+        // Add click event listeners to audio items
+        document.querySelectorAll('.audio-item').forEach(item => {
+            item.addEventListener('click', () => toggleAudio(item));
+        });
+    }
+
+    // Function to toggle audio play/pause
+    function toggleAudio(item) {
+        const audio = item.querySelector('audio');
+
+        if (currentlyPlaying && currentlyPlaying !== audio) {
+            currentlyPlaying.pause();
+            currentlyPlaying.currentTime = 0;
+            currentlyPlaying.parentNode.classList.remove('playing');
+            currentlyPlaying.removeEventListener('timeupdate', updateProgressBar);
         }
 
-        // Function to update tag highlights
-        function updateTagHighlights() {
-            document.querySelectorAll('.tag').forEach(tag => {
-                tag.classList.remove('active', 'highlighted');
-                if (activeTags.has(tag.dataset.tag)) {
-                    tag.classList.add('active');
+        if (audio.paused) {
+            audio.play();
+            item.classList.add('playing');
+            currentlyPlaying = audio;
+            currentlyPlaying.addEventListener('timeupdate', updateProgressBar);
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+            item.classList.remove('playing');
+            currentlyPlaying = null;
+            progressBar.style.width = '0%';
+        }
+    }
+
+    function updateProgressBar() {
+        if (currentlyPlaying && progressBar) {
+            const progress = (currentlyPlaying.currentTime / currentlyPlaying.duration) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+    }
+
+    // Function to render tags
+    function renderTags() {
+        const sortedTags = Array.from(allTags).sort();
+        tagList.innerHTML = sortedTags.map(tag => `
+            <span class="tag" data-tag="${tag}">${tag}</span>
+        `).join('');
+
+        // Add "All" tag at the end
+        const allTag = document.createElement('span');
+        allTag.className = 'tag';
+        allTag.textContent = 'All';
+        // allTag.innerHTML = 'All ' + ' &emsp; <a id="reset" href="?">&#215; reset</a>';
+        allTag.dataset.tag = 'all';
+        tagList.appendChild(allTag);
+
+        // Add event listeners to tags
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', () => handleTagClick(tag));
+        });
+    }
+
+    // Function to handle tag clicks
+    function handleTagClick(clickedTag) {
+        const tag = clickedTag.dataset.tag;
+
+        if (tag === 'all') {
+            activeTags.clear();
+        } else if (clickedTag.classList.contains('active')) {
+            activeTags.delete(tag);
+        } else if (clickedTag.classList.contains('highlighted')) {
+            activeTags.add(tag);
+        } else {
+            activeTags.clear();
+            activeTags.add(tag);
+        }
+        updateTitle();
+        filterAudioItems();
+        updateTagHighlights();
+        updateSelectedTags();
+        updateUrlHash();
+        scrollToAudioList(); // Add this line to trigger scrolling
+    }
+    function updateTitle() {
+        const baseTitle = "Enhanced Audio Player";
+        if (activeTags.size === 0) {
+            document.title = baseTitle;
+        } else {
+            const tagString = Array.from(activeTags).join(' + ');
+            document.title = `${tagString} - ${baseTitle}`;
+            document.body.className = `${tagString}` + ' _filtered ';
+        }
+        
+    }
+    // Function to update tag highlights
+    function updateTagHighlights() {
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.classList.remove('active', 'highlighted');
+            if (activeTags.has(tag.dataset.tag)) {
+                tag.classList.add('active');
+            }
+        });
+
+        if (activeTags.size > 0) {
+            const relatedTags = new Set();
+            audioData.forEach(item => {
+                const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                if (activeTags.size === itemTags.filter(t => activeTags.has(t)).length) {
+                    itemTags.forEach(t => relatedTags.add(t));
                 }
             });
 
-            if (activeTags.size > 0) {
-                const relatedTags = new Set();
-                audioData.forEach(item => {
-                    const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
-                    if (activeTags.size === itemTags.filter(t => activeTags.has(t)).length) {
-                        itemTags.forEach(t => relatedTags.add(t));
-                    }
-                });
-
-                document.querySelectorAll('.tag').forEach(tag => {
-                    if (relatedTags.has(tag.dataset.tag) && !activeTags.has(tag.dataset.tag)) {
-                        tag.classList.add('highlighted');
-                    }
-                });
-            }
+            document.querySelectorAll('.tag').forEach(tag => {
+                if (relatedTags.has(tag.dataset.tag) && !activeTags.has(tag.dataset.tag)) {
+                    tag.classList.add('highlighted');
+                }
+            });
         }
+    }
 
-        // Function to update selected tags display
-        function updateSelectedTags() {
-            if (activeTags.size === 0) {
-                selectedTagsDiv.textContent = 'All';
-                childThemesDiv.textContent = '';
-            } else {
-                const tagArray = Array.from(activeTags);
-                const filteredItems = audioData.filter(item => {
-                    const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
-                    return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
-                });
-
-                // selectedTagsDiv.textContent = `${tagArray.join(' + ')} (${filteredItems.length})`;
-                selectedTagsDiv.innerHTML = `<b>${tagArray.join(' + ')}</b>` + ` ` + `<small>(${filteredItems.length})</small>`;
-
-                const childThemes = new Set();
-                filteredItems.forEach(item => {
-                    const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
-                    itemTags.forEach(tag => {
-                        if (!activeTags.has(tag)) childThemes.add(tag);
-                    });
-                });
-
-                // childThemesDiv.textContent = `${Array.from(childThemes).join(', ')}`;
-                // add span in betwheen childThemesDiv content items
-                childThemesDiv.innerHTML = Array.from(childThemes).map(tag => `<span class="item-tag">${tag}</span>`).join('');
-            }
-        }
-
-        // Function to filter audio items based on selected tags
-        function filterAudioItems() {
+    // Function to update selected tags display
+    function updateSelectedTags() {
+        if (activeTags.size === 0) {
+            // selectedTagsDiv.textContent = 'All';
+            selectedTagsDiv.innerHTML = '–– ' + ' &emsp; <a id="reset" href="?">&#215; reset</a>';
+            childThemesDiv.textContent = '';
+        } else {
+            const tagArray = Array.from(activeTags);
             const filteredItems = audioData.filter(item => {
-                if (activeTags.size === 0) return true;
                 const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
                 return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
             });
-            renderAudioItems(filteredItems);
-        }
 
-        // Function to update URL hash
-        function updateUrlHash() {
-            const hashValue = Array.from(activeTags).join('+');
-            window.history.replaceState(null, null, hashValue ? `#${hashValue}` : '#');
-        }
-        function scrollToAudioList() {
-            if (window.location.hash) {
-                const audioListElement = document.getElementById('audio-list');
-                if (audioListElement) {
-                    audioListElement.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        }
-        // Function to apply filter from URL hash
-        function applyFilterFromHash() {
-            const hash = window.location.hash.substring(1);
-            if (hash) {
-                const filterTags = hash.split('+');
-                activeTags = new Set(filterTags);
-                filterAudioItems();
-                updateTagHighlights();
-                updateSelectedTags();
-                scrollToAudioList(); // Add this line to trigger scrolling on page load
-            }
-        }
-        // Fetch and process CSV data
-        fetch(listfile)
-            .then(response => response.text())
-            .then(csv => {
-                audioData = parseCSV(csv);
-                audioData.forEach(item => {
-                    if (item.tags) {
-                        item.tags.split(',').forEach(tag => {
-                            const trimmedTag = tag.trim();
-                            if (trimmedTag) allTags.add(trimmedTag);
-                        });
-                    } else {
-                        allTags.add('Uncategorized');
-                    }
+            // selectedTagsDiv.textContent = `${tagArray.join(' + ')} (${filteredItems.length})`;
+            selectedTagsDiv.innerHTML = `<b>${tagArray.join(' + ')}</b>` + ` ` + `<small>(${filteredItems.length})</small>` + ' &emsp; <a id="reset" href="?">&#215; reset</a>';
+
+            const childThemes = new Set();
+            filteredItems.forEach(item => {
+                const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                itemTags.forEach(tag => {
+                    if (!activeTags.has(tag)) childThemes.add(tag);
                 });
-                allTags.add('Uncategorized');
-                renderTags();
-                applyFilterFromHash();
-                if (activeTags.size === 0) {
-                    updateSelectedTags();
-                }
-            })
-            .catch(error => {
-                console.error('Error loading CSV:', error);
-                audioList.innerHTML = '<p>Error loading audio data. Please try again later.</p>';
             });
 
-        // Listen for hash changes
-        window.addEventListener('hashchange', applyFilterFromHash);
+            // childThemesDiv.textContent = `${Array.from(childThemes).join(', ')}`;
+            // add span in betwheen childThemesDiv content items
+            childThemesDiv.innerHTML = Array.from(childThemes).map(tag => `<span class="item-tag">${tag}</span>`).join('');
+        }
+    }
 
-        
-        document.querySelectorAll('.audio-item').forEach(item => {
-            const audio = item.querySelector('audio');
-            audio.addEventListener('ended', () => {
-                item.classList.remove('playing');
-                currentlyPlaying = null;
-                progressBar.style.width = '0%';
-            });
+    // Function to filter audio items based on selected tags
+    function filterAudioItems() {
+        const filteredItems = audioData.filter(item => {
+            if (activeTags.size === 0) return true;
+            const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+            return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
         });
-    </script>
-</body>
+        renderAudioItems(filteredItems);
+    }
+
+    // Function to update URL hash
+    function updateUrlHash() {
+        const hashValue = Array.from(activeTags).join('+');
+        window.history.replaceState(null, null, hashValue ? `#${hashValue}` : '#');
+    }
+    function scrollToAudioList() {
+        if (window.location.hash) {
+            const audioListElement = document.getElementById('audio-list');
+            if (audioListElement) {
+                audioListElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }
+    // Function to apply filter from URL hash
+    function applyFilterFromHash() {
+        const hash = window.location.hash.substring(1);
+        if (hash) {
+            const filterTags = hash.split('+');
+            activeTags = new Set(filterTags);
+            filterAudioItems();
+            updateTagHighlights();
+            updateSelectedTags();
+            scrollToAudioList(); // Add this line to trigger scrolling on page load
+        }
+    }
+
+    function playSpecificAudio(slug) {
+        const audioItem = document.querySelector(`.audio-item[data-slug="${slug}"]`);
+        if (audioItem) {
+            toggleAudio(audioItem);
+            audioItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+
+    // Fetch and process CSV data
+    fetch(listfile)
+        .then(response => response.text())
+        .then(csv => {
+            audioData = parseCSV(csv);
+            audioData.forEach(item => {
+                if (item.tags) {
+                    item.tags.split(',').forEach(tag => {
+                        const trimmedTag = tag.trim();
+                        if (trimmedTag) allTags.add(trimmedTag);
+                    });
+                } else {
+                    allTags.add('Uncategorized');
+                }
+            });
+            allTags.add('Uncategorized');
+            renderTags();
+            applyFilterFromHash();
+            if (activeTags.size === 0) {
+                updateSelectedTags();
+            }
+        })
+        .catch(error => {
+            console.error('Error loading CSV:', error);
+            audioList.innerHTML = '<p>Error loading audio data. Please try again later.</p>';
+        });
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', applyFilterFromHash);
+
+
+    document.querySelectorAll('.audio-item').forEach(item => {
+        const audio = item.querySelector('audio');
+        audio.addEventListener('ended', () => {
+            item.classList.remove('playing');
+            currentlyPlaying = null;
+            progressBar.style.width = '0%';
+        });
+    });
+</script>
 
 </html>
