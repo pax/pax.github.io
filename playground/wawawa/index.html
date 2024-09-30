@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📯 Reaction Sounds</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tag {
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .tag.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .tag.highlighted {
+            border: 2px solid #007bff;
+        }
+        #audio-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .audio-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .audio-item h3 {
+            margin: 0 0 10px 0;
+            padding: 5px;
+        }
+        .audio-item.playing h3 {
+            background-color: #007bff;
+            color: white;
+        }
+        .item-tags {
+            font-size: 0.8em;
+            color: #666;
+        }
+        .item-tag {
+            background-color: #e0e0e0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        #selected-tags {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        #child-themes {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .audio-item.playing {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="selected-tags"></div>
+    <div id="child-themes"></div>
+    <div id="tag-list"></div>
+    <div id="audio-list"></div>
+
+    <script>
+        const dataRoot = 'audio/myinstants/';
+        const listfile = dataRoot + 'sounds.csv';
+        const tagList = document.getElementById('tag-list');
+        const audioList = document.getElementById('audio-list');
+        const selectedTagsDiv = document.getElementById('selected-tags');
+        const childThemesDiv = document.getElementById('child-themes');
+        let audioData = [];
+        let allTags = new Set();
+        let currentlyPlaying = null;
+        let activeTags = new Set();
+
+        // Function to parse CSV data
+        function parseCSV(csv) {
+            const lines = csv.split('\n').filter(line => line.trim() !== '');
+            const headers = lines[0].split(',').map(h => h.trim());
+            
+            return lines.slice(1).map(line => {
+                const values = [];
+                let inQuotes = false;
+                let currentValue = '';
+                
+                for (let char of line) {
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(currentValue.trim());
+                        currentValue = '';
+                    } else {
+                        currentValue += char;
+                    }
+                }
+                values.push(currentValue.trim());
+
+                return headers.reduce((obj, header, index) => {
+                    obj[header] = values[index].replace(/^"(.*)"$/, '$1');
+                    return obj;
+                }, {});
+            }).filter(item => item.slug && item.title);
+        }
+
+        // Function to render audio items
+        function renderAudioItems(items) {
+            audioList.innerHTML = items.map(item => {
+                const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                const displayTags = itemTags.filter(t => !activeTags.has(t));
+                return `
+                    <div class="audio-item" data-tags="${item.tags || ''}" data-slug="${item.slug}">
+                        <h3>${item.title}</h3>
+                        <div class="item-tags">
+                            ${displayTags.map(tag => `<span class="item-tag">${tag}</span>`).join('')}
+                        </div>
+                        <audio preload="auto">
+                            <source src="${dataRoot}ogg/${item.slug}.ogg" type="audio/ogg">
+                            <source src="${dataRoot}mp3/${item.slug}.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click event listeners to audio items
+            document.querySelectorAll('.audio-item').forEach(item => {
+                item.addEventListener('click', () => toggleAudio(item));
+            });
+        }
+
+        // Function to toggle audio play/pause
+        function toggleAudio(item) {
+            const audio = item.querySelector('audio');
+            
+            if (currentlyPlaying && currentlyPlaying !== audio) {
+                currentlyPlaying.pause();
+                currentlyPlaying.currentTime = 0;
+                currentlyPlaying.parentNode.classList.remove('playing');
+            }
+
+            if (audio.paused) {
+                audio.play();
+                item.classList.add('playing');
+                currentlyPlaying = audio;
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                item.classList.remove('playing');
+                currentlyPlaying = null;
+            }
+        }
+
+        // Function to render tags
+        function renderTags() {
+            const sortedTags = Array.from(allTags).sort();
+            tagList.innerHTML = sortedTags.map(tag => `
+                <span class="tag" data-tag="${tag}">${tag}</span>
+            `).join('');
+
+            // Add "All" tag at the end
+            const allTag = document.createElement('span');
+            allTag.className = 'tag';
+            allTag.textContent = 'All';
+            allTag.dataset.tag = 'all';
+            tagList.appendChild(allTag);
+
+            // Add event listeners to tags
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.addEventListener('click', () => handleTagClick(tag));
+            });
+        }
+
+        // Function to handle tag clicks
+        function handleTagClick(clickedTag) {
+            const tag = clickedTag.dataset.tag;
+
+            if (tag === 'all') {
+                activeTags.clear();
+            } else if (clickedTag.classList.contains('active')) {
+                activeTags.delete(tag);
+            } else if (clickedTag.classList.contains('highlighted')) {
+                activeTags.add(tag);
+            } else {
+                activeTags.clear();
+                activeTags.add(tag);
+            }
+
+            filterAudioItems();
+            updateTagHighlights();
+            updateSelectedTags();
+            updateUrlHash();
+        }
+
+        // Function to update tag highlights
+        function updateTagHighlights() {
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.classList.remove('active', 'highlighted');
+                if (activeTags.has(tag.dataset.tag)) {
+                    tag.classList.add('active');
+                }
+            });
+
+            if (activeTags.size > 0) {
+                const relatedTags = new Set();
+                audioData.forEach(item => {
+                    const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                    if (activeTags.size === itemTags.filter(t => activeTags.has(t)).length) {
+                        itemTags.forEach(t => relatedTags.add(t));
+                    }
+                });
+
+                document.querySelectorAll('.tag').forEach(tag => {
+                    if (relatedTags.has(tag.dataset.tag) && !activeTags.has(tag.dataset.tag)) {
+                        tag.classList.add('highlighted');
+                    }
+                });
+            }
+        }
+
+        // Function to update selected tags display
+        function updateSelectedTags() {
+            if (activeTags.size === 0) {
+                selectedTagsDiv.textContent = 'All';
+                childThemesDiv.textContent = '';
+            } else {
+                const tagArray = Array.from(activeTags);
+                const filteredItems = audioData.filter(item => {
+                    const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                    return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
+                });
+                
+                selectedTagsDiv.textContent = `${tagArray.join(' + ')} (${filteredItems.length})`;
+                
+                const childThemes = new Set();
+                filteredItems.forEach(item => {
+                    const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                    itemTags.forEach(tag => {
+                        if (!activeTags.has(tag)) childThemes.add(tag);
+                    });
+                });
+                
+                childThemesDiv.textContent = `Child themes: ${Array.from(childThemes).join(', ')}`;
+            }
+        }
+
+        // Function to filter audio items based on selected tags
+        function filterAudioItems() {
+            const filteredItems = audioData.filter(item => {
+                if (activeTags.size === 0) return true;
+                const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
+            });
+            renderAudioItems(filteredItems);
+        }
+
+        // Function to update URL hash
+        function updateUrlHash() {
+            const hashValue = Array.from(activeTags).join('+');
+            window.history.replaceState(null, null, hashValue ? `#${hashValue}` : '#');
+        }
+
+        // Function to apply filter from URL hash
+        function applyFilterFromHash() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const filterTags = hash.split('+');
+                activeTags = new Set(filterTags);
+                filterAudioItems();
+                updateTagHighlights();
+                updateSelectedTags();
+            }
+        }
+
+        // Fetch and process CSV data
+        fetch(listfile)
+            .then(response => response.text())
+            .then(csv => {
+                audioData = parseCSV(csv);
+                audioData.forEach(item => {
+                    if (item.tags) {
+                        item.tags.split(',').forEach(tag => {
+                            const trimmedTag = tag.trim();
+                            if (trimmedTag) allTags.add(trimmedTag);
+                        });
+                    } else {
+                        allTags.add('Uncategorized');
+                    }
+                });
+                allTags.add('Uncategorized');
+                renderTags();
+                applyFilterFromHash();
+                if (activeTags.size === 0) {
+                    updateSelectedTags();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading CSV:', error);
+                audioList.innerHTML = '<p>Error loading audio data. Please try again later.</p>';
+            });
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', applyFilterFromHash);
+    </script>
+</body>
+</html>
