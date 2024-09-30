@@ -1,0 +1,176 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>KRKRK - KraKraOK</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/shorthandcss@1.1.1/dist/shorthand.min.css">
+  <link href="style.css" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bevan&family=Bowlby+One&family=Fascinate+Inline&family=Alfa+Slab+One&family=Luckiest+Guy&family=Rammetto+One&display=swap"
+    rel="stylesheet">
+  
+</head>
+
+<body class="bg-dark gloop">
+  <div id="wrapper" class="container-fluid  py-5 text-center">
+    <h1 id="xloop" class="mt-5 pt-5 pattern-diagonal-lines-sm text-pattern fw-800"
+      contenteditable="true">
+      &#10140; CINE se<br>&#9733;scoala&quot;<br>&#9660;departe&#x1f534;<br>AJUNGE! <br><u>edit me</u> &hearts;
+    </h1>
+  </div>
+  <footer id="footer" class="border pt-2 pl-3 pr-1 d-inline-block text-light rounded">
+    <div class="form-check form-check-inline ">
+      <input type="checkbox" id="zx-white" name="bckg" class="form-check-input" onclick="setoption('zx-white')">
+      <label for="zx-white" class="form-check-label">light</label>
+    </div>
+    <div class="form-check form-check-inline ">
+      <input type="checkbox" id="zx-bckg" name="bckg" class="form-check-input" onclick="setoption('zx-bckg')">
+      <label for="zx-bckg" class="form-check-label">dark</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="checkbox" id="zx-type" name="type" class="form-check-input " onclick="setoption('zx-type')">
+      <label for="zx-type" class="form-check-label">type</label>
+    </div>
+    <select id="theme-switcher">
+      <option value="vibrant">Vibrant</option>
+      <option value="neon">Neon</option>
+      <option value="sunset">Sunset</option>
+      <option value="ocean">Ocean</option>
+      <option value="forest">Forest</option>
+  </select>
+    <a href="https://bansal.io/pattern-css" target="_blank" class="text-light d-inline-block"
+      style="position: fixed; right: 1em; bottom: 1em;">pattern.css</a>
+  </footer>
+</body>
+<script>
+  let patterns = [
+    'pattern-checks-sm',
+    'pattern-checks-md',
+    'pattern-checks-lg',
+    'pattern-checks-xl',
+    'pattern-grid-sm',
+    'pattern-grid-md',
+    'pattern-grid-lg',
+    'pattern-grid-xl',
+    'pattern-dots-sm',
+    'pattern-dots-md',
+    'pattern-dots-lg',
+    'pattern-dots-xl',
+    'pattern-cross-dots-sm',
+    'pattern-cross-dots-md',
+    'pattern-cross-dots-lg',
+    'pattern-cross-dots-xl',
+    'pattern-diagonal-lines-sm',
+    'pattern-diagonal-lines-md',
+    'pattern-diagonal-lines-lg',
+    'pattern-diagonal-lines-xl',
+    'pattern-vertical-lines-sm',
+    'pattern-vertical-lines-md',
+    'pattern-vertical-lines-lg',
+    'pattern-vertical-lines-xl',
+    'pattern-horizontal-lines-sm',
+    'pattern-horizontal-lines-md',
+    'pattern-horizontal-lines-lg',
+    'pattern-horizontal-lines-xl',
+    'pattern-diagonal-stripes-sm',
+    'pattern-diagonal-stripes-md',
+    'pattern-diagonal-stripes-lg',
+    'pattern-diagonal-stripes-xl',
+    'pattern-vertical-stripes-sm',
+    'pattern-vertical-stripes-md',
+    'pattern-vertical-stripes-lg',
+    'pattern-vertical-stripes-xl',
+    'pattern-horizontal-stripes-sm',
+    'pattern-horizontal-stripes-md',
+    'pattern-horizontal-stripes-lg',
+    'pattern-horizontal-stripes-xl',
+    'pattern-triangles-sm',
+    'pattern-triangles-md',
+    'pattern-triangles-lg',
+    'pattern-triangles-xl',
+    'pattern-zigzag-sm',
+    'pattern-zigzag-md',
+    'pattern-zigzag-lg',
+    'pattern-zigzag-xl'
+  ];
+  let fonts = [
+    'luckiest-guy',
+    'bevan',
+    'rammetto-one',
+    'bowlby-one',
+    'fascinate-inline',
+    'alfa-slab-one',
+  ];
+  gz = patterns.length;
+  let zz = document.querySelector('#xloop');
+  let zy = document.querySelector('.gloop');
+  let wr = document.querySelector('#wrapper');
+
+  function log(i, z) {
+    if (z >= fonts.length) { z = 0; }
+    zz.classList.toggle(patterns[i]);
+    zz.classList.add(patterns[i + 1]);
+    wr.classList.toggle(fonts[z]);
+    wr.classList.add(fonts[z + 1]);
+    zy.classList.add(patterns[i + 4]);
+    zy.classList.toggle(patterns[i + 3]);
+
+    if (i < patterns.length) {
+      setTimeout(function () {
+        i++;
+        if (Math.round(i / 20) == i / 20) {
+          z++;
+        }
+        log(i, z);
+      }, 150);
+    }
+    else { log(0, z) }
+  }
+  log(0, 0);
+
+  function setoption(option) {
+    var element = document.getElementById("wrapper");
+    element.classList.toggle(option);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+            var xloop = document.getElementById('xloop');
+
+            // Function to update URL hash
+            function updateHash() {
+                window.location.hash = encodeURIComponent(xloop.innerText);
+            }
+
+            // Function to load text from hash
+            function loadFromHash() {
+                if (window.location.hash) {
+                    xloop.innerText = decodeURIComponent(window.location.hash.slice(1));
+                }
+            }
+
+            // Load text from hash on page load
+            loadFromHash();
+
+            // Update hash when text is edited
+            xloop.addEventListener('input', updateHash);
+
+            // Theme switching functionality
+            var themeRadios = document.querySelectorAll('input[name="theme"]');
+            themeRadios.forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    document.body.className = this.value + '-theme';
+                });
+            });
+        });
+
+        document.getElementById('theme-switcher').addEventListener('change', function() {
+    var xloop = document.getElementById('xloop');
+    xloop.className = xloop.className.replace(/theme-\w+/, '');
+    xloop.classList.add('theme-' + this.value);
+});
+</script>
+
+</html>

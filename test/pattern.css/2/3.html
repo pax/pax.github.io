@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Pattern Text</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bevan&family=Bowlby+One&family=Fascinate+Inline&family=Alfa+Slab+One&family=Luckiest+Guy&family=Rammetto+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/shorthandcss@1.1.1/dist/shorthand.min.css">
+  <link href="../pattern.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #wrapper {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #xloop {
+            font-size: 6vw;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 4px 4px rgba(0,0,0,0.4);
+        }
+        @media (max-width: 768px) {
+            #xloop {
+                font-size: 8vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <h1 id="xloop" contenteditable="true">Great there Work!!</h1>
+    </div>
+
+    <script>
+        const patternClasses = [
+            'pattern-checks-sm', 'pattern-checks-md', 'pattern-checks-lg', 'pattern-checks-xl',
+            'pattern-grid-sm', 'pattern-grid-md', 'pattern-grid-lg', 'pattern-grid-xl',
+            'pattern-dots-sm', 'pattern-dots-md', 'pattern-dots-lg', 'pattern-dots-xl',
+            'pattern-cross-dots-sm', 'pattern-cross-dots-md', 'pattern-cross-dots-lg', 'pattern-cross-dots-xl',
+            'pattern-diagonal-lines-sm', 'pattern-diagonal-lines-md', 'pattern-diagonal-lines-lg', 'pattern-diagonal-lines-xl',
+            'pattern-horizontal-lines-sm', 'pattern-horizontal-lines-md', 'pattern-horizontal-lines-lg', 'pattern-horizontal-lines-xl',
+            'pattern-vertical-lines-sm', 'pattern-vertical-lines-md', 'pattern-vertical-lines-lg', 'pattern-vertical-lines-xl',
+            'pattern-diagonal-stripes-sm', 'pattern-diagonal-stripes-md', 'pattern-diagonal-stripes-lg', 'pattern-diagonal-stripes-xl',
+            'pattern-horizontal-stripes-sm', 'pattern-horizontal-stripes-md', 'pattern-horizontal-stripes-lg', 'pattern-horizontal-stripes-xl',
+            'pattern-vertical-stripes-sm', 'pattern-vertical-stripes-md', 'pattern-vertical-stripes-lg', 'pattern-vertical-stripes-xl',
+            'pattern-triangles-sm', 'pattern-triangles-md', 'pattern-triangles-lg', 'pattern-triangles-xl',
+            'pattern-zigzag-sm', 'pattern-zigzag-md', 'pattern-zigzag-lg', 'pattern-zigzag-xl'
+        ];
+
+        const fontFamilies = [
+            'Bevan', 'Bowlby One', 'Fascinate Inline', 'Alfa Slab One', 'Luckiest Guy', 'Rammetto One'
+        ];
+
+        const colors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F67280', '#C06C84', '#6C5B7B', '#355C7D', '#99B898'
+        ];
+
+        const wrapper = document.getElementById('wrapper');
+        const xloop = document.getElementById('xloop');
+
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function updateStyles() {
+            wrapper.className = getRandomItem(patternClasses);
+            wrapper.style.backgroundColor = getRandomItem(colors);
+            xloop.style.color = getRandomItem(colors);
+            xloop.style.fontFamily = getRandomItem(fontFamilies);
+        }
+
+        setInterval(updateStyles, 3000);
+        updateStyles(); // Initial update
+
+        // Optional: Add event listener for text changes
+        xloop.addEventListener('input', function() {
+            console.log('Text changed to:', this.textContent);
+        });
+    </script>
+</body>
+</html>

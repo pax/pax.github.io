@@ -1,0 +1,84 @@
+@import url('https://unpkg.com/pattern.css');
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
+
+:root {
+  --duration: 20s;
+  --text-duration: 10s;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Alfa Slab One', cursive;
+  overflow: hidden;
+}
+
+@keyframes bodyPatternChange {
+  0%, 100% { background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%); }
+  20% { background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%); }
+  40% { background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%); }
+  60% { background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%); }
+  80% { background-image: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); }
+}
+
+@keyframes bodyClassChange {
+  0%, 100% { @apply pattern-checks-sm; }
+  20% { @apply pattern-grid-md; }
+  40% { @apply pattern-dots-lg; }
+  60% { @apply pattern-diagonal-lines-xl; }
+  80% { @apply pattern-zigzag-lg; }
+}
+
+body {
+  animation: 
+    bodyPatternChange var(--duration) infinite,
+    bodyClassChange var(--duration) infinite steps(1);
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+@keyframes textPatternChange {
+  0%, 100% { background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); }
+  25% { background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%); }
+  50% { background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%); }
+  75% { background-image: linear-gradient(to right, #43e97b 0%, #38f9d7 100%); }
+}
+
+@keyframes textClassChange {
+  0%, 100% { @apply pattern-triangles-sm; }
+  25% { @apply pattern-cross-dots-md; }
+  50% { @apply pattern-diagonal-stripes-lg; }
+  75% { @apply pattern-horizontal-lines-xl; }
+}
+
+#text {
+  position: relative;
+  z-index: 2;
+  font-size: 7.5vw;
+  text-align: center;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-shadow: 2px 4px 1ex rgba(0, 0, 0, .4);
+  animation: 
+    textPatternChange var(--text-duration) infinite,
+    textClassChange var(--text-duration) infinite steps(1);
+}
+
+@media screen and (max-width: 800px) {
+  #text {
+    font-size: 12vw;
+  }
+}
