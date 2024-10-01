@@ -10,6 +10,7 @@
     <meta property="og:url" content="https://pax.github.io/playground/wawawa/" />
     <meta property="og:image" content="https://pax.github.io/playground/wawawa/misc/wawawa.png" />
     <meta property="og:description"  content="Reaction SoundBoard" />
+
 <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,15 +24,13 @@
             flex-wrap: wrap;
             gap: 10px;
             font-size: 1.75em;
-            /* margin-bottom: 20px; */
         }
 
         .tag {
             background-color: #f0f0f0;
             padding: 5px 10px;
-            border-radius: 5px;
+            border-radius: 55px;
             cursor: pointer;
-
         }
 
         .tag.active {
@@ -54,10 +53,7 @@
         .audio-item {
             line-height: 1.15;   
             height: 4em;   overflow: hidden;
-            /* background-color: #F66; */
-            /* background-image: linear-gradient(#F55, rgba(255, 150, 150, 0.6), rgba(255, 100, 100, 0.8)); */
             background-size: contain;
-            /* background-size: cover; */
             background-position:  right center;
             background-repeat: no-repeat;
             padding: 1px  1ex 1px 1px;
@@ -66,8 +62,6 @@
             border-top-left-radius: .7ex;
             border-top-right-radius: .7ex;
             cursor: pointer;
-            /* box-shadow: 0 2px 4px rgba(0, 0, 0, .2); */
-            /* border: 1px solid #f0f0f0; */
             position: relative;
         }
         #child-themes ,
@@ -75,47 +69,15 @@
             font-family: 'Arial Narrow', sans-serif;
         }
         .audio-item .item-tags .item-tag{background-color: whitesmoke;}
-        /* @media screen and (min-width: 1260px) {
-            .audio-item {
-               
-            }
-            
-        } */
-
- /*        .audio-item:before {
-            content: "\25B6";
-            position: absolute;
-            color: white;
-            right: .75ex;
-            bottom: 48%;
-            outline: 1px solid rgba(255,255,255,.25);  
-            text-shadow: -1px -1px 2px rgba(0, 0, 0, .2);
-            background-color: rgba(255,0,0,.5);
-            border-radius: 5px;
-            display: inline-block;
-            padding: 1px 3px;
-            box-shadow: -1px -1px 2px rgba(0, 0, 0, .2);
-            
-        } */
 
         .audio-item.playing:before {
             background-color: #007bff;
         }
 
-        /* .audio-item:not(.playing) {
-            text-shadow: 0 0 1px white, -1px -1px 2px white, 1px 1px 2px white;
-        } */
-
         .audio-item h3 {         
-/*             text-decoration: underline;
-            text-decoration-color: white;
-            text-decoration-thickness: 3px; */
             margin: 0 0 3px 0;
             padding: 1px; line-height: 1;
-            /* background-color: rgba(255,255,255,.75);  */
-             display: inline;
-            /* background-color: rgba(255, 66, 66, .75); */
-            /* background-image: linear-gradient(rgba(255,255,255,.75), transparent); */
+            display: inline;
             display: inline-block;
         }
         .audio-item:hover{
@@ -123,9 +85,7 @@
         }
 
         .audio-item.playing h3 {
-            /* background-color: #007bff; */
             text-shadow: 1px 2px 3px rgba(0, 0, 0, .4);
-            /* background-image: linear-gradient(#007bff 66%, transparent); */
             color: white;
         }
 
@@ -141,21 +101,18 @@
         }
 
         .item-tag {
-            /* background-color: #e0e0e0; */
             padding: 1px 3px;
             border-radius: 3px;
             margin: 1px;
         }
 
         #selected-tags {
-            /* margin-bottom: 20px; */
             font-size: 1.2em; 
         }
         #selected-tags b {background-color: rgba(255,255,0,.25); color: #666 ; font-size: 1.2em; text-transform: capitalize; }
 
         #child-themes {
             font-size: 0.9em;
-            /* display: inline-block; */
             color: #666;
             margin-top: 5px;  line-height: .8;
             
@@ -164,7 +121,6 @@
         #child-themes:not(:empty) {
             margin-bottom: 20px;
             padding: .4ex;
-            /* background-color: whitesmoke; */
         }
 
         #child-themes:not(:empty)::before {
@@ -220,39 +176,9 @@
        border-bottom: 1px solid #DDD; text-transform: capitalize;
     }
     }
-        /*  
-        #tag-wrapper,
-        #audio-wrapper {
-            display: inline-block;
-            vertical-align: top;
-            width: 48%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-    #tag-wrapper {
-            padding-right: 1em;
-            padding-top: 1ex;
-            max-width: 30vw;
-        }
-
-        #audio-wrapper {
-            padding-left: 1ex;
-            max-width: 69vw;
-        }
-
-        @media screen and (max-width: 760px) {
-            #tag-wrapper {
-                max-width: 33vw;
-            }
-
-            #audio-wrapper {
-                max-width: 66vw;
-            }
-        }
- */
+       
         /* body:not(._filtered) a#reset {display: none;} */
-        #tag-list span:before { position: relative; margin-left: -1.25ex; margin-right: .85ex; margin-top: -1em; transform: scale(1.75); display: inline-block; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
+        #tag-list span:before { position: relative; margin-left: -1.15ex; margin-right: .75ex; margin-top: -1em; transform: scale(1.75); display: inline-block; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
         #tag-list span[data-tag="action"]:before {content:"\1F918";}
         #tag-list span[data-tag="no"]:before {content:"👎";}
         #tag-list span[data-tag="yes"]:before {content:"👍";}
@@ -634,7 +560,6 @@
 
     // Listen for hash changes
     window.addEventListener('hashchange', applyFilterFromHash);
-
 
     document.querySelectorAll('.audio-item').forEach(item => {
         const audio = item.querySelector('audio');
