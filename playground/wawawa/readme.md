@@ -22,7 +22,6 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 - [x] basic filtered list
 - [x] url hash for ctg filter
 - [x] file / audio permalink 
-    - [ ] with autoplay?
 - [x] when clicking a tag where children have other tags, higlight those tags, when clicked, filter down. when other tag is clicked, reset to that one
 - [x] show sound tags, other than the selection
 - [ ] how to minimise clicks - shorten tag list? - some tags are secondary, different categories, source - leave in just the reaction subject, not attributes

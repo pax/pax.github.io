@@ -91,7 +91,35 @@
 
         .audio-item.playing:before {
             background-color: #007bff;
+            content: "🔉" ; 
+            text-shadow: 1px 2px 9px rgba(255, 255, 0, 0.8);
+            
         }
+        .audio-item.playing:hover:before {
+            /* stop the pulse animation */
+            animation: none;
+            content: "⏯️" ;
+            /* content: "🔉" ;  */
+        }
+        .audio-item:before {
+            font-size: 2.5em; right: 5px;  /* ▶️ */
+            position: absolute;   
+        }
+        .audio-item:not(.playing):hover:before {
+            content: "▶️";
+            /* content: "🔉" ;  */
+        }
+        /* make this element pulsating */
+        .audio-item.playing:before {
+            animation: pulse .6s infinite;
+        }
+        /* define animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
 
         .audio-item h3 {
             margin: 0 0 3px 0;
