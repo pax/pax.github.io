@@ -83,7 +83,10 @@
         .audio-item .item-tags .item-tag {
             background-color: whitesmoke;
         }
-
+        .audio-item:hover .item-tags .item-tag {
+            background-color: transparent; 
+            color: #999;
+        }
         .audio-item.playing:before {
             background-color: #007bff;
         }
@@ -97,8 +100,12 @@
         }
 
         .audio-item:hover {
-            background-color: aliceblue;
-            outline: 1px solid #007bff66;
+            background-color: #333;
+            color: white;
+            /* outline: 1px solid #007bff66; */
+        }
+        .audio-item:hover h3 {
+            text-shadow: 1px 2px 3px rgba(0, 0, 0, .4);
         }
 
         .audio-item.playing h3 {

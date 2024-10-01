@@ -26,6 +26,8 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 - [x] show sound tags, other than the selection
 - [ ] how to minimise clicks - shorten tag list? - some tags are secondary, different categories, source - leave in just the reaction subject, not attributes
 - [x] add thumbs
+- [x] break titles in aproximatively half the first 2 breakpoint
+    - [ ] smarter compactation
 - [ ] log played sounds + categories to browser cache - display popular choices
 - [ ] add sounds / ctgs to favorites in browser cache
 - [ ] add collections?
