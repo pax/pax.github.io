@@ -9,7 +9,8 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 
 ## Prior art
 - [Myinstants](https://www.myinstants.com/) 
-- [soundboard.com](https://www.soundboard.com/) 
+- [SoundBoard.com](https://www.soundboard.com/) 
+- [SoundButtons.com](https://soundbuttonsworld.com/) 
 - [AKAspanion/music-app](https://github.com/AKAspanion/music-app) 
 - see also: [YT mixer / mash-up](https://docs.google.com/document/d/1bWTh5fIsHL3iAnIx1BTs_ersVWhNiOSs) 
 

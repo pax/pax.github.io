@@ -376,6 +376,9 @@
         #tag-list span[data-tag="impatience"]:before {
             content: "⏳";
         }
+        #tag-list span[data-tag="ringtone"]:before {
+            content: "📱";
+        }
 
         /* hide tags */
         #tag-list span[data-tag="supportive"],
@@ -443,7 +446,7 @@
 </body>
 
 <script>
-    const dataRoot = 'audio/myinstants/';
+    const dataRoot = 'audio/';
     const listfile = dataRoot + 'sounds.csv';
     const tagList = document.getElementById('tag-list');
     const audioList = document.getElementById('audio-list');
