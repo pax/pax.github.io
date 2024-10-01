@@ -88,11 +88,18 @@
             background-color: transparent;
             color: #999;
         }
-
+        .audio-item.playing {
+            /* outline: 4px solid rgba(0, 0, 255, 0.3); */
+            outline: 2px solid rgba(255,255,255,.75);  
+            /* box-shadow: inset 1px 0 15px rgba(0, 0, 0, .95) !important; */
+            /* both inset and outset box shadow */
+             box-shadow: inset 1px 0 12px rgba(0, 0, 0, .77), 1px 3px 5px rgba(0, 0, 0, .6) !important; 
+        }
         .audio-item.playing:before {
-            background-color: #007bff;
+            /* background-color: #007bff; */
             content: "🔉" ; 
             text-shadow: 1px 2px 9px rgba(255, 255, 0, 0.8);
+            
             
         }
         .audio-item.playing:hover:before {
