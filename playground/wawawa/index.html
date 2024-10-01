@@ -833,7 +833,17 @@ document.getElementById('share').addEventListener('click', function() {
     // Check if Clipboard API is supported
     if (navigator.clipboard) {
         navigator.clipboard.writeText(urlToShare).then(() => {
-            alert('URL copied to clipboard');
+            // alert('URL copied to clipboard');
+            const message = document.createElement('div');
+            message.textContent = 'Url copied to clipboard';
+            message.className = 'xmessage';
+      
+            document.body.appendChild(message);
+
+            setTimeout(() => {
+                document.body.removeChild(message);
+            }, 1500);
+            
         }).catch(err => {
             console.error('Failed to copy URL: ', err);
             fallBackCopy(urlToShare);
