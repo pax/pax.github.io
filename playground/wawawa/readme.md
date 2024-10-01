@@ -1,6 +1,11 @@
-# Like reaction gifs / memes, but for sound
+
+# WAWAWA - Reaction SoundBoard
+
+Like reaction gifs / memes, but for sound
 
 Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa/) 
+
+![Screenshot](misc/wawawa.png)
 
 ## Prior art
 - [Myinstants](https://www.myinstants.com/) 
@@ -48,8 +53,9 @@ Mobile
 - attach / pair with memes! 
 - ai enhanced - follows conversation - even just when it stops?
 - Mix over YouTube / Multiple YouTubes
+- clip from youtube!
 
-Hardare
+Hardware
 - hardware device - 2 form factors: keychain or bigger, for indoors - promo on the site
 - smart watch remote?
 - 6 buttons, pushing twice takes you to category
@@ -77,42 +83,6 @@ Audio Recorder Keychain
 Sound buttons
 - [RIBOSY USB Sound Button](https://www.amazon.com/RIBOSY-USB-Sound-Button-Recordings/dp/B0825NJJ6Q)  - Make Your Own Button by Uploading Audio Files
 
-### sample content
-
-- [myinstants / palx/](https://www.myinstants.com/en/profile/palx/) 
-- [myinstants / viral](https://www.myinstants.com/en/categories/viral/) 
-
-#### categories
-- action
-- fail
-- farts
-- country specific
-- movies
-- cartoons
-- tv shows
-- quotes
-    - comedians
-    - movies
-    - politicians
-
-Claude: 
-- Victories / Achievements
-- Epic Fails / Mishaps
-- Awkward Moments
-- Dramatic Reveals
-- Comedy Punctuation
-- Flirtatious / Romantic Situations
-- Attention Grabbers
-- Action Sequences
-- Sarcasm / Irony
-- Tension Builders
-- Unexpected Interruptions
-- Nostalgic Callbacks
-- Celebration Enhancers
-- Mock Sophistication
-
-Individuals
-- we wish you a merry christmas carrol 
 
 ## Marketing
 sell meme based merch alogn, or audio hardware gizmos

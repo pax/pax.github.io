@@ -4,50 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📯 WAWAWA - Reaction SoundBoard - Reaction SoundBoard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
+    <title>📯 WAWAWA - Reaction SoundBoard</title>
+
+    <meta property="og:title" content="WAWAWA" />
+    <meta property="og:url" content="https://pax.github.io/playground/wawawa/" />
+    <meta property="og:image" content="https://pax.github.io/playground/wawawa/misc/wawawa.png" />
+    <meta property="og:description"
+        content="Reaction SoundBoard" />
+    <script type="text/javascript">
+
+        <style>
+            body {
+                font - family: Arial, sans-serif;
             max-width: 1600px;
             margin: 0 auto;
             padding: 1em;
         }
-        #meta-header  {border-left: 4px solid #88C; padding-left: 1ex;}
-        #tag-list {
-            display: flex;
+            #meta-header  {border - left: 4px solid #88C; padding-left: 1ex;}
+            #tag-list {
+                display: flex;
             flex-wrap: wrap;
             gap: 10px;
             font-size: 1.75em;
             /* margin-bottom: 20px; */
         }
 
-        .tag {
-            background-color: #f0f0f0;
+            .tag {
+                background - color: #f0f0f0;
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
 
         }
 
-        .tag.active {
-            background-color: #007bff;
+            .tag.active {
+                background - color: #007bff;
             color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
         }
 
-        .tag.highlighted {
-            outline: 2px solid #007bff;
+            .tag.highlighted {
+                outline: 2px solid #007bff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
         }
 
-        #audio-list {
-            display: grid;
+            #audio-list {
+                display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 1ex 1ex ;
         }
 
-        .audio-item {
-            line-height: 1.15;   
+            .audio-item {
+                line - height: 1.15;
             height: 4em;   overflow: hidden;
             /* background-color: #F66; */
             /* background-image: linear-gradient(#F55, rgba(255, 150, 150, 0.6), rgba(255, 100, 100, 0.8)); */
@@ -65,25 +73,25 @@
             /* border: 1px solid #f0f0f0; */
             position: relative;
         }
-        #child-themes ,
-        .item-tags {
-            font-family: 'Arial Narrow', sans-serif;
+            #child-themes ,
+            .item-tags {
+                font - family: 'Arial Narrow', sans-serif;
         }
-        .audio-item .item-tags .item-tag{background-color: whitesmoke;}
+            .audio-item .item-tags .item-tag{background - color: whitesmoke;}
         /* @media screen and (min-width: 1260px) {
-            .audio-item {
-               
+            .audio - item {
+
             }
             
         } */
 
  /*        .audio-item:before {
-            content: "\25B6";
+                content: "\25B6";
             position: absolute;
             color: white;
             right: .75ex;
             bottom: 48%;
-            outline: 1px solid rgba(255,255,255,.25);  
+            outline: 1px solid rgba(255,255,255,.25);
             text-shadow: -1px -1px 2px rgba(0, 0, 0, .2);
             background-color: rgba(255,0,0,.5);
             border-radius: 5px;
@@ -93,86 +101,86 @@
             
         } */
 
-        .audio-item.playing:before {
-            background-color: #007bff;
+            .audio-item.playing:before {
+                background - color: #007bff;
         }
 
         /* .audio-item:not(.playing) {
-            text-shadow: 0 0 1px white, -1px -1px 2px white, 1px 1px 2px white;
+                text - shadow: 0 0 1px white, -1px -1px 2px white, 1px 1px 2px white;
         } */
 
-        .audio-item h3 {         
-/*             text-decoration: underline;
-            text-decoration-color: white;
-            text-decoration-thickness: 3px; */
-            margin: 0 0 3px 0;
+            .audio-item h3 {
+                /*             text-decoration: underline;
+                            text-decoration-color: white;
+                            text-decoration-thickness: 3px; */
+                margin: 0 0 3px 0;
             padding: 1px; line-height: 1;
             /* background-color: rgba(255,255,255,.75);  */
-             display: inline;
+            display: inline;
             /* background-color: rgba(255, 66, 66, .75); */
             /* background-image: linear-gradient(rgba(255,255,255,.75), transparent); */
             display: inline-block;
         }
-        .audio-item:hover{
-            background-color: aliceblue; outline: 1px solid #007bff66;
+            .audio-item:hover{
+                background - color: aliceblue; outline: 1px solid #007bff66;
         }
 
-        .audio-item.playing h3 {
-            /* background-color: #007bff; */
-            text-shadow: 1px 2px 3px rgba(0, 0, 0, .4);
+            .audio-item.playing h3 {
+                /* background-color: #007bff; */
+                text - shadow: 1px 2px 3px rgba(0, 0, 0, .4);
             /* background-image: linear-gradient(#007bff 66%, transparent); */
             color: white;
         }
 
-        .audio-item h3 {
-            text-shadow: 0 0 1px white, -1px -1px 0 white, 1px 1px 0 white,
+            .audio-item h3 {
+                text - shadow: 0 0 1px white, -1px -1px 0 white, 1px 1px 0 white,
             2px 2px 0 white, -2px -2px 0 white, 0 0 4px white
             ;
         }
 
-        .item-tags {
-            font-size: 0.8em;
+            .item-tags {
+                font - size: 0.8em;
             color: #666;
         }
 
-        .item-tag {
-            /* background-color: #e0e0e0; */
-            padding: 1px 3px;
+            .item-tag {
+                /* background-color: #e0e0e0; */
+                padding: 1px 3px;
             border-radius: 3px;
             margin: 1px;
         }
 
-        #selected-tags {
-            /* margin-bottom: 20px; */
-            font-size: 1.2em; 
+            #selected-tags {
+                /* margin-bottom: 20px; */
+                font - size: 1.2em; 
         }
-        #selected-tags b {background-color: rgba(255,255,0,.25); color: #666 ; font-size: 1.2em; text-transform: capitalize; }
+            #selected-tags b {background - color: rgba(255,255,0,.25); color: #666 ; font-size: 1.2em; text-transform: capitalize; }
 
-        #child-themes {
-            font-size: 0.9em;
+            #child-themes {
+                font - size: 0.9em;
             /* display: inline-block; */
             color: #666;
             margin-top: 5px;  line-height: .8;
             
         }
-        #child-themes .item-tag {  display: inline-block;}
-        #child-themes:not(:empty) {
-            margin-bottom: 20px;
+            #child-themes .item-tag {display: inline-block;}
+            #child-themes:not(:empty) {
+                margin - bottom: 20px;
             padding: .4ex;
             /* background-color: whitesmoke; */
         }
 
-        #child-themes:not(:empty)::before {
-            content: '🏷️ ';
+            #child-themes:not(:empty)::before {
+                content: '🏷️ ';
             font-weight: bold;
         }
 
-        .audio-item.playing {
-            background-color: #007bff;
+            .audio-item.playing {
+                background - color: #007bff;
         }
 
-        #progress-bar-container {
-            position: fixed;
+            #progress-bar-container {
+                position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
@@ -181,134 +189,134 @@
             z-index: 1000;
         }
 
-        #progress-bar {
-            height: 100%;
+            #progress-bar {
+                height: 100%;
             width: 0;
             background-color: #007bff;
             transition: width 0.1s linear;
         }
 
-        a#reset {
-            font-size: .85em;
+            a#reset {
+                font - size: .85em;
             text-decoration: none; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
             background-color: rgba(255,0,0,.66);
             color: whitesmoke; display: inline-block; line-height: 1; text-align: center; border-radius: .75em; width: 1.75ex;  padding: 2px;
         }
-        a#reset:hover {background-color: rgba(255,0,0,1);}
-   #wrapper {  display:flex;
+            a#reset:hover {background - color: rgba(255,0,0,1);}
+            #wrapper {display:flex;
     flex-flow: column;}
-    
-    @media screen and (max-width: 760px) {
-        #audio-list:not(:empty) {
-            margin-bottom: .75em;
+
+            @media screen and (max-width: 760px) {
+                #audio - list:not(:empty) {
+                margin - bottom: .75em;
             padding-bottom: .75em;
             border-bottom: 2px solid #DDE;
         }
     }
-    @media screen and (min-width: 760px) {
-        #audio-wrapper{
-        order:2;
+            @media screen and (min-width: 760px) {
+                #audio - wrapper{
+                order:2;
     }
-    #tag-wrapper{
-       margin-bottom: 1em;
-       padding-bottom: 1em;
-       border-bottom: 1px solid #DDD; text-transform: capitalize;
+            #tag-wrapper{
+                margin - bottom: 1em;
+            padding-bottom: 1em;
+            border-bottom: 1px solid #DDD; text-transform: capitalize;
     }
     }
-        /*  
+        /*
         #tag-wrapper,
         #audio-wrapper {
-            display: inline-block;
+                display: inline-block;
             vertical-align: top;
             width: 48%;
             max-height: 90vh;
             overflow-y: auto;
         }
 
-    #tag-wrapper {
-            padding-right: 1em;
+            #tag-wrapper {
+                padding - right: 1em;
             padding-top: 1ex;
             max-width: 30vw;
         }
 
-        #audio-wrapper {
-            padding-left: 1ex;
+            #audio-wrapper {
+                padding - left: 1ex;
             max-width: 69vw;
         }
 
-        @media screen and (max-width: 760px) {
-            #tag-wrapper {
-                max-width: 33vw;
+            @media screen and (max-width: 760px) {
+                #tag - wrapper {
+                max - width: 33vw;
             }
 
             #audio-wrapper {
-                max-width: 66vw;
+                max - width: 66vw;
             }
         }
- */
+            */
         /* body:not(._filtered) a#reset {display: none;} */
-        #tag-list span:before { position: relative; margin-left: -1.25ex; margin-right: .85ex; margin-top: -1em; transform: scale(1.75); display: inline-block; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
-        #tag-list span[data-tag="action"]:before {content:"\1F918";}
-        #tag-list span[data-tag="no"]:before {content:"👎";}
-        #tag-list span[data-tag="yes"]:before {content:"👍";}
-        #tag-list span[data-tag="approve"]:before {content:"👍";}
-        #tag-list span[data-tag="dismissive"]:before {content:"👎";}
-        #tag-list span[data-tag="danger"]:before {content:"⚠️";}
-        #tag-list span[data-tag="fail"]:before {content:"⚠️";}
-        #tag-list span[data-tag="fart"]:before {content:"💨";}
-        #tag-list span[data-tag="happy"]:before {content:"🦄";}
-        #tag-list span[data-tag="laugh"]:before {content:"🤣";}
-        #tag-list span[data-tag="sad"]:before {content:"😥";}
-        #tag-list span[data-tag="drum"]:before {content:"🥁";}
-        #tag-list span[data-tag="angry"]:before {content:"👿";}
-        #tag-list span[data-tag="winning"]:before {content:"🥇";}
-        #tag-list span[data-tag="gun"]:before {content:"💥";}
-        #tag-list span[data-tag="insult"]:before {content:"🤬";}
-        #tag-list span[data-tag="confusion"]:before {content:"🤔";}
-        #tag-list span[data-tag="impatience"]:before {content:"⏳";}
+            #tag-list span:before {position: relative; margin-left: -1.25ex; margin-right: .85ex; margin-top: -1em; transform: scale(1.75); display: inline-block; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
+            #tag-list span[data-tag="action"]:before {content:"\1F918";}
+            #tag-list span[data-tag="no"]:before {content:"👎";}
+            #tag-list span[data-tag="yes"]:before {content:"👍";}
+            #tag-list span[data-tag="approve"]:before {content:"👍";}
+            #tag-list span[data-tag="dismissive"]:before {content:"👎";}
+            #tag-list span[data-tag="danger"]:before {content:"⚠️";}
+            #tag-list span[data-tag="fail"]:before {content:"⚠️";}
+            #tag-list span[data-tag="fart"]:before {content:"💨";}
+            #tag-list span[data-tag="happy"]:before {content:"🦄";}
+            #tag-list span[data-tag="laugh"]:before {content:"🤣";}
+            #tag-list span[data-tag="sad"]:before {content:"😥";}
+            #tag-list span[data-tag="drum"]:before {content:"🥁";}
+            #tag-list span[data-tag="angry"]:before {content:"👿";}
+            #tag-list span[data-tag="winning"]:before {content:"🥇";}
+            #tag-list span[data-tag="gun"]:before {content:"💥";}
+            #tag-list span[data-tag="insult"]:before {content:"🤬";}
+            #tag-list span[data-tag="confusion"]:before {content:"🤔";}
+            #tag-list span[data-tag="impatience"]:before {content:"⏳";}
 
-        /* hide tags */
-        #tag-list span[data-tag="darth-vader"],
-        #tag-list span[data-tag="chill-down"],
-        #tag-list span[data-tag="thank-you"],
-        #tag-list span[data-tag="realistic"],
-        #tag-list span[data-tag="alarm"],
-        #tag-list span[data-tag="_unfilled"],
-        #tag-list span[data-tag="quote"],
-        #tag-list span[data-tag="mockery"],
-        #tag-list span[data-tag="filler"],
-        #tag-list span[data-tag="dukenukem"],
-        #tag-list span[data-tag="meme"],
-        #tag-list span[data-tag="seinfeld"],
-        #tag-list span[data-tag="cheering"],
-        #tag-list span[data-tag="aggressive"],
-        #tag-list span[data-tag="error"],
-        #tag-list span[data-tag="scream"],
-        #tag-list span[data-tag="metal"],
-        #tag-list span[data-tag="happy-birthday"],
-        #tag-list span[data-tag="fake-enthusiasm"],
-        #tag-list span[data-tag="failure-expected"],
-        #tag-list span[data-tag="relief"],
-        #tag-list span[data-tag="the-office"],
-        #tag-list span[data-tag="natural"],
-        /* #tag-list span[data-tag="movies"], */
-        #tag-list span[data-tag="misc"],
-        #tag-list span[data-tag="games"],
-        #tag-list span[data-tag="futurama"],
-        #tag-list span[data-tag="confirmation"],
-        #tag-list span[data-tag="computer"],
-        #tag-list span[data-tag="circus"],
-        #tag-list span[data-tag="cartoons"],
-        #tag-list span[data-tag="Uncategorized"],
-        #tag-list span[data-tag="donald-trump"],
-        #tag-list span[data-tag="lets-do-it"],
-        #tag-list span[data-tag="robot-voice"],
-        #tag-list span[data-tag="female-voice"],
-        #tag-list span[data-tag="male-voice"] {
-            display: none;
+            /* hide tags */
+            #tag-list span[data-tag="darth-vader"],
+            #tag-list span[data-tag="chill-down"],
+            #tag-list span[data-tag="thank-you"],
+            #tag-list span[data-tag="realistic"],
+            #tag-list span[data-tag="alarm"],
+            #tag-list span[data-tag="_unfilled"],
+            #tag-list span[data-tag="quote"],
+            #tag-list span[data-tag="mockery"],
+            #tag-list span[data-tag="filler"],
+            #tag-list span[data-tag="dukenukem"],
+            #tag-list span[data-tag="meme"],
+            #tag-list span[data-tag="seinfeld"],
+            #tag-list span[data-tag="cheering"],
+            #tag-list span[data-tag="aggressive"],
+            #tag-list span[data-tag="error"],
+            #tag-list span[data-tag="scream"],
+            #tag-list span[data-tag="metal"],
+            #tag-list span[data-tag="happy-birthday"],
+            #tag-list span[data-tag="fake-enthusiasm"],
+            #tag-list span[data-tag="failure-expected"],
+            #tag-list span[data-tag="relief"],
+            #tag-list span[data-tag="the-office"],
+            #tag-list span[data-tag="natural"],
+            /* #tag-list span[data-tag="movies"], */
+            #tag-list span[data-tag="misc"],
+            #tag-list span[data-tag="games"],
+            #tag-list span[data-tag="futurama"],
+            #tag-list span[data-tag="confirmation"],
+            #tag-list span[data-tag="computer"],
+            #tag-list span[data-tag="circus"],
+            #tag-list span[data-tag="cartoons"],
+            #tag-list span[data-tag="Uncategorized"],
+            #tag-list span[data-tag="donald-trump"],
+            #tag-list span[data-tag="lets-do-it"],
+            #tag-list span[data-tag="robot-voice"],
+            #tag-list span[data-tag="female-voice"],
+            #tag-list span[data-tag="male-voice"] {
+                display: none;
         }
-    </style>
-</head>
+        </style>
+</head >
 
 <body>
     <div id="top"></div>
@@ -538,9 +546,9 @@
             });
 
             // selectedTagsDiv.textContent = `${tagArray.join(' + ')} (${filteredItems.length})`;
-            selectedTagsDiv.innerHTML = `<b>${tagArray.join(' + ')}</b>` + ` ` + `<small>(${filteredItems.length})</small>` + ' &emsp; <a id="reset" href="?">&#215;</a>';
+                selectedTagsDiv.innerHTML = `<b>${tagArray.join(' + ')}</b>` + ` ` + `<small>(${filteredItems.length})</small>` + ' &emsp; <a id="reset" href="?">&#215;</a>';
 
-            const childThemes = new Set();
+                const childThemes = new Set();
             filteredItems.forEach(item => {
                 const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
                 itemTags.forEach(tag => {
@@ -554,57 +562,57 @@
         }
     }
 
-    // Function to filter audio items based on selected tags
-    function filterAudioItems() {
+                // Function to filter audio items based on selected tags
+                function filterAudioItems() {
         const filteredItems = audioData.filter(item => {
             if (activeTags.size === 0) return true;
             const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
             return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
         });
-        renderAudioItems(filteredItems);
+                renderAudioItems(filteredItems);
     }
 
-    // Function to update URL hash
-    function updateUrlHash() {
+                // Function to update URL hash
+                function updateUrlHash() {
         const hashValue = Array.from(activeTags).join('+');
-        window.history.replaceState(null, null, hashValue ? `#${hashValue}` : '#');
+                window.history.replaceState(null, null, hashValue ? `#${hashValue}` : '#');
     }
-    function scrollToAudioList() {
+                function scrollToAudioList() {
         if (window.location.hash) {
             // const audioListElement = document.getElementById('audio-list');
             const audioListElement = document.getElementById('top');
-            if (audioListElement) {
-                audioListElement.scrollIntoView({ behavior: 'smooth' });
+                if (audioListElement) {
+                    audioListElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
     }
-    // Function to apply filter from URL hash
-    function applyFilterFromHash() {
+                // Function to apply filter from URL hash
+                function applyFilterFromHash() {
         const hash = window.location.hash.substring(1);
-        if (hash) {
+                if (hash) {
             const filterTags = hash.split('+');
-            activeTags = new Set(filterTags);
-            filterAudioItems();
-            updateTagHighlights();
-            updateSelectedTags();
-            scrollToAudioList(); // Add this line to trigger scrolling on page load
+                activeTags = new Set(filterTags);
+                filterAudioItems();
+                updateTagHighlights();
+                updateSelectedTags();
+                scrollToAudioList(); // Add this line to trigger scrolling on page load
         }
     }
 
-    function playSpecificAudio(slug) {
+                function playSpecificAudio(slug) {
         const audioItem = document.querySelector(`.audio-item[data-slug="${slug}"]`);
-        if (audioItem) {
-            toggleAudio(audioItem);
-            audioItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (audioItem) {
+                    toggleAudio(audioItem);
+                audioItem.scrollIntoView({behavior: 'smooth', block: 'center' });
         }
     }
 
 
-    // Fetch and process CSV data
-    fetch(listfile)
+                // Fetch and process CSV data
+                fetch(listfile)
         .then(response => response.text())
         .then(csv => {
-            audioData = parseCSV(csv);
+                    audioData = parseCSV(csv);
             audioData.forEach(item => {
                 if (item.tags) {
                     item.tags.split(',').forEach(tag => {
@@ -615,30 +623,30 @@
                     allTags.add('Uncategorized');
                 }
             });
-            allTags.add('Uncategorized');
-            renderTags();
-            applyFilterFromHash();
-            if (activeTags.size === 0) {
-                updateSelectedTags();
+                allTags.add('Uncategorized');
+                renderTags();
+                applyFilterFromHash();
+                if (activeTags.size === 0) {
+                    updateSelectedTags();
             }
         })
         .catch(error => {
-            console.error('Error loading CSV:', error);
-            audioList.innerHTML = '<p>Error loading audio data. Please try again later.</p>';
+                    console.error('Error loading CSV:', error);
+                audioList.innerHTML = '<p>Error loading audio data. Please try again later.</p>';
         });
 
-    // Listen for hash changes
-    window.addEventListener('hashchange', applyFilterFromHash);
+                // Listen for hash changes
+                window.addEventListener('hashchange', applyFilterFromHash);
 
 
     document.querySelectorAll('.audio-item').forEach(item => {
         const audio = item.querySelector('audio');
         audio.addEventListener('ended', () => {
-            item.classList.remove('playing');
-            currentlyPlaying = null;
-            progressBar.style.width = '0%';
+                    item.classList.remove('playing');
+                currentlyPlaying = null;
+                progressBar.style.width = '0%';
         });
     });
-</script>
+    </script>
 
 </html>
