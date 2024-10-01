@@ -5,20 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📣 WAWAWA - Reaction SoundBoard - Reaction SoundBoard</title>
-
     <meta property="og:title" content="🔉 WAWAWA" />
     <meta property="og:url" content="https://pax.github.io/playground/wawawa/" />
     <meta property="og:image" content="https://pax.github.io/playground/wawawa/misc/wawawa.png" />
-    <meta property="og:description"  content="Reaction SoundBoard" />
+    <meta property="og:description" content="Reaction SoundBoard" />
 
-<style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 1600px;
             margin: 0 auto;
             padding: 1em;
         }
-        #meta-header  {border-left: 4px solid #88C; padding-left: 1ex;}
+
+        #meta-header {
+            border-left: 4px solid #88C;
+            padding-left: 1ex;
+        }
+
         #tag-list {
             display: flex;
             flex-wrap: wrap;
@@ -27,16 +31,21 @@
         }
 
         .tag {
-            background-color: #f0f0f0;
+            background-color: #eef;
+            background-image: linear-gradient(to right, #eee, #F9F9FC);
             padding: 5px 10px;
             border-radius: 55px;
             cursor: pointer;
+            text-shadow: 1px 2px 1px white;
         }
 
         .tag.active {
             background-color: #007bff;
+            background-image: linear-gradient(to right, #007bff 50%, #009bCC);
             color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+            outline: 1px solid whitesmoke;
+            text-shadow: 1px 2px 1px rgba(0, 0, 0, .3);
         }
 
         .tag.highlighted {
@@ -47,16 +56,17 @@
         #audio-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1ex 1ex ;
+            gap: 1ex 1ex;
         }
 
         .audio-item {
-            line-height: 1.15;   
-            height: 4em;   overflow: hidden;
+            line-height: 1.15;
+            height: 4em;
+            overflow: hidden;
             background-size: contain;
-            background-position:  right center;
+            background-position: right center;
             background-repeat: no-repeat;
-            padding: 1px  1ex 1px 1px;
+            padding: 1px 1ex 1px 1px;
             border-bottom-left-radius: 1ex;
             border-bottom-right-radius: 1ex;
             border-top-left-radius: .7ex;
@@ -64,24 +74,31 @@
             cursor: pointer;
             position: relative;
         }
-        #child-themes ,
+
+        #child-themes,
         .item-tags {
             font-family: 'Arial Narrow', sans-serif;
         }
-        .audio-item .item-tags .item-tag{background-color: whitesmoke;}
+
+        .audio-item .item-tags .item-tag {
+            background-color: whitesmoke;
+        }
 
         .audio-item.playing:before {
             background-color: #007bff;
         }
 
-        .audio-item h3 {         
+        .audio-item h3 {
             margin: 0 0 3px 0;
-            padding: 1px; line-height: 1;
+            padding: 1px;
+            line-height: 1;
             display: inline;
             display: inline-block;
         }
-        .audio-item:hover{
-            background-color: aliceblue; outline: 1px solid #007bff66;
+
+        .audio-item:hover {
+            background-color: aliceblue;
+            outline: 1px solid #007bff66;
         }
 
         .audio-item.playing h3 {
@@ -91,8 +108,7 @@
 
         .audio-item h3 {
             text-shadow: 0 0 1px white, -1px -1px 0 white, 1px 1px 0 white,
-            2px 2px 0 white, -2px -2px 0 white, 0 0 4px white
-            ;
+                2px 2px 0 white, -2px -2px 0 white, 0 0 4px white;
         }
 
         .item-tags {
@@ -107,17 +123,28 @@
         }
 
         #selected-tags {
-            font-size: 1.2em; 
+            font-size: 1.2em;
         }
-        #selected-tags b {background-color: rgba(255,255,0,.25); color: #666 ; font-size: 1.2em; text-transform: capitalize; }
+
+        #selected-tags b {
+            background-color: rgba(255, 255, 0, .25);
+            color: #666;
+            font-size: 1.2em;
+            text-transform: capitalize;
+        }
 
         #child-themes {
             font-size: 0.9em;
             color: #666;
-            margin-top: 5px;  line-height: .8;
-            
+            margin-top: 5px;
+            line-height: .8;
+
         }
-        #child-themes .item-tag {  display: inline-block;}
+
+        #child-themes .item-tag {
+            display: inline-block;
+        }
+
         #child-themes:not(:empty) {
             margin-bottom: 20px;
             padding: .4ex;
@@ -151,52 +178,130 @@
 
         a#reset {
             font-size: .85em;
-            text-decoration: none; text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
-            background-color: rgba(255,0,0,.66);
-            color: whitesmoke; display: inline-block; line-height: 1; text-align: center; border-radius: .75em; width: 1.75ex;  padding: 2px;
+            text-decoration: none;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+            background-color: rgba(255, 0, 0, .66);
+            color: whitesmoke;
+            display: inline-block;
+            line-height: 1;
+            text-align: center;
+            border-radius: .75em;
+            width: 1.75ex;
+            padding: 2px;
         }
-        a#reset:hover {background-color: rgba(255,0,0,1);}
-   #wrapper {  display:flex;
-    flex-flow: column;}
-    
-    @media screen and (max-width: 760px) {
-        #audio-list:not(:empty) {
-            margin-bottom: .75em;
-            padding-bottom: .75em;
-            border-bottom: 2px solid #DDE;
+
+        a#reset:hover {
+            background-color: rgba(255, 0, 0, 1);
         }
-    }
-    @media screen and (min-width: 760px) {
-        #audio-wrapper{
-        order:2;
-    }
-    #tag-wrapper{
-       margin-bottom: 1em;
-       padding-bottom: 1em;
-       border-bottom: 1px solid #DDD; text-transform: capitalize;
-    }
-    }
-       
+
+        #wrapper {
+            display: flex;
+            flex-flow: column;
+        }
+
+        @media screen and (max-width: 760px) {
+            #audio-list:not(:empty) {
+                margin-bottom: .75em;
+                padding-bottom: .75em;
+                border-bottom: 2px solid #DDE;
+            }
+        }
+
+        @media screen and (min-width: 760px) {
+            #audio-wrapper {
+                order: 2;
+            }
+
+            #tag-wrapper {
+                margin-bottom: 1em;
+                padding-bottom: 1em;
+                border-bottom: 1px solid #DDD;
+                text-transform: capitalize;
+            }
+        }
+
         /* body:not(._filtered) a#reset {display: none;} */
-        #tag-list span:before { position: relative; margin-left: -1.15ex; margin-right: .75ex; margin-top: -1em; transform: scale(1.75); display: inline-block; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
-        #tag-list span[data-tag="action"]:before {content:"\1F918";}
-        #tag-list span[data-tag="no"]:before {content:"👎";}
-        #tag-list span[data-tag="yes"]:before {content:"👍";}
-        #tag-list span[data-tag="approve"]:before {content:"👍";}
-        #tag-list span[data-tag="dismissive"]:before {content:"👎";}
-        #tag-list span[data-tag="danger"]:before {content:"⚠️";}
-        #tag-list span[data-tag="fail"]:before {content:"⚠️";}
-        #tag-list span[data-tag="fart"]:before {content:"💨";}
-        #tag-list span[data-tag="happy"]:before {content:"🦄";}
-        #tag-list span[data-tag="laugh"]:before {content:"🤣";}
-        #tag-list span[data-tag="sad"]:before {content:"😥";}
-        #tag-list span[data-tag="drum"]:before {content:"🥁";}
-        #tag-list span[data-tag="angry"]:before {content:"👿";}
-        #tag-list span[data-tag="winning"]:before {content:"🥇";}
-        #tag-list span[data-tag="gun"]:before {content:"💥";}
-        #tag-list span[data-tag="insult"]:before {content:"🤬";}
-        #tag-list span[data-tag="confusion"]:before {content:"🤔";}
-        #tag-list span[data-tag="impatience"]:before {content:"⏳";}
+        #tag-list span:before {
+            position: relative;
+            margin-left: -1.15ex;
+            margin-right: .75ex;
+            margin-top: -1em;
+            transform: scale(1.75);
+            display: inline-block;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+        }
+
+        #tag-list span[data-tag="action"]:before {
+            content: "\1F918";
+        }
+
+        #tag-list span[data-tag="no"]:before {
+            content: "👎";
+        }
+
+        #tag-list span[data-tag="yes"]:before {
+            content: "👍";
+        }
+
+        #tag-list span[data-tag="approve"]:before {
+            content: "👍";
+        }
+
+        #tag-list span[data-tag="dismissive"]:before {
+            content: "👎";
+        }
+
+        #tag-list span[data-tag="danger"]:before {
+            content: "⚠️";
+        }
+
+        #tag-list span[data-tag="fail"]:before {
+            content: "⚠️";
+        }
+
+        #tag-list span[data-tag="fart"]:before {
+            content: "💨";
+        }
+
+        #tag-list span[data-tag="happy"]:before {
+            content: "🦄";
+        }
+
+        #tag-list span[data-tag="laugh"]:before {
+            content: "🤣";
+        }
+
+        #tag-list span[data-tag="sad"]:before {
+            content: "😥";
+        }
+
+        #tag-list span[data-tag="drum"]:before {
+            content: "🥁";
+        }
+
+        #tag-list span[data-tag="angry"]:before {
+            content: "👿";
+        }
+
+        #tag-list span[data-tag="winning"]:before {
+            content: "🥇";
+        }
+
+        #tag-list span[data-tag="gun"]:before {
+            content: "💥";
+        }
+
+        #tag-list span[data-tag="insult"]:before {
+            content: "🤬";
+        }
+
+        #tag-list span[data-tag="confusion"]:before {
+            content: "🤔";
+        }
+
+        #tag-list span[data-tag="impatience"]:before {
+            content: "⏳";
+        }
 
         /* hide tags */
         #tag-list span[data-tag="darth-vader"],
@@ -254,7 +359,6 @@
         <div id="tag-wrapper">
             <div id="tag-list"></div>
         </div>
-        
     </div>
     <div id="progress-bar-container">
         <div id="progress-bar"></div>
@@ -262,6 +366,7 @@
 
 
 </body>
+
 <script>
     const dataRoot = 'audio/myinstants/';
     const listfile = dataRoot + 'sounds.csv';
@@ -317,7 +422,9 @@
             }
             return `
                 <div class="audio-item" data-tags="${item.tags || ''}" data-slug="${item.slug}" ${thebcg}>
-                    <h3>${item.title}</h3>
+                    
+                    
+                    <h3>${splitTitle(item.title, 17)}</h3>
                     <div class="item-tags">
                         ${displayTags.map(tag => `<span class="item-tag">${tag}</span>`).join('')}
                     </div>
@@ -380,7 +487,7 @@
         allTag.className = 'tag';
         allTag.textContent = 'All';
         allTag.dataset.tag = 'all';
-        
+
         const resetTags = document.createElement('span');
         resetTags.className = 'tag';
         resetTags.innerHTML = '#';
@@ -389,7 +496,7 @@
         tagList.insertBefore(resetTags, tagList.firstChild);
         tagList.appendChild(allTag);
         // tagList.appendChild(resetTags);
-        
+
 
         // Add event listeners to tags
         document.querySelectorAll('.tag').forEach(tag => {
@@ -530,7 +637,40 @@
         }
     }
 
+    function splitTitle(title, breakpoint) {
+        // console.log(title.length + ' - ' + title)   
+        if (title.length <= 1) {
+            return title;
+        }
+       
+        const words = title.split(' ');
+        // console.log(words.length + ' x- ' + words)
+        if (words.length == 2 && title.length >= 10) {
+            return words[0] + '<br>' + words[1];
+        }   
+        let firstHalf = words[0];
+        let charCount = words[0].length;
+        const midpoint = Math.min(title.length / 2, breakpoint);
 
+        for (let i = 1; i < words.length; i++) {
+            if (charCount + 1 + words[i].length > midpoint || i === words.length - 1) {
+                // If adding this word exceeds midpoint or it's the last word
+                if (i === words.length - 1 && charCount + 1 + words[i].length <= breakpoint) {
+                    // If it's the last word and adding it doesn't exceed breakpoint, add it to first half
+                    return firstHalf + ' ' + words[i];
+                } else {
+                    // Otherwise, split here
+                    return firstHalf + '<br>' + words.slice(i).join(' ');
+                }
+            }
+
+            firstHalf += ' ' + words[i];
+            charCount += 1 + words[i].length; // +1 for space
+        }
+
+
+        return title; // Fallback, should rarely be reached
+    }
     // Fetch and process CSV data
     fetch(listfile)
         .then(response => response.text())
