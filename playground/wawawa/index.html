@@ -692,6 +692,8 @@
             item.classList.remove('playing');
             if (item.dataset.slug == xslug) {
                 item.classList.add('playing');
+                // scroll page to the active audio item
+                item.scrollIntoView({ behavior: 'smooth' });
                 // toggleAudio(item); 
             }
         });
