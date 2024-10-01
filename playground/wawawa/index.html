@@ -12,7 +12,7 @@
             margin: 0 auto;
             padding: 1em;
         }
-
+        #meta-header  {border-left: 4px solid #88C; padding-left: 1ex;}
         #tag-list {
             display: flex;
             flex-wrap: wrap;
@@ -65,7 +65,7 @@
             /* border: 1px solid #f0f0f0; */
             position: relative;
         }
-    #child-themes ,
+        #child-themes ,
         .item-tags {
             font-family: 'Arial Narrow', sans-serif;
         }
@@ -143,14 +143,16 @@
 
         #selected-tags {
             /* margin-bottom: 20px; */
-            font-size: 1.2em;
+            font-size: 1.2em; 
         }
+        #selected-tags b {background-color: rgba(255,255,0,.25); color: #666 ; font-size: 1.2em; text-transform: capitalize; }
 
         #child-themes {
             font-size: 0.9em;
             /* display: inline-block; */
             color: #666;
             margin-top: 5px;  line-height: .8;
+            
         }
         #child-themes .item-tag {  display: inline-block;}
         #child-themes:not(:empty) {
@@ -209,7 +211,7 @@
     #tag-wrapper{
        margin-bottom: 1em;
        padding-bottom: 1em;
-       border-bottom: 1px solid #DDD;
+       border-bottom: 1px solid #DDD; text-transform: capitalize;
     }
     }
         /*  
@@ -311,8 +313,10 @@
     <div id="top"></div>
     <div id="wrapper">
         <div id="audio-wrapper">
-            <div id="selected-tags"></div>
-            <div id="child-themes"></div>
+            <div id="meta-header">
+                <div id="selected-tags"></div>
+                <div id="child-themes"></div>
+            </div>
             <div id="audio-list"></div>
         </div>
         <div id="tag-wrapper">
