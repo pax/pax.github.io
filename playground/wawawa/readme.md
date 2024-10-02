@@ -5,7 +5,7 @@ Like reaction gifs / memes, but for sound
 
 Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa/) 
 
-![Screenshot](misc/wawawa.png)
+![Screenshot 0](misc/screenshot-0.png) ![Screenshot 1](misc/screenshot-1.png)
 
 ## Prior art
 - [MyInstants.com](https://www.myinstants.com/) 
