@@ -343,9 +343,9 @@
             font-size: 1.65em;
             background-color: darkred;
         }
-
+        #footer-logo{margin-top: 5em; font-size: 1.5em;}
         details#about {
-            margin: 5em 0 2em 0;
+            margin: 0 0 2em 0;
             /* display: inline-block;background-color: var(--base-color); */
         }
 
@@ -404,7 +404,12 @@
             z-index: 1000;
         }
 
-    
+        body:not(._filtered) #footer-logo {
+            display: none;
+        } 
+        body:not(._filtered) #about {
+            margin-top: 5em;
+        }  
 
         /* body:not(._filtered) a#reset {display: none;} */
         #tag-list span:before {
@@ -569,8 +574,10 @@
         <div id="progress-bar"></div>
     </div>
     <span id="share">↪ share</span>
+    
+    <div id="footer-logo">🔉💥🤺</div>
     <details id="about">
-        <summary>About</summary>
+          <summary>About</summary>
         <!-- <p class="ww-bcg">WAWAWeeWA</p><br><br> -->
         <details>
             <summary>
