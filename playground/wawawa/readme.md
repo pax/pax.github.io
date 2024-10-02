@@ -37,6 +37,11 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 - [ ] add collections?
 - [ ] add Random func
 - [ ] SEO?
+- [ ] when audio file is shared, show a nicer message + arrow to play sourface: _Wheee... You've been sent an audio reaction. Please **click below** to listen to it!_
+- [ ] translate UI in a few languages. Guess ui interface. Offer EN (or local lang) as alternative.
+- [ ] equalize clip volumes
+- [ ] ease out/into clips, when a new clip starts, overlap them a bit, fade out the first.
+
 
 ### Enhancements
 
@@ -63,6 +68,18 @@ Mobile
 - Mix over YouTube / Multiple YouTubes
 - clip from youtube!
 - SEO?
+- add playlists, recipes for audio narration - a sequence of sounds. list of audio-items + cutoff timestamp (optional)
+    - add browser generated tts for custom names?
+    - export as a youtube clips playlist, mash-up
+
+### Sound curration
+
+Remaster clips
+- remove initial silence
+- find source youtube, automatically find timestamps and crop
+- normalize volume
+- optimize size
+
 
 Hardware
 - hardware device - 2 form factors: keychain or bigger, for indoors - promo on the site
