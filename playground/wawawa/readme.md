@@ -113,10 +113,30 @@ sell meme based merch alogn, or audio hardware gizmos
 Custom collections
 - kids, lullabies
 - per source (show/movie)
+    - Iliescu
+    - Dancilă
+    - Hagi
+    - Vadim
+    - Lorin
+    - Irina Nistor
 - corporate meeting
-- dating
+- corporate buzzwords
+- [Gen-Z slang](https://en.wikipedia.org/wiki/List_of_Generation_Z_slang) 
+- dating / speed dating cards
 
-Create your own board / collection.
+Words needed
+- intriquing
+- very interesting
+- I fully agree
+- this kid is smart
+
+Categories to explore
+- corporate bullshit
+- euphemisms 
+- one liners - comediants. party companion. random one liners.
+- John Oliver - country etc definitions. [*53 COUNTRIES* - John Oliver Describes Countries Compilation - (A to Z)](https://www.youtube.com/watch?v=ms59aHUObf4), [Yakko's Countries/Nations of the World but every country is defined by comedian John Oliver](https://www.youtube.com/watch?v=hT8HLlRm9G8)  
+
+Create your own board / collection. Customize order.
 
 ### Sound curration
 
@@ -140,5 +160,8 @@ meme sfx
 buzz master.club
 reaction-jukebox.club
 react-fx.club
+das-fx.club
+b01ng.club
+emoji url 
 
 <video src="audio/wawawa-screenrec.ogg" width="480" height="854" controls type="video/ogg"></video>

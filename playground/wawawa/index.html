@@ -16,6 +16,7 @@
         :root {
             --base-color: #007bff;
         }
+
         body {
             font-family: Arial, sans-serif;
             max-width: 1600px;
@@ -43,13 +44,16 @@
             cursor: pointer;
             text-shadow: 1px 2px 1px white;
         }
+
         .ww-bcg {
             background-color: var(--base-color);
             color: whitesmoke;
         }
+
         .ww-bcg a {
             color: lightyellow;
         }
+
         .tag.active {
             background-color: var(--base-color);
             background-image: linear-gradient(to right, var(--base-color) 50%, #009bCC);
@@ -86,21 +90,28 @@
             outline: 2px solid white;
             box-shadow: inset 1px 0 2em rgba(0, 0, 0, .15);
         }
+
         /* or #xcanvas */
-        #audio-list .audio-item:first-child h3{font-size: 3em; margin: .5ex 0 0 .5ex;}
+        #audio-list .audio-item:first-child h3 {
+            font-size: 3em;
+            margin: .5ex 0 0 .5ex;
+        }
+
         #audio-list .audio-item:first-child {
             grid-column: span 2;
-            grid-row: span 3; 
+            grid-row: span 3;
             height: 13.6em;
-            padding: 0; 
+            padding: 0;
 
-             z-index: 33;
+            z-index: 33;
         }
+
         #audio-list .audio-item:first-child:before {
             font-size: 4em;
             left: 2em;
             top: 1.5ex;
         }
+
         #child-themes,
         .item-tags {
             font-family: 'Arial Narrow', sans-serif;
@@ -166,10 +177,22 @@
             /* z-index: 99; */
             box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
         }
-        .audio-item.playing {box-shadow: 0 1px 3px rgba(0, 0, 0, .5); z-index: 2; background-color: #DDE;
-            box-shadow: inset 1px 0 2em rgba(0, 0, 0, .2), 1px 3px 5px rgba(0, 0, 0, .6) !important;}
 
-            #renderer-placeholder {font-size: 5em; display: block; text-align: center; position: absolute; top: 30%; width: 100%;}
+        .audio-item.playing {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+            z-index: 2;
+            background-color: #DDE;
+            box-shadow: inset 1px 0 2em rgba(0, 0, 0, .2), 1px 3px 5px rgba(0, 0, 0, .6) !important;
+        }
+
+        #renderer-placeholder {
+            font-size: 5em;
+            display: block;
+            text-align: center;
+            position: absolute;
+            top: 30%;
+            width: 100%;
+        }
 
         /* define animation */
         @keyframes pulse {
@@ -260,7 +283,7 @@
         }
 
 
-       
+
 
         #progress-bar-container {
             position: fixed;
@@ -322,7 +345,11 @@
                 text-transform: capitalize;
             }
         } */
-#tag-wrapper {margin-top: 2em; padding: 1ex;}
+        #tag-wrapper {
+            margin-top: 2em;
+            padding: 1ex;
+        }
+
         #share {
             position: fixed;
             background-color: red;
@@ -359,15 +386,19 @@
             padding: .5ex 1ex;
             border-radius: 3px;
             margin: -1px 0 -1px 0;
-         
+
         }
+
         details#about p.ww-bcg {
-            box-shadow: 1px 1px 4px rgba(0, 0, 0, .4); outline: 1px solid rgba(255,255,255,.33);      
+            box-shadow: 1px 1px 4px rgba(0, 0, 0, .4);
+            outline: 1px solid rgba(255, 255, 255, .33);
         }
+
         details#about p:last-child {
             padding-bottom: 1ex;
             margin-bottom: 1em;
         }
+
         details#about p:first-child {
             padding-top: 1ex;
         }
@@ -375,8 +406,14 @@
         details p b {
             color: rgb(246, 255, 179);
             text-shadow: 2px 1px 2px rgba(0, 0, 0, .6);
+            /* font-family: Georgia, serif;
+            font-style: italic;  */
         }
-        details details {margin: 1ex 0 0 0;}
+
+        details details {
+            margin: 1ex 0 0 0;
+        }
+
         details>summary {
             list-style-type: '+ ';
         }
@@ -407,7 +444,7 @@
             z-index: 1000;
         }
 
-    
+
 
         /* body:not(._filtered) a#reset {display: none;} */
         #tag-list span:before {
@@ -499,6 +536,9 @@
         #tag-list span[data-tag="ringtone"]:before {
             content: "📱";
         }
+        #tag-list span[data-tag="meeting"]:before {
+            content: "👔";
+        }
 
         /* hide tags */
         #tag-list span[data-tag="supportive"],
@@ -573,13 +613,13 @@
                 What is this?
             </summary>
             <p class="ww-bcg">The <b>Tactful Meeting Assistant</b> (NSFW) </p><br>
-        <p class="ww-bcg"><b>Podcast Companion</b> Reaction Board</p><br>  
-        <p class="ww-bcg">Thumbs Down to Speak Up!</p><br><br>
-        <p class="ww-bcg">Audio reactions <b>SoundBoard</b>.</p><br>
-        <p class="ww-bcg">Like some sort of <b>Audio Emojis</b>.</p><br>
+            <p class="ww-bcg"><b>Podcast Companion</b> Reaction <b>Jukebox</b></p><br>
+            <p class="ww-bcg">Thumbs Down to Speak Up!</p><br><br>
+            <p class="ww-bcg"><b>Audio Reaction</b> Clips <b>SoundBoard</b>.</p><br>
+            <p class="ww-bcg">Like some sort of <b>Audio Emojis</b>.</p><br>
 
         </details>
-        
+
         <details>
             <summary>Usage</summary>
             <p class="ww-bcg">Clicking on higlighted/related tag adds it to the filter. </p><br>
@@ -587,13 +627,13 @@
             <p class="ww-bcg">Clicking an item toggles audio, clicking the large preview restarts audio.</p><br>
             <p class="ww-bcg">Make some noise.</p><br>
             <p class="ww-bcg">Have fun</p>
-            
+
         </details>
-        
+
         <details>
             <summary>FAQ</summary>
-            
-<pre># <b><u>Weren't there already</u>?</b>
+
+            <pre># <b><u>Weren't there already</u>?</b>
   Yes. <a href="https://www.myinstants.com/" target="_blank" rel=“noreferrer”>MyInstants</a>, <a href="https://www.soundboard.com/" target="_blank" rel=“noreferrer”>SoundBoard</a>, <a href="https://soundbuttonsworld.com/" target="_blank" rel=“noreferrer”>SoundButtonsWorld</a> come to mind. 
   But none quite satisfactory. 
 
@@ -603,7 +643,7 @@
 # <b><u>Wheren't you supposed to be working on something else</u>?!</b>
   Yes. <a href="./#fail::tf">🥹</a>
             </pre>
-        
+
         </details>
         <details>
             <summary>Legal</summary>
@@ -700,7 +740,7 @@
                     window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + Array.from(activeTags).join('+') + '::' + audioSlug);
 
                     toggleAudio(item);
-                });                
+                });
 
             });
         });
@@ -888,12 +928,12 @@
                 renderer = document.getElementById('xcanvas');
                 renderer.innerHTML = renderItem(audioData.find(x => x.slug == xslug));
                 renderer.addEventListener('click', () => {
-                document.querySelectorAll('.audio-item').forEach(item => { item.classList.remove('playing'); });
-                const audioSlug = item.dataset.slug;
-                window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + Array.from(activeTags).join('+') + '::' + audioSlug);
+                    document.querySelectorAll('.audio-item').forEach(item => { item.classList.remove('playing'); });
+                    const audioSlug = item.dataset.slug;
+                    window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + Array.from(activeTags).join('+') + '::' + audioSlug);
 
-                toggleAudio(item);
-            });
+                    toggleAudio(item);
+                });
                 // renderer.innerHTML = renderItem(item);
             }
         });
@@ -922,12 +962,12 @@
                 const audioSlug = zz[1];
                 markActiveAudio(audioSlug);
             }
-            
+
         }
     }
 
     function splitTitle(title, breakpoint) {
-    
+
         const words = title.split(' ');
         if (words.length == 1) {
             return title;
