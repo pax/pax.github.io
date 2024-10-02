@@ -5,12 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📣 WAWAWA - Reaction SoundBoard - Reaction SoundBoard</title>
+    <meta name="description" content="Audio Reactions SoundBoard">
+    <meta name="keywords" content="audio, reactions, soundboard, mp3, ogg, short clips, audio memes, sound fx, quick">
     <meta property="og:title" content="🔉 WAWAWA" />
     <meta property="og:url" content="https://pax.github.io/playground/wawawa/" />
     <meta property="og:image" content="https://pax.github.io/playground/wawawa/misc/wawawa.png" />
-    <meta property="og:description" content="Reaction SoundBoard" />
+    <meta property="og:description" content="Audio Reactions SoundBoard" />
 
     <style>
+        :root {
+            --base-color: #007bff;
+        }
         body {
             font-family: Arial, sans-serif;
             max-width: 1600px;
@@ -38,10 +43,12 @@
             cursor: pointer;
             text-shadow: 1px 2px 1px white;
         }
-
+        .theme-bcg {
+            background-color: var(--base-color);
+        }
         .tag.active {
-            background-color: #007bff;
-            background-image: linear-gradient(to right, #007bff 50%, #009bCC);
+            background-color: var(--base-color);
+            background-image: linear-gradient(to right, var(--base-color) 50%, #009bCC);
             color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
             outline: 1px solid whitesmoke;
@@ -49,14 +56,16 @@
         }
 
         .tag.highlighted {
-            outline: 2px solid #007bff;
+            outline: 2px solid var(--base-color);
             box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
         }
 
         #audio-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1ex 1ex;
+            gap: -1px;
+            grid-auto-flow: dense;
+
         }
 
         .audio-item {
@@ -66,15 +75,28 @@
             background-size: contain;
             background-position: right center;
             background-repeat: no-repeat;
-            padding: 1px 1ex 1px 1px;
-            border-bottom-left-radius: 1ex;
-            border-bottom-right-radius: 1ex;
-            border-top-left-radius: .7ex;
-            border-top-right-radius: .7ex;
+            padding: .75ex .5ex .5ex .75ex;
             cursor: pointer;
             position: relative;
+            background-color: rgba(245, 245, 245, 0.512);
+            outline: 2px solid white;
+            box-shadow: inset 1px 0 2em rgba(0, 0, 0, .15);
         }
+        /* or #xcanvas */
+        #audio-list .audio-item:first-child h3{font-size: 3em; margin: .5ex 0 0 .5ex;}
+        #audio-list .audio-item:first-child {
+            grid-column: span 2;
+            grid-row: span 3; 
+            height: 13.6em;
+            padding: 0; 
 
+             z-index: 33;
+        }
+        #audio-list .audio-item:first-child:before {
+            font-size: 4em;
+            left: 2em;
+            top: 1.5ex;
+        }
         #child-themes,
         .item-tags {
             font-family: 'Arial Narrow', sans-serif;
@@ -88,43 +110,76 @@
             background-color: transparent;
             color: #999;
         }
-        .audio-item.playing {
+
+        .audio-item.xplaying {
+            border-radius: .7ex;
             /* outline: 4px solid rgba(0, 0, 255, 0.3); */
-            outline: 2px solid rgba(255,255,255,.75);  
+            outline: 2px solid rgba(255, 255, 255, .75);
             /* box-shadow: inset 1px 0 15px rgba(0, 0, 0, .95) !important; */
             /* both inset and outset box shadow */
-             box-shadow: inset 1px 0 2em rgba(0, 0, 0, .6), 1px 3px 5px rgba(0, 0, 0, .6) !important; 
+            z-index: 2;
+            box-shadow: inset 1px 0 2em rgba(0, 0, 0, .6), 1px 3px 5px rgba(0, 0, 0, .6) !important;
         }
-        .audio-item.playing:before {
-            /* background-color: #007bff; */
-            content: "🔉" ; 
+
+        .audio-item:before {
+            font-size: 2.5em;
+            left: 1.4em;
+            top: .5ex;
+            opacity: .8;
+            position: absolute;
+        }
+
+        .audio-item.xplaying:before {
+            /* background-color: var(--base-color); */
+            content: "🔉";
             text-shadow: 1px 2px 9px rgba(255, 255, 0, 0.8);
-            
-            
+
+
         }
-        .audio-item.playing:hover:before {
+
+        .audio-item.xplaying:hover:before {
             /* stop the pulse animation */
             animation: none;
-            content: "⏯️" ;
+            content: "⏯️";
             /* content: "🔉" ;  */
         }
-        .audio-item:before {
-            font-size: 2.5em; right: 5px;  /* ▶️ */
-            position: absolute;   
-        }
-        .audio-item:not(.playing):hover:before {
+
+
+
+        .audio-item:not(.xplaying):hover:before {
             content: "▶️";
             /* content: "🔉" ;  */
         }
+
         /* make this element pulsating */
-        .audio-item.playing:before {
+        .audio-item.xplaying:before {
             animation: pulse .6s infinite;
         }
+
+        .audio-item.xplaying.playing {
+            background-color: var(--base-color);
+            /* transform: scale(1.05);   */
+            /* z-index: 99; */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+        }
+        .audio-item.playing {box-shadow: 0 1px 3px rgba(0, 0, 0, .5); z-index: 2; background-color: #DDE;
+            box-shadow: inset 1px 0 2em rgba(0, 0, 0, .2), 1px 3px 5px rgba(0, 0, 0, .6) !important;}
+
+            #renderer-placeholder {font-size: 5em; display: block; text-align: center; position: absolute; top: 30%; width: 100%;}
+
         /* define animation */
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
 
@@ -139,14 +194,14 @@
         .audio-item:hover {
             background-color: #333;
             color: white;
-            /* outline: 1px solid #007bff66; */
+            /* outline: 1px solid var(--base-color)66; */
         }
 
         .audio-item:hover h3 {
             text-shadow: 1px 2px 3px rgba(0, 0, 0, .4);
         }
 
-        .audio-item.playing h3 {
+        .audio-item.xplaying h3 {
             text-shadow: 1px 2px 3px rgba(0, 0, 0, .4);
             color: white;
         }
@@ -200,13 +255,8 @@
             font-weight: bold;
         }
 
-        
-        .audio-item.playing {
-            background-color: #007bff;
-            /* transform: scale(1.05);   */
-            /* z-index: 99; */
-            box-shadow:  0 1px 3px rgba(0, 0, 0, .5);
-        }
+
+       
 
         #progress-bar-container {
             position: fixed;
@@ -221,7 +271,7 @@
         #progress-bar {
             height: 100%;
             width: 0;
-            background-color: #007bff;
+            background-color: var(--base-color);
             transition: width 0.1s linear;
         }
 
@@ -256,7 +306,7 @@
             }
         }
 
-        @media screen and (min-width: 760px) {
+        /* @media screen and (min-width: 760px) {
             #audio-wrapper {
                 order: 2;
             }
@@ -267,29 +317,83 @@
                 border-bottom: 1px solid #DDD;
                 text-transform: capitalize;
             }
+        } */
+#tag-wrapper {margin-top: 2em; padding: 1ex;}
+        #share {
+            position: fixed;
+            background-color: red;
+            color: white;
+            padding: 5px;
+            cursor: pointer;
+            z-index: 1000;
+            line-height: 1;
+            bottom: 2px;
+            right: 2px;
+            height: 1em;
+            box-shadow: 2px 1px 8px rgba(0, 0, 0, .5);
+            font-size: 1.4em;
+            border-top-left-radius: .66em;
+            padding: .7ex 1.2ex;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+            outline: 1px solid white;
         }
 
-        #share {position: fixed;   background-color: red; color: white; padding: 5px;   cursor: pointer; z-index: 1000;  line-height: 1;
-            bottom: 2px; right: 2px; height: 1em; 
-            box-shadow: 2px 1px 8px rgba(0, 0, 0, .5); font-size: 1.4em; border-top-left-radius: .66em; padding: .7ex 1.2ex;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, .2); outline: 1px solid white;
-        }
         #share:hover {
             font-size: 1.65em;
             background-color: darkred;
         }
- 
-        .xmessage {
-            position : fixed;
-            /* top : 5px; */
-            bottom : 3em;
-            right : 5px;
-            padding : 5px;
-            background-color : rgba(0, 0, 0, .66);
-            color : white; font-size: 1.25em;
-            border-radius : 5px;
-            z-index : 1000;
+
+        #about {
+            margin: 5em 0 2em 0;
+            /* display: inline-block;background-color: var(--base-color); */
         }
+
+        details p {
+            background-color: var(--base-color);
+            color: #DDD;
+            display: inline-block;
+            padding: .5ex 1ex;
+            border-radius: 3px;
+            margin: -1px 0 -1px 0;
+
+        }
+
+        details p b {
+            color: white;
+        }
+
+        details>summary {
+            list-style-type: '+ ';
+        }
+
+        details[open]>summary {
+            list-style-type: '| ';
+        }
+
+        details[open]>summary {
+            margin-bottom: 0.5rem;
+        }
+
+        #about summary {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .xmessage {
+            position: fixed;
+            /* top : 5px; */
+            bottom: 3em;
+            right: 5px;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, .66);
+            color: white;
+            font-size: 1.25em;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+    
+
         /* body:not(._filtered) a#reset {display: none;} */
         #tag-list span:before {
             position: relative;
@@ -376,6 +480,7 @@
         #tag-list span[data-tag="impatience"]:before {
             content: "⏳";
         }
+
         #tag-list span[data-tag="ringtone"]:before {
             content: "📱";
         }
@@ -430,6 +535,7 @@
     <div id="top"></div>
     <div id="wrapper">
         <div id="audio-wrapper">
+
             <div id="meta-header">
                 <div id="selected-tags"></div>
                 <div id="child-themes"></div>
@@ -443,8 +549,13 @@
     <div id="progress-bar-container">
         <div id="progress-bar"></div>
     </div>
-<span id="share">↪ share</span>
-
+    <span id="share">↪ share</span>
+    <details id="about">
+        <summary>About</summary>
+        <p>WAWAWeeWA</p><br>
+        <p>The <b>Tactful Meeting Assistant</b> (NSFW) </p><br>
+        <p>Audio reactions SoundBoard.</p>
+    </details>
 </body>
 
 <script>
@@ -461,7 +572,6 @@
 
     let progressBar = document.getElementById('progress-bar');
 
-    // Function to parse CSV data
     function parseCSV(csv) {
         const lines = csv.split('\n').filter(line => line.trim() !== '');
         const headers = lines[0].split(',').map(h => h.trim());
@@ -490,21 +600,18 @@
         }).filter(item => item.slug && item.title);
     }
 
-    // Function to render audio items
     function renderAudioItems(items) {
         audioList.innerHTML = items.map(item => {
             const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
             const displayTags = itemTags.filter(t => !activeTags.has(t));
-            // check if item has 'thumb' and is not null, if so add style background-image to audio-item
             let thebcg = ''
             if (item.thumb && item.thumb !== 'null') {
                 thebcg = ` style="background-image: url(${dataRoot}thumbs/${item.thumb}); " `;
             }
+            // return renderItem(item);
             return `
-                <div class="audio-item" data-tags="${item.tags || ''}" data-slug="${item.slug}" ${thebcg}>
-                    
-                    
-                    <h3>${splitTitle(item.title, 17)}</h3>
+                <div class="audio-item" data-tags="${item.tags || ''}" data-slug="${item.slug}" ${thebcg}>                                  
+                    <h3>${splitTitle(item.title, 17)}</h3>                
                     <div class="item-tags">
                         ${displayTags.map(tag => `<span class="item-tag">${tag}</span>`).join('')}
                     </div>
@@ -516,26 +623,51 @@
                 </div>
             `;
         }).join('');
+        audioList.innerHTML = "<div id=\"xcanvas\" class=\"audio-item\" ><span id=\"renderer-placeholder\">🔉</span></div>" + audioList.innerHTML;
 
-        // Add click event listeners to audio items
+        // TODO: add event listeners to audio items
         document.querySelectorAll('.audio-item').forEach(item => {
-// when clicking on audio-item, add ::audio slug to the end of current url
-// how to add a second function to the event listener?
 
             item.addEventListener('click', () => {
-                document.querySelectorAll('.audio-item').forEach(item => {item.classList.remove('playing');});
+                document.querySelectorAll('.audio-item').forEach(item => { item.classList.remove('playing'); });
                 const audioSlug = item.dataset.slug;
-                // add audioSlug to the end of the url - but keep the existing #hash
                 window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + Array.from(activeTags).join('+') + '::' + audioSlug);
-                // window.location.hash = Array.from(activeTags).join('+') + '::' + audioSlug;
-                
+
                 toggleAudio(item);
+                // add current item to #xcanvas
+                renderer = document.getElementById('xcanvas');
+                renderer.innerHTML = renderItem(audioData.find(x => x.slug == audioSlug));
+                // add event listener to the new item so it plays the new slug audio 
+                renderer.addEventListener('click', () => {
+                    document.querySelectorAll('.audio-item').forEach(item => { item.classList.remove('playing'); });
+                    const audioSlug = item.dataset.slug;
+                    window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + Array.from(activeTags).join('+') + '::' + audioSlug);
+
+                    toggleAudio(item);
+                });
+
+
             });
-            // item.addEventListener('click', () => toggleAudio(item));
         });
     }
 
-    // Function to toggle audio play/pause
+    function renderItem(xitem) {
+        let thebcg = ''
+        if (xitem && xitem.thumb && xitem.thumb !== 'null') {
+            thebcg = ` style="background-image: url(${dataRoot}thumbs/${xitem.thumb}); " `;
+        }
+        return `
+                <div class="audio-item playing xplaying" data-tags="${xitem.tags || ''}" data-slug="${xitem.slug}" ${thebcg}>                                  
+                    <h3>${splitTitle(xitem.title, 17)}</h3>                   
+                    <audio preload="auto">
+                        <source src="${dataRoot}ogg/${xitem.slug}.ogg" type="audio/ogg">
+                        <source src="${dataRoot}mp3/${xitem.slug}.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            `;
+    }
+
     function toggleAudio(item) {
         const audio = item.querySelector('audio');
 
@@ -567,14 +699,12 @@
         }
     }
 
-    // Function to render tags
     function renderTags() {
         const sortedTags = Array.from(allTags).sort();
         tagList.innerHTML = sortedTags.map(tag => `
             <span class="tag" data-tag="${tag}">${tag}</span>
         `).join('');
 
-        // Add "All" tag at the end
         const allTag = document.createElement('span');
         allTag.className = 'tag';
         allTag.textContent = 'All';
@@ -587,16 +717,13 @@
 
         tagList.insertBefore(resetTags, tagList.firstChild);
         tagList.appendChild(allTag);
-        // tagList.appendChild(resetTags);
 
 
-        // Add event listeners to tags
         document.querySelectorAll('.tag').forEach(tag => {
             tag.addEventListener('click', () => handleTagClick(tag));
         });
     }
 
-    // Function to handle tag clicks
     function handleTagClick(clickedTag) {
         const tag = clickedTag.dataset.tag;
 
@@ -615,9 +742,8 @@
         updateTagHighlights();
         updateSelectedTags();
         updateUrlHash();
-        scrollToAudioList(); // Add this line to trigger scrolling
     }
-    
+
     function updateTitle() {
         const baseTitle = "🔉 WAWAWA - Reaction SoundBoard";
         if (activeTags.size === 0) {
@@ -629,8 +755,7 @@
         }
 
     }
-    // Function to update tag highlights
-    
+
     function updateTagHighlights() {
         document.querySelectorAll('.tag').forEach(tag => {
             tag.classList.remove('active', 'highlighted');
@@ -656,10 +781,8 @@
         }
     }
 
-    // Function to update selected tags display
     function updateSelectedTags() {
         if (activeTags.size === 0) {
-            // selectedTagsDiv.textContent = 'All';
             selectedTagsDiv.innerHTML = '–– ' + ' &emsp; <a id="reset" href="?">&#215;</a>';
             childThemesDiv.textContent = '';
         } else {
@@ -669,7 +792,6 @@
                 return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
             });
 
-            // selectedTagsDiv.textContent = `${tagArray.join(' + ')} (${filteredItems.length})`;
             selectedTagsDiv.innerHTML = `<b>${tagArray.join(' + ')}</b>` + ` ` + `<small>(${filteredItems.length})</small>` + ' &emsp; <a id="reset" href="?">&#215;</a>';
 
             const childThemes = new Set();
@@ -680,13 +802,10 @@
                 });
             });
 
-            // childThemesDiv.textContent = `${Array.from(childThemes).join(', ')}`;
-            // add span in betwheen childThemesDiv content items
             childThemesDiv.innerHTML = Array.from(childThemes).map(tag => ` <span class="item-tag">${tag}</span> `).join('');
         }
     }
 
-    // Function to filter audio items based on selected tags
     function filterAudioItems() {
         const filteredItems = audioData.filter(item => {
             if (activeTags.size === 0) return true;
@@ -696,77 +815,64 @@
         renderAudioItems(filteredItems);
     }
 
-    // Function to update URL hash
     function updateUrlHash() {
         const hashValue = Array.from(activeTags).join('+');
         window.history.replaceState(null, null, hashValue ? `#${hashValue}` : '#');
     }
 
- 
-
-    // Function to get audio slug from URL
-    function getAudioSlugFromURL() {
-        const url = window.location.href;
-        const parts = url.split('::');
-        return parts.length > 1 ? parts[1] : null;
-    }
-
-    // Function to mark active audio item
-    function markActiveAudio(xslug) {        
-         document.querySelectorAll('.audio-item').forEach(item => {
-            // remove playing class from all audio items
+    function markActiveAudio(xslug) {
+        document.querySelectorAll('.audio-item').forEach(item => {
             item.classList.remove('playing');
             if (item.dataset.slug == xslug) {
                 item.classList.add('playing');
-                // scroll page to the active audio item
                 item.scrollIntoView({ behavior: 'smooth' });
-                // toggleAudio(item); 
+                console.log(xslug)
+                renderer = document.getElementById('xcanvas');
+                renderer.innerHTML = renderItem(audioData.find(x => x.slug == xslug));
+                renderer.addEventListener('click', () => {
+                document.querySelectorAll('.audio-item').forEach(item => { item.classList.remove('playing'); });
+                const audioSlug = item.dataset.slug;
+                window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + Array.from(activeTags).join('+') + '::' + audioSlug);
+
+                toggleAudio(item);
+            });
+                // renderer.innerHTML = renderItem(item);
             }
         });
     }
 
     function scrollToAudioList() {
         if (window.location.hash) {
-            // const audioListElement = document.getElementById('audio-list');
             const audioListElement = document.getElementById('top');
             if (audioListElement) {
                 audioListElement.scrollIntoView({ behavior: 'smooth' });
             }
         }
     }
-    // Function to apply filter from URL hash
-   
+
     function applyFilterFromHash() {
         const hash = window.location.hash.substring(1);
         if (hash) {
-            zz=hash.split('::')
-           
+            zz = hash.split('::')
+
             const filterTags = zz[0].split('+');
             activeTags = new Set(filterTags);
             filterAudioItems();
             updateTagHighlights();
             updateSelectedTags();
-            scrollToAudioList(); // Add this line to trigger scrolling on page load
             if (zz.length > 1) {
                 const audioSlug = zz[1];
-                // alert(audioSlug)
-                
-                // add audioSlug to the end of the url - but keep the existing #hash
-                // window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + hash + '::' + audioSlug);
-                // window.location.hash = hash + '::' + audioSlug;
                 markActiveAudio(audioSlug);
             }
         }
     }
 
     function splitTitle(title, breakpoint) {
-        // console.log(title.length + ' - ' + title)   
-        if (title.length <= 1) {
+    
+        const words = title.split(' ');
+        if (words.length == 1) {
             return title;
         }
-
-        const words = title.split(' ');
-        // console.log(words.length + ' x- ' + words)
         if (words.length == 2 && title.length >= 10) {
             return words[0] + '<br>' + words[1];
         }
@@ -776,24 +882,19 @@
 
         for (let i = 1; i < words.length; i++) {
             if (charCount + 1 + words[i].length > midpoint || i === words.length - 1) {
-                // If adding this word exceeds midpoint or it's the last word
                 if (i === words.length - 1 && charCount + 1 + words[i].length <= breakpoint) {
-                    // If it's the last word and adding it doesn't exceed breakpoint, add it to first half
                     return firstHalf + ' ' + words[i];
                 } else {
-                    // Otherwise, split here
                     return firstHalf + '<br>' + words.slice(i).join(' ');
                 }
             }
 
             firstHalf += ' ' + words[i];
-            charCount += 1 + words[i].length; // +1 for space
         }
 
 
-        return title; // Fallback, should rarely be reached
     }
-    // Fetch and process CSV data
+
     fetch(listfile)
         .then(response => response.text())
         .then(csv => {
@@ -820,7 +921,6 @@
             audioList.innerHTML = '<p>Error loading audio data. Please try again later.</p>';
         });
 
-    // Listen for hash changes
     window.addEventListener('hashchange', applyFilterFromHash);
 
     document.querySelectorAll('.audio-item').forEach(item => {
@@ -831,57 +931,54 @@
             progressBar.style.width = '0%';
         });
     });
-// when #share is clicked, copy the current url to clipboard - and show a message
-document.getElementById('share').addEventListener('click', function() {
-    const urlToShare = window.location.href;
+    document.getElementById('share').addEventListener('click', function () {
+        const urlToShare = window.location.href;
 
-    // Check if Clipboard API is supported
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(urlToShare).then(() => {
-            // alert('URL copied to clipboard');
-            const message = document.createElement('div');
-            message.textContent = 'Url copied to clipboard';
-            message.className = 'xmessage';
-      
-            document.body.appendChild(message);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(urlToShare).then(() => {
+                const message = document.createElement('div');
+                message.textContent = 'Url copied to clipboard';
+                message.className = 'xmessage';
 
-            setTimeout(() => {
-                document.body.removeChild(message);
-            }, 1500);
-            
-        }).catch(err => {
-            console.error('Failed to copy URL: ', err);
+                document.body.appendChild(message);
+
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 1500);
+
+            }).catch(err => {
+                console.error('Failed to copy URL: ', err);
+                fallBackCopy(urlToShare);
+            });
+        } else {
             fallBackCopy(urlToShare);
-        });
-    } else {
-        fallBackCopy(urlToShare);
-    }
-
-    function fallBackCopy(text) {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-
-        try {
-            document.execCommand('copy');
-            const message = document.createElement('div');
-            message.textContent = 'Url copied to clipboard';
-            message.className = 'xmessage';
-      
-            document.body.appendChild(message);
-
-            setTimeout(() => {
-                document.body.removeChild(message);
-            }, 1500);
-        } catch (err) {
-            console.error('Fallback copy failed: ', err);
         }
 
-        document.body.removeChild(textArea);
-    }
-});
+        function fallBackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                const message = document.createElement('div');
+                message.textContent = 'Url copied to clipboard';
+                message.className = 'xmessage';
+
+                document.body.appendChild(message);
+
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 1500);
+            } catch (err) {
+                console.error('Fallback copy failed: ', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+    });
 
 </script>
 

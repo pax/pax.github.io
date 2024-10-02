@@ -8,10 +8,12 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 ![Screenshot](misc/wawawa.png)
 
 ## Prior art
-- [Myinstants](https://www.myinstants.com/) 
+- [MyInstants.com](https://www.myinstants.com/) 
 - [SoundBoard.com](https://www.soundboard.com/) 
 - [SoundButtons.com](https://soundbuttonsworld.com/) 
+- [Voicy](https://www.voicy.network) 
 - [AKAspanion/music-app](https://github.com/AKAspanion/music-app) 
+- [Somoji](https://github.com/ApoorvSaxena/Somoji) 
 - see also: [YT mixer / mash-up](https://docs.google.com/document/d/1bWTh5fIsHL3iAnIx1BTs_ersVWhNiOSs) 
 
 ## Roadmap - HTML prototype
@@ -23,15 +25,18 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 - [x] basic filtered list
 - [x] url hash for ctg filter
 - [x] file / audio permalink 
+    - [x] showcase 1 audio
 - [x] when clicking a tag where children have other tags, higlight those tags, when clicked, filter down. when other tag is clicked, reset to that one
 - [x] show sound tags, other than the selection
 - [ ] how to minimise clicks - shorten tag list? - some tags are secondary, different categories, source - leave in just the reaction subject, not attributes
 - [x] add thumbs
 - [x] break titles in aproximatively half the first 2 breakpoint
-    - [ ] smarter compactation
+    - [ ] smarter compactation 
 - [ ] log played sounds + categories to browser cache - display popular choices
 - [ ] add sounds / ctgs to favorites in browser cache
 - [ ] add collections?
+- [ ] add Random func
+- [ ] SEO?
 
 ### Enhancements
 
@@ -49,7 +54,7 @@ Mobile
 - default bundles / also by country? - select what you want to install
 - fetch from youtube? with timespan?
 - cast to devices?
-- direct link to song?
+- [x] direct link to song?
 - random play - detect conversation stop?
 - andoid widget?
 - website - with users, can create collections. add to faves. Specific to <country>
@@ -57,6 +62,7 @@ Mobile
 - ai enhanced - follows conversation - even just when it stops?
 - Mix over YouTube / Multiple YouTubes
 - clip from youtube!
+- SEO?
 
 Hardware
 - hardware device - 2 form factors: keychain or bigger, for indoors - promo on the site
@@ -97,6 +103,9 @@ sound blaster sound bar
 reaction blaster
 WAWAWA 
 wahwahwah 
-
+meme sfx
+buzz master.club
+reaction-jukebox.club
+react-fx.club
 
 <video src="audio/wawawa-screenrec.ogg" width="480" height="854" controls type="video/ogg"></video>
