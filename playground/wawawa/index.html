@@ -42,6 +42,7 @@
             border-radius: 55px;
             cursor: pointer;
             text-shadow: 1px 2px 1px white;
+            text-transform: capitalize;
         }
         .ww-bcg {
             background-color: var(--base-color);
@@ -322,7 +323,7 @@
                 text-transform: capitalize;
             }
         } */
-#tag-wrapper {margin-top: 2em; padding: 1ex;}
+        #tag-wrapper {margin-top: 2em; padding: 1ex;}
         #share {
             position: fixed;
             background-color: red;
@@ -499,6 +500,8 @@
         #tag-list span[data-tag="ringtone"]:before {
             content: "📱";
         }
+        #tag-list span[data-tag="meeting"]:before {
+            content: "🤺"; }
 
         /* hide tags */
         #tag-list span[data-tag="supportive"],
@@ -661,7 +664,7 @@
             const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
             const displayTags = itemTags.filter(t => !activeTags.has(t));
             let thebcg = ''
-            console.log(item.thumb)   
+               
             if (item.thumb && item.thumb !== 'null') {
                 thebcg = ` style="background-image: url(${dataRoot}thumbs/${item.thumb}); " `;
             }
