@@ -705,18 +705,18 @@
             <span class="tag" data-tag="${tag}">${tag}</span>
         `).join('');
 
-        const allTag = document.createElement('span');
-        allTag.className = 'tag';
-        allTag.textContent = 'All';
-        allTag.dataset.tag = 'all';
+        // const allTag = document.createElement('span');
+        // allTag.className = 'tag';
+        // allTag.textContent = 'All';
+        // allTag.dataset.tag = 'all';
 
-        const resetTags = document.createElement('span');
-        resetTags.className = 'tag';
-        resetTags.innerHTML = '#';
-        resetTags.dataset.tag = '';
+        // const resetTags = document.createElement('span');
+        // resetTags.className = 'tag';
+        // resetTags.innerHTML = '#';
+        // resetTags.dataset.tag = '';
 
-        tagList.insertBefore(resetTags, tagList.firstChild);
-        tagList.appendChild(allTag);
+        // tagList.insertBefore(resetTags, tagList.firstChild);
+        // tagList.appendChild(allTag);
 
 
         document.querySelectorAll('.tag').forEach(tag => {
@@ -783,7 +783,7 @@
 
     function updateSelectedTags() {
         if (activeTags.size === 0) {
-            selectedTagsDiv.innerHTML = '–– ' + ' &emsp; <a id="reset" href="?">&#215;</a>';
+            selectedTagsDiv.innerHTML = '' + '';
             childThemesDiv.textContent = '';
         } else {
             const tagArray = Array.from(activeTags);
@@ -792,7 +792,7 @@
                 return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
             });
 
-            selectedTagsDiv.innerHTML = `<b>${tagArray.join(' + ')}</b>` + ` ` + `<small>(${filteredItems.length})</small>` + ' &emsp; <a id="reset" href="?">&#215;</a>';
+            selectedTagsDiv.innerHTML = `<b>${tagArray.join(' + ')}</b>` + ` ` + `<small>(${filteredItems.length})</small>` + ' ';
 
             const childThemes = new Set();
             filteredItems.forEach(item => {
@@ -825,7 +825,9 @@
             item.classList.remove('playing');
             if (item.dataset.slug == xslug) {
                 item.classList.add('playing');
-                item.scrollIntoView({ behavior: 'smooth' });
+                // item.scrollIntoView({ behavior: 'smooth' });
+                // scroll into view to #xcanvas instead
+                document.getElementById('xcanvas').scrollIntoView({ behavior: 'smooth' });
                 console.log(xslug)
                 renderer = document.getElementById('xcanvas');
                 renderer.innerHTML = renderItem(audioData.find(x => x.slug == xslug));
