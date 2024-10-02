@@ -72,13 +72,7 @@ Mobile
     - add browser generated tts for custom names?
     - export as a youtube clips playlist, mash-up
 
-### Sound curration
 
-Remaster clips
-- remove initial silence
-- find source youtube, automatically find timestamps and crop
-- normalize volume
-- optimize size
 
 
 Hardware
@@ -112,6 +106,28 @@ Sound buttons
 
 ## Marketing
 sell meme based merch alogn, or audio hardware gizmos
+
+
+
+## Content
+Custom collections
+- kids, lullabies
+- per source (show/movie)
+- corporate meeting
+- dating
+
+Create your own board / collection.
+
+### Sound curration
+
+Remaster clips
+- remove initial silence
+- find source youtube, automatically find timestamps and crop
+- normalize volume
+- optimize size
+- include credits link to owner / publisher / wikipedia.
+
+Look into quotes database, quotes from movies and pick from there. See also [quodb.com](https://www.quodb.com/), [whatpoliticssay.com](https://www.whatpoliticssay.com/), [playphrase.me](https://www.playphrase.me/) 
 
 ### Name
 punctuate reactions

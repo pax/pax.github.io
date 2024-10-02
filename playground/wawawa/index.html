@@ -359,12 +359,14 @@
             padding: .5ex 1ex;
             border-radius: 3px;
             margin: -1px 0 -1px 0;
-            box-shadow: 1px 1px 4px rgba(0, 0, 0, .4); outline: 1px solid rgba(255,255,255,.33);  
-
-            
+         
+        }
+        details#about p.ww-bcg {
+            box-shadow: 1px 1px 4px rgba(0, 0, 0, .4); outline: 1px solid rgba(255,255,255,.33);      
         }
         details#about p:last-child {
             padding-bottom: 1ex;
+            margin-bottom: 1em;
         }
         details#about p:first-child {
             padding-top: 1ex;
@@ -374,7 +376,7 @@
             color: rgb(246, 255, 179);
             text-shadow: 2px 1px 2px rgba(0, 0, 0, .6);
         }
-
+        details details {margin: 1ex 0 0 0;}
         details>summary {
             list-style-type: '+ ';
         }
@@ -566,13 +568,18 @@
     <details id="about">
         <summary>About</summary>
         <!-- <p class="ww-bcg">WAWAWeeWA</p><br><br> -->
-        <p class="ww-bcg">The <b>Tactful Meeting Assistant</b> (NSFW) </p><br>
+        <details>
+            <summary>
+                What is this?
+            </summary>
+            <p class="ww-bcg">The <b>Tactful Meeting Assistant</b> (NSFW) </p><br>
         <p class="ww-bcg"><b>Podcast Companion</b> Reaction Board</p><br>  
         <p class="ww-bcg">Thumbs Down to Speak Up!</p><br><br>
         <p class="ww-bcg">Audio reactions <b>SoundBoard</b>.</p><br>
         <p class="ww-bcg">Like some sort of <b>Audio Emojis</b>.</p><br>
 
-        <br>
+        </details>
+        
         <details>
             <summary>Usage</summary>
             <p class="ww-bcg">Clicking on higlighted/related tag adds it to the filter. </p><br>
@@ -581,6 +588,26 @@
             <p class="ww-bcg">Make some noise.</p><br>
             <p class="ww-bcg">Have fun</p>
             
+        </details>
+        
+        <details>
+            <summary>FAQ</summary>
+            
+<pre># <b><u>Weren't there already</u>?</b>
+  Yes. <a href="https://www.myinstants.com/" target="_blank" rel=“noreferrer”>MyInstants</a>, <a href="https://www.soundboard.com/" target="_blank" rel=“noreferrer”>SoundBoard</a>, <a href="https://soundbuttonsworld.com/" target="_blank" rel=“noreferrer”>SoundButtonsWorld</a> come to mind. 
+  But none quite satisfactory. 
+
+# <b><u>Who asked for this</u>?</b>
+  Nobody.
+
+# <b><u>Wheren't you supposed to be working on something else</u>?!</b>
+  Yes. <a href="./#fail::tf">🥹</a>
+            </pre>
+        
+        </details>
+        <details>
+            <summary>Legal</summary>
+            <p>This is a parody.</p>
         </details>
         <br>
         <p class="ww-bcg"><a href="./"><b>&larr;</b></a></p>
