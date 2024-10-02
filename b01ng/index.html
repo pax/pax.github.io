@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔉💥b01ng.Club🤺  - Reaction Clips SoundBoard</title>
+    <meta name="description" content="Audio Reactions SoundBoard. Like some sort of Audio Emojis.">
+    <meta name="keywords" content="audio, reactions, soundboard, mp3, ogg, short clips, audio memes, sound fx, quick">
+    <meta property="og:title" content="🔉💥b01ng.Club🤺" />
+    <meta property="og:url" content="https://b01ng.club" />
+    <meta property="og:image" content="https://b01ng.club/misc/wawawa.png" />
+    <meta property="og:description" content="Audio Reactions SoundBoard. Thumbs Down to Speak Up! Like some sort of Audio Emojis." />
+    <link rel="apple-touch-icon" sizes="180x180" href="misc/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="misc/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="misc/favicon/favicon-16x16.png">
+    <link rel="manifest" href="misc/favicon/site.webmanifest">
+    <link rel="mask-icon" href="misc/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    
+    <style>
+        :root {
+            --base-color: #007bff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1em;
+        }
+
+        #meta-header {
+            border-left: 4px solid #88C;
+            padding-left: 1ex;
+        }
+
+        #tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 1.75em;
+        }
+
+        .tag {
+            background-color: #eef;
+            background-image: linear-gradient(to right, #eee, #F9F9FC);
+            padding: 5px 10px;
+            border-radius: 55px;
+            cursor: pointer;
+            text-shadow: 1px 2px 1px white;
+            text-transform: capitalize;
+        }
+
+        .ww-bcg {
+            background-color: var(--base-color);
+            color: whitesmoke;
+        }
+
+        .ww-bcg a {
+            color: lightyellow;
+        }
+
+        .tag.active {
+            background-color: var(--base-color);
+            background-image: linear-gradient(to right, var(--base-color) 50%, #009bCC);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+            outline: 1px solid whitesmoke;
+            text-shadow: 1px 2px 1px rgba(0, 0, 0, .3);
+        }
+
+        .tag.highlighted {
+            outline: 2px solid var(--base-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        }
+
+        #audio-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: -1px;
+            grid-auto-flow: dense;
+
+        }
+
+        .audio-item {
+            line-height: 1.15;
+            height: 4em;
+            overflow: hidden;
+            background-size: contain;
+            background-position: right center;
+            background-repeat: no-repeat;
+            padding: .75ex .5ex .5ex .75ex;
+            cursor: pointer;
+            position: relative;
+            background-color: rgba(245, 245, 245, 0.512);
+            outline: 2px solid white;
+            box-shadow: inset 1px 0 2em rgba(0, 0, 0, .15);
+        }
+
+        /* or #xcanvas */
+        #audio-list .audio-item:first-child h3 {
+            font-size: 3em;
+            margin: .5ex 0 0 .5ex;
+        }
+
+        #audio-list .audio-item:first-child {
+            grid-column: span 2;
+            grid-row: span 3;
+            height: 13.6em;
+            padding: 0;
+
+            z-index: 33;
+        }
+
+        #audio-list .audio-item:first-child:before {
+            font-size: 4em;
+            left: 2em;
+            top: 1.5ex;
+        }
+
+        #child-themes,
+        .item-tags {
+            font-family: 'Arial Narrow', sans-serif;
+        }
+
+        .audio-item .item-tags .item-tag {
+            background-color: whitesmoke;
+        }
+
+        .audio-item:hover .item-tags .item-tag {
+            background-color: transparent;
+            color: #999;
+        }
+
+        .audio-item.xplaying {
+            border-radius: .7ex;
+            /* outline: 4px solid rgba(0, 0, 255, 0.3); */
+            outline: 2px solid rgba(255, 255, 255, .75);
+            /* box-shadow: inset 1px 0 15px rgba(0, 0, 0, .95) !important; */
+            /* both inset and outset box shadow */
+            z-index: 2;
+            box-shadow: inset 1px 0 2em rgba(0, 0, 0, .6), 1px 3px 5px rgba(0, 0, 0, .6) !important;
+        }
+
+        .audio-item:before {
+            font-size: 2.5em;
+            left: 1.4em;
+            top: .5ex;
+            opacity: .8;
+            position: absolute;
+        }
+
+        .audio-item.xplaying:before {
+            content: "🔉";   opacity: .66;
+            animation: pulse .7s infinite;
+            text-shadow: 1px 2px 9px rgba(255, 255, 0, 0.8);
+        }
+
+        .audio-item.xplaying:hover:before {
+            /* stop the pulse animation */
+            animation: none;
+            content: "⏯️";
+            /* content: "🔉" ;  */
+        }
+
+
+        .audio-item:not(.xplaying):hover:before {
+            content: "▶️";
+            /* content: "🔉" ;  */
+        }
+
+
+        .audio-item.xplaying.playing {
+            background-color: var(--base-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+        }
+
+        .audio-item.playing {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+            z-index: 2;
+            background-color: #DDE;
+            box-shadow: inset 1px 0 2em rgba(0, 0, 0, .2), 1px 3px 5px rgba(0, 0, 0, .6) !important;
+        }
+
+        #renderer-placeholder {
+            font-size: 5em;
+            display: block;
+            text-align: center;
+            position: absolute;
+            top: 30%;
+            width: 100%;
+        }
+
+        /* define animation */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+
+        .audio-item h3 {
+            margin: 0 0 3px 0;
+            padding: 1px;
+            line-height: 1;
+            display: inline;
+            display: inline-block;
+        }
+
+        .audio-item:hover {
+            background-color: #333;
+            color: white;
+            /* outline: 1px solid var(--base-color)66; */
+        }
+
+        .audio-item:hover h3 {
+            text-shadow: 1px 2px 3px rgba(0, 0, 0, .4);
+        }
+
+        .audio-item.xplaying h3 {
+            text-shadow: 1px 2px 3px rgba(0, 0, 0, .4);
+            color: white;
+        }
+
+        .audio-item h3 {
+            text-shadow: 0 0 1px white, -1px -1px 0 white, 1px 1px 0 white,
+                2px 2px 0 white, -2px -2px 0 white, 0 0 4px white;
+        }
+
+        .item-tags {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .item-tag {
+            padding: 1px 3px;
+            border-radius: 3px;
+            margin: 1px;
+        }
+
+        #selected-tags {
+            font-size: 1.2em;
+        }
+
+        #selected-tags b {
+            background-color: rgba(255, 255, 0, .25);
+            color: #666;
+            font-size: 1.2em;
+            text-transform: capitalize;
+        }
+
+        #child-themes {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            line-height: .8;
+
+        }
+
+        #child-themes .item-tag {
+            display: inline-block;
+        }
+
+        #child-themes:not(:empty) {
+            margin-bottom: 20px;
+            padding: .4ex;
+        }
+
+        #child-themes:not(:empty)::before {
+            content: '🏷️ ';
+            font-weight: bold;
+        }
+
+        #progress-bar-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #f0f0f0;
+            z-index: 1000;
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: var(--base-color);
+            transition: width 0.1s linear;
+        }
+
+        a#reset {
+            font-size: .85em;
+            text-decoration: none;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+            background-color: rgba(255, 0, 0, .66);
+            color: whitesmoke;
+            display: inline-block;
+            line-height: 1;
+            text-align: center;
+            border-radius: .75em;
+            width: 1.75ex;
+            padding: 2px;
+        }
+
+        a#reset:hover {
+            background-color: rgba(255, 0, 0, 1);
+        }
+
+        #wrapper {
+            display: flex;
+            flex-flow: column;
+        }
+
+        @media screen and (max-width: 760px) {
+            #audio-list:not(:empty) {
+                margin-bottom: .75em;
+                padding-bottom: .75em;
+                /* border-bottom: 2px solid #DDE; */
+            }
+        }
+
+        /* @media screen and (min-width: 760px) {
+            #audio-wrapper {
+                order: 2;
+            }
+
+            #tag-wrapper {
+                margin-bottom: 1em;
+                padding-bottom: 1em;
+                border-bottom: 1px solid #DDD;
+                text-transform: capitalize;
+            }
+        } */
+        #tag-wrapper {
+            margin-top: 2em;
+            padding: 1ex;
+        }
+
+        #share {
+            position: fixed;
+            background-color: red;
+            color: white;
+            padding: 5px;
+            cursor: pointer;
+            z-index: 1000;
+            line-height: 1;
+            bottom: 2px;
+            right: 2px;
+            height: 1em;
+            box-shadow: 2px 1px 8px rgba(0, 0, 0, .5);
+            font-size: 1.4em;
+            border-top-left-radius: .66em;
+            padding: .7ex 1.2ex;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+            outline: 1px solid white;
+        }
+
+        #share:hover {
+            font-size: 1.65em;
+            background-color: darkred;
+        }
+
+        #footer-logo {
+            margin-top: 5em;
+            font-size: 1.5em;
+        }
+
+        details#about {
+            margin: 0 0 2em 0;
+            /* display: inline-block;background-color: var(--base-color); */
+        }
+
+        details#about p {
+            /* background-color: var(--base-color); */
+            /* color: #DDD; */
+            display: inline-block;
+            padding: .5ex 1ex;
+            border-radius: 3px;
+            margin: -1px 0 -1px 0;
+
+        }
+
+        details#about p.ww-bcg {
+            box-shadow: 1px 1px 4px rgba(0, 0, 0, .4);
+            outline: 1px solid rgba(255, 255, 255, .33);
+        }
+
+        details#about p:last-child {
+            padding-bottom: 1ex;
+            margin-bottom: 1em;
+        }
+
+        details#about p:first-child {
+            padding-top: 1ex;
+        }
+
+        details p b {
+            color: rgb(246, 255, 179);
+            text-shadow: 2px 1px 2px rgba(0, 0, 0, .6);
+        }
+
+        details details {
+            margin: 1ex 0 0 0;
+        }
+
+        details>summary {
+            list-style-type: '+ ';
+        }
+
+        details[open]>summary {
+            list-style-type: '| ';
+        }
+
+        details[open]>summary {
+            margin-bottom: 0.5rem;
+        }
+
+        #about summary {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .xmessage {
+            position: fixed;
+            /* top : 5px; */
+            bottom: 3em;
+            right: 5px;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, .66);
+            color: white;
+            font-size: 1.25em;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        body:not(._filtered) #footer-logo {
+            display: none;
+        }
+
+        body:not(._filtered) #about {
+            margin-top: 5em;
+        }
+
+        /* body:not(._filtered) a#reset {display: none;} */
+        #tag-list span:before {
+            position: relative;
+            margin-left: -1.15ex;
+            margin-right: .75ex;
+            margin-top: -1em;
+            transform: scale(1.75);
+            display: inline-block;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+        }
+
+        body #meta-header #selected-tags b:before {
+            font-size: 1.5em;
+            margin-right: 4px;
+        }
+
+        body.action #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="action"]:before {
+            content: "\1F918";
+        }
+
+        body.no #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="no"]:before {
+            content: "👎";
+        }
+
+        body.no #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="no"]:before {
+            content: "👎";
+        }
+
+        body.supportive #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="supportive"]:before {
+            content: "🤙🏻";
+        }
+
+        body.yes #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="yes"]:before {
+            content: "👍";
+        }
+
+        body.approve #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="approve"]:before {
+            content: "👍";
+        }
+
+        body.dismissive #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="dismissive"]:before {
+            content: "👎";
+        }
+
+        body.danger #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="danger"]:before {
+            content: "⚠️";
+        }
+
+        body.fail #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="fail"]:before {
+            content: "⚠️";
+        }
+
+        body.fart #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="fart"]:before {
+            content: "💨";
+        }
+
+        body.happy #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="happy"]:before {
+            content: "🦄";
+        }
+
+        body.laugh #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="laugh"]:before {
+            content: "🤣";
+        }
+
+        body.sad #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="sad"]:before {
+            content: "😥";
+        }
+
+        body.drum #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="drum"]:before {
+            content: "🥁";
+        }
+
+        body.angry #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="angry"]:before {
+            content: "👿";
+        }
+
+        body.winning #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="winning"]:before {
+            content: "🥇";
+        }
+
+        body.gun #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="gun"]:before {
+            content: "💥";
+        }
+
+        body.insult #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="insult"]:before {
+            content: "🤬";
+        }
+
+        body.confusion #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="confusion"]:before {
+            content: "🤔";
+        }
+
+        body.impatience #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="impatience"]:before {
+            content: "⏳";
+        }
+
+        body.ringtone #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="ringtone"]:before {
+            content: "📱";
+        }
+
+        body.meeting #meta-header #selected-tags b:before,
+        #tag-list span[data-tag="meeting"]:before {
+            content: "🤺";
+        }
+
+        /* hide tags */
+        #tag-list span[data-tag="supportive"],
+        #tag-list span[data-tag="approve"],
+        #tag-list span[data-tag="conclusion"],
+        #tag-list span[data-tag="darth-vader"],
+        #tag-list span[data-tag="chill-down"],
+        #tag-list span[data-tag="thank-you"],
+        #tag-list span[data-tag="realistic"],
+        #tag-list span[data-tag="alarm"],
+        #tag-list span[data-tag="_unfilled"],
+        #tag-list span[data-tag="quote"],
+        #tag-list span[data-tag="mockery"],
+        #tag-list span[data-tag="filler"],
+        #tag-list span[data-tag="dukenukem"],
+        #tag-list span[data-tag="meme"],
+        #tag-list span[data-tag="seinfeld"],
+        #tag-list span[data-tag="cheering"],
+        #tag-list span[data-tag="aggressive"],
+        #tag-list span[data-tag="error"],
+        #tag-list span[data-tag="scream"],
+        #tag-list span[data-tag="metal"],
+        #tag-list span[data-tag="happy-birthday"],
+        #tag-list span[data-tag="fake-enthusiasm"],
+        #tag-list span[data-tag="failure-expected"],
+        #tag-list span[data-tag="relief"],
+        #tag-list span[data-tag="the-office"],
+        #tag-list span[data-tag="natural"],
+        /* #tag-list span[data-tag="movies"], */
+        #tag-list span[data-tag="misc"],
+        #tag-list span[data-tag="games"],
+        #tag-list span[data-tag="futurama"],
+        #tag-list span[data-tag="confirmation"],
+        #tag-list span[data-tag="computer"],
+        #tag-list span[data-tag="circus"],
+        #tag-list span[data-tag="cartoons"],
+        #tag-list span[data-tag="Uncategorized"],
+        #tag-list span[data-tag="donald-trump"],
+        #tag-list span[data-tag="lets-do-it"],
+        #tag-list span[data-tag="robot-voice"],
+        #tag-list span[data-tag="female-voice"],
+        #tag-list span[data-tag="male-voice"] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="top"></div>
+    <div id="wrapper">
+        <div id="audio-wrapper">
+
+            <div id="meta-header">
+                <div id="selected-tags"></div>
+                <div id="child-themes"></div>
+            </div>
+            <div id="audio-list"><span
+                    style="font-size: 3em; transform: scale(1.25); left: .75em; position: relative;">🔉💥🤺</span></div>
+        </div>
+        <div id="tag-wrapper">
+            <div id="tag-list"></div>
+        </div>
+    </div>
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+    <span id="share">↪ share</span>
+
+    <div id="footer-logo">🔉💥🤺</div>
+    <details id="about">
+        <summary>About</summary>
+        <!-- <p class="ww-bcg">WAWAWeeWA</p><br><br> -->
+        <details>
+            <summary>
+                What is this?
+            </summary>
+            <p style="font-size: 2.5em;">🔉💥🤺 </p><br>
+            <p class="ww-bcg">The <b>Tactful Meeting Assistant</b> (NSFW) </p><br>
+            <p class="ww-bcg"><b>Podcast Companion</b> Reaction Board</p><br>
+            <p class="ww-bcg">Thumbs Down to Speak Up!</p><br><br>
+            <p class="ww-bcg">Audio reactions <b>SoundBoard</b>.</p><br>
+            <p class="ww-bcg">Like some sort of <b>Audio Emojis</b>.</p><br>
+
+        </details>
+
+        <details>
+            <summary>Usage</summary>
+            <p class="ww-bcg">Clicking on higlighted/related tag adds it to the filter. </p><br>
+            <p class="ww-bcg">Clicking on a selected/blue tag, deselects the tag.</p><br>
+            <p class="ww-bcg">Clicking an item toggles audio, clicking the large preview restarts audio.</p><br>
+            <p class="ww-bcg">Make some noise.</p><br>
+            <p class="ww-bcg">Have fun</p><br><br>
+            &rarr; <a href="sitemap.html">all categories</a>
+
+        </details>
+
+        <details>
+            <summary>FAQ</summary>
+
+            <pre># <b><u>Weren't there already</u>?</b>
+  Yes. <a href="https://www.myinstants.com/" rel=“noreferrer”>MyInstants</a>, <a href="https://www.soundboard.com/" rel=“noreferrer”>SoundBoard</a>, <a href="https://soundbuttonsworld.com/" rel=“noreferrer”>SoundButtonsWorld</a> etc. 
+  But not quite satisfactory. 
+
+# <b><u>Who asked for this</u>?</b>
+  Nobody.
+
+# <b><u>Wheren't you supposed to be working on something else</u>?!</b>
+  Yes. <a href="./#fail::tf">🥹</a>
+            </pre>
+
+        </details>
+        <details>
+            <summary>Legal</summary>
+            <p>This is a parody.</p>
+        </details>
+        <br>
+        <p class="ww-bcg"><a href="./"><b>&larr;</b></a></p>
+    </details>
+</body>
+
+<script>
+    const dataRoot = 'audio/';
+    const listfile = dataRoot + 'sounds.csv';
+    const tagList = document.getElementById('tag-list');
+    const audioList = document.getElementById('audio-list');
+    const selectedTagsDiv = document.getElementById('selected-tags');
+    const childThemesDiv = document.getElementById('child-themes');
+    let audioData = [];
+    let allTags = new Set();
+    let currentlyPlaying = null;
+    let activeTags = new Set();
+
+    let progressBar = document.getElementById('progress-bar');
+
+    function parseCSV(csv) {
+        const lines = csv.split('\n').filter(line => line.trim() !== '');
+        const headers = lines[0].split(',').map(h => h.trim());
+
+        return lines.slice(1).map(line => {
+            const values = [];
+            let inQuotes = false;
+            let currentValue = '';
+
+            for (let char of line) {
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    values.push(currentValue.trim());
+                    currentValue = '';
+                } else {
+                    currentValue += char;
+                }
+            }
+            values.push(currentValue.trim());
+
+            return headers.reduce((obj, header, index) => {
+                obj[header] = values[index].replace(/^"(.*)"$/, '$1');
+                return obj;
+            }, {});
+        }).filter(item => item.slug && item.title);
+    }
+
+    function renderAudioItems(items) {
+        audioList.innerHTML = items.map(item => {
+            const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+            const displayTags = itemTags.filter(t => !activeTags.has(t));
+            let thebcg = ''
+
+            if (item.thumb && item.thumb !== 'null') {
+                thebcg = ` style="background-image: url(${dataRoot}thumbs/${item.thumb}); " `;
+            }
+            // return renderItem(item);
+            return `
+                <div class="audio-item" data-tags="${item.tags || ''}" data-slug="${item.slug}" ${thebcg}>                                  
+                    <h3>${splitTitle(item.title, 17)}</h3>                
+                    <div class="item-tags">
+                        ${displayTags.map(tag => `<span class="item-tag">${tag}</span>`).join('')}
+                    </div>
+                    <audio preload="auto">
+                        <source src="${dataRoot}ogg/${item.slug}.ogg" type="audio/ogg">
+                        <source src="${dataRoot}mp3/${item.slug}.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            `;
+        }).join('');
+        audioList.innerHTML = "<div id=\"xcanvas\" class=\"audio-item\" ><span id=\"renderer-placeholder\">🔉</span></div>" + audioList.innerHTML;
+
+        // TODO: add event listeners to audio items
+        document.querySelectorAll('.audio-item').forEach(item => {
+
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.audio-item').forEach(item => { item.classList.remove('playing'); });
+                const audioSlug = item.dataset.slug;
+                window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + Array.from(activeTags).join('+') + '::' + audioSlug);
+
+                toggleAudio(item);
+                // add current item to #xcanvas
+                renderer = document.getElementById('xcanvas');
+                renderer.innerHTML = renderItem(audioData.find(x => x.slug == audioSlug));
+                // add event listener to the new item so it plays the new slug audio 
+                renderer.addEventListener('click', () => {
+                    document.querySelectorAll('.audio-item').forEach(item => { item.classList.remove('playing'); });
+                    const audioSlug = item.dataset.slug;
+                    window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + Array.from(activeTags).join('+') + '::' + audioSlug);
+
+                    toggleAudio(item);
+                });
+
+            });
+        });
+    }
+
+    function renderItem(xitem) {
+        let thebcg = ''
+        if (xitem && xitem.thumb && xitem.thumb !== 'null') {
+            thebcg = ` style="background-image: url(${dataRoot}thumbs/${xitem.thumb}); " `;
+        }
+        return `
+                <div class="audio-item playing xplaying" data-tags="${xitem.tags || ''}" data-slug="${xitem.slug}" ${thebcg}>                                  
+                    <h3>${splitTitle(xitem.title, 17)}</h3>                   
+                    <audio preload="auto">
+                        <source src="${dataRoot}ogg/${xitem.slug}.ogg" type="audio/ogg">
+                        <source src="${dataRoot}mp3/${xitem.slug}.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            `;
+    }
+
+    function toggleAudio(item) {
+        const audio = item.querySelector('audio');
+
+        if (currentlyPlaying && currentlyPlaying !== audio) {
+            currentlyPlaying.pause();
+            currentlyPlaying.currentTime = 0;
+            currentlyPlaying.parentNode.classList.remove('playing');
+            currentlyPlaying.removeEventListener('timeupdate', updateProgressBar);
+        }
+
+        if (audio.paused) {
+            audio.play();
+            item.classList.add('playing');
+            currentlyPlaying = audio;
+            currentlyPlaying.addEventListener('timeupdate', updateProgressBar);
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+            item.classList.remove('playing');
+            currentlyPlaying = null;
+            progressBar.style.width = '0%';
+        }
+    }
+
+    function updateProgressBar() {
+        if (currentlyPlaying && progressBar) {
+            const progress = (currentlyPlaying.currentTime / currentlyPlaying.duration) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+    }
+
+    function renderTags() {
+        const sortedTags = Array.from(allTags).sort();
+        tagList.innerHTML = sortedTags.map(tag => `
+            <span class="tag" data-tag="${tag}">${tag}</span>
+        `).join('');
+
+        // const allTag = document.createElement('span');
+        // allTag.className = 'tag';
+        // allTag.textContent = 'All';
+        // allTag.dataset.tag = 'all';
+
+        // const resetTags = document.createElement('span');
+        // resetTags.className = 'tag';
+        // resetTags.innerHTML = '#';
+        // resetTags.dataset.tag = '';
+
+        // tagList.insertBefore(resetTags, tagList.firstChild);
+        // tagList.appendChild(allTag);
+
+
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', () => handleTagClick(tag));
+        });
+    }
+
+    function handleTagClick(clickedTag) {
+        const tag = clickedTag.dataset.tag;
+
+        if (tag === 'all') {
+            activeTags.clear();
+        } else if (clickedTag.classList.contains('active')) {
+            activeTags.delete(tag);
+        } else if (clickedTag.classList.contains('highlighted')) {
+            activeTags.add(tag);
+        } else {
+            activeTags.clear();
+            activeTags.add(tag);
+        }
+        updateTitle();
+        filterAudioItems();
+        updateTagHighlights();
+        updateSelectedTags();
+        updateUrlHash();
+        document.getElementById('xcanvas').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function updateTitle() {
+        const baseTitle = "🔉 WAWAWA - Reaction SoundBoard";
+        if (activeTags.size === 0) {
+            document.title = baseTitle;
+        } else {
+            const tagString = Array.from(activeTags).join(' + ');
+            document.title = `${tagString} - ${baseTitle}`;
+            document.body.className = `${tagString}` + ' _filtered ';
+        }
+
+    }
+
+    function updateTagHighlights() {
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.classList.remove('active', 'highlighted');
+            if (activeTags.has(tag.dataset.tag)) {
+                tag.classList.add('active');
+            }
+        });
+
+        if (activeTags.size > 0) {
+            const relatedTags = new Set();
+            audioData.forEach(item => {
+                const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                if (activeTags.size === itemTags.filter(t => activeTags.has(t)).length) {
+                    itemTags.forEach(t => relatedTags.add(t));
+                }
+            });
+
+            document.querySelectorAll('.tag').forEach(tag => {
+                if (relatedTags.has(tag.dataset.tag) && !activeTags.has(tag.dataset.tag)) {
+                    tag.classList.add('highlighted');
+                }
+            });
+        }
+    }
+
+    function updateSelectedTags() {
+        if (activeTags.size === 0) {
+            selectedTagsDiv.innerHTML = '' + '';
+            childThemesDiv.textContent = '';
+        } else {
+            const tagArray = Array.from(activeTags);
+            const filteredItems = audioData.filter(item => {
+                const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
+            });
+
+            selectedTagsDiv.innerHTML = `<b>${tagArray.join(' + ')}</b>` + ` ` + `<small>(${filteredItems.length})</small>` + ' ';
+
+            const childThemes = new Set();
+            filteredItems.forEach(item => {
+                const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+                itemTags.forEach(tag => {
+                    if (!activeTags.has(tag)) childThemes.add(tag);
+                });
+            });
+
+            childThemesDiv.innerHTML = Array.from(childThemes).map(tag => ` <span class="item-tag">${tag}</span> `).join('');
+        }
+    }
+
+    function filterAudioItems() {
+        const filteredItems = audioData.filter(item => {
+            if (activeTags.size === 0) return true;
+            const itemTags = item.tags ? item.tags.split(',').map(t => t.trim()) : ['Uncategorized'];
+            return activeTags.size === itemTags.filter(t => activeTags.has(t)).length;
+        });
+        renderAudioItems(filteredItems);
+    }
+
+    function updateUrlHash() {
+        const hashValue = Array.from(activeTags).join('+');
+        window.history.replaceState(null, null, hashValue ? `#${hashValue}` : '#');
+    }
+
+    function markActiveAudio(xslug) {
+        document.querySelectorAll('.audio-item').forEach(item => {
+            item.classList.remove('playing');
+            if (item.dataset.slug == xslug) {
+                item.classList.add('playing');
+                // item.scrollIntoView({ behavior: 'smooth' });
+                // scroll into view to #xcanvas instead
+                document.getElementById('xcanvas').scrollIntoView({ behavior: 'smooth' });
+                // console.log(xslug)
+                renderer = document.getElementById('xcanvas');
+                renderer.innerHTML = renderItem(audioData.find(x => x.slug == xslug));
+                renderer.addEventListener('click', () => {
+                    document.querySelectorAll('.audio-item').forEach(item => { item.classList.remove('playing'); });
+                    const audioSlug = item.dataset.slug;
+                    window.history.replaceState({}, '', window.location.pathname + window.location.search + '#' + Array.from(activeTags).join('+') + '::' + audioSlug);
+
+                    toggleAudio(item);
+                });
+                // renderer.innerHTML = renderItem(item);
+            }
+        });
+    }
+
+    function scrollToAudioList() {
+        if (window.location.hash) {
+            const audioListElement = document.getElementById('top');
+            if (audioListElement) {
+                audioListElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }
+
+    function applyFilterFromHash() {
+        const hash = window.location.hash.substring(1);
+        if (hash) {
+            zz = hash.split('::')
+
+            const filterTags = zz[0].split('+');
+            activeTags = new Set(filterTags);
+            filterAudioItems();
+            updateTagHighlights();
+            updateSelectedTags();
+            if (zz.length > 1) {
+                const audioSlug = zz[1];
+                markActiveAudio(audioSlug);
+            }
+
+        }
+    }
+
+    function splitTitle(title, breakpoint) {
+
+        const words = title.split(' ');
+        if (words.length == 1) {
+            return title;
+        }
+        if (words.length == 2 && title.length >= 10) {
+            return words[0] + '<br>' + words[1];
+        }
+        let firstHalf = words[0];
+        let charCount = words[0].length;
+        const midpoint = Math.min(title.length / 2, breakpoint);
+
+        for (let i = 1; i < words.length; i++) {
+            if (charCount + 1 + words[i].length > midpoint || i === words.length - 1) {
+                if (i === words.length - 1 && charCount + 1 + words[i].length <= breakpoint) {
+                    return firstHalf + ' ' + words[i];
+                } else {
+                    return firstHalf + '<br>' + words.slice(i).join(' ');
+                }
+            }
+
+            firstHalf += ' ' + words[i];
+        }
+
+
+    }
+
+    fetch(listfile)
+        .then(response => response.text())
+        .then(csv => {
+            audioData = parseCSV(csv);
+            audioData.forEach(item => {
+                if (item.tags) {
+                    item.tags.split(',').forEach(tag => {
+                        const trimmedTag = tag.trim();
+                        if (trimmedTag) allTags.add(trimmedTag);
+                    });
+                } else {
+                    allTags.add('Uncategorized');
+                }
+            });
+            allTags.add('Uncategorized');
+            renderTags();
+            applyFilterFromHash();
+            if (activeTags.size === 0) {
+                updateSelectedTags();
+            }
+        })
+        .catch(error => {
+            console.error('Error loading CSV:', error);
+            audioList.innerHTML = '<p>Error loading audio data. Please try again later.</p>';
+        });
+
+    window.addEventListener('hashchange', applyFilterFromHash);
+
+    document.querySelectorAll('.audio-item').forEach(item => {
+        const audio = item.querySelector('audio');
+        audio.addEventListener('ended', () => {
+            item.classList.remove('playing');
+            currentlyPlaying = null;
+            progressBar.style.width = '0%';
+        });
+    });
+    document.getElementById('share').addEventListener('click', function () {
+        const urlToShare = window.location.href;
+
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(urlToShare).then(() => {
+                const message = document.createElement('div');
+                message.textContent = 'Url copied to clipboard';
+                message.className = 'xmessage';
+
+                document.body.appendChild(message);
+
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 1500);
+
+            }).catch(err => {
+                console.error('Failed to copy URL: ', err);
+                fallBackCopy(urlToShare);
+            });
+        } else {
+            fallBackCopy(urlToShare);
+        }
+
+        function fallBackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                const message = document.createElement('div');
+                message.textContent = 'Url copied to clipboard';
+                message.className = 'xmessage';
+
+                document.body.appendChild(message);
+
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 1500);
+            } catch (err) {
+                console.error('Fallback copy failed: ', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+    });
+
+</script>
+
+</html>

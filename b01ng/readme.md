@@ -3,7 +3,7 @@
 
 Like reaction gifs / memes, but for sound
 
-Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa/) 
+[b01ng.club](https://b01ng.club) / Mirror: [pax.github.io/b01ng](https://pax.github.io/b01ng/) 
 
 ![Screenshot 0](misc/screenshot-0.png) ![Screenshot 1](misc/screenshot-1.png)
 
@@ -43,6 +43,7 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 - [ ] ease out/into clips, when a new clip starts, overlap them a bit, fade out the first.
 - [ ] landing - also show list of sources / characters below keywords
 - [ ] generate sitemap from css 
+- [ ] Random Audio dice thrower
 
 
 ### Enhancements
@@ -73,7 +74,7 @@ Mobile
 - add playlists, recipes for audio narration - a sequence of sounds. list of audio-items + cutoff timestamp (optional)
     - add browser generated tts for custom names?
     - export as a youtube clips playlist, mash-up
-
+- automatically add farts to yt vids, based on sound profile? get the beat?
 
 
 
@@ -126,6 +127,17 @@ Custom collections
 - [Gen-Z slang](https://en.wikipedia.org/wiki/List_of_Generation_Z_slang) 
 - dating / speed dating cards
 
+### Games 
+
+**Ramdom picks** Also by shaking the phone?
+Random Audio dice thrower
+Rock Paper Scissor. 
+Like cards against humanity - if everybody joins same game, sync to server. Or pass the phone - with timer.
+Conversation starter / ice breaker
+
+
+----
+
 Words needed
 - intriquing
 - very interesting
@@ -158,12 +170,13 @@ sound blaster sound bar
 reaction blaster
 WAWAWA 
 wahwahwah 
-meme sfx
-buzz master.club
-reaction-jukebox.club
-react-fx.club
+**reaction-jukebox.club**
+**buzz-master.club**
+react-sfx.club
+reactsfx.club
+meme-sfx.club
 das-fx.club
-b01ng.club
-emoji url 
+**b01ng.club**
+b01ng.xyz
 
 <video src="audio/wawawa-screenrec.ogg" width="480" height="854" controls type="video/ogg"></video>
