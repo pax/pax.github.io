@@ -41,6 +41,8 @@ Prototype: [pax.github.io &rarr; wawawa](https://pax.github.io/playground/wawawa
 - [ ] translate UI in a few languages. Guess ui interface. Offer EN (or local lang) as alternative.
 - [ ] equalize clip volumes
 - [ ] ease out/into clips, when a new clip starts, overlap them a bit, fade out the first.
+- [ ] landing - also show list of sources / characters below keywords
+- [ ] generate sitemap from css 
 
 
 ### Enhancements
