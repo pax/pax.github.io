@@ -11,7 +11,9 @@ body {
 
 #meta-header {
     border-left: 4px solid #88C;
-    padding-left: 1ex;
+    padding-left: 1ex; display: inline-block;
+    position: fixed;  
+    background-color: rgba(255,255,255,.75);   z-index: 44;
 }
 
 #tag-list {
@@ -56,6 +58,7 @@ body {
 }
 
 #audio-list {
+    margin-top:6.6em;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: -1px;
@@ -239,7 +242,7 @@ body {
 }
 
 #child-themes:not(:empty) {
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     padding: .4ex;
 }
 
@@ -477,7 +480,7 @@ body.dismissive #meta-header #selected-tags b:before,
 
 body.danger #meta-header #selected-tags b:before,
 #tag-list span[data-tag="danger"]:before {
-    content: "⚠️";
+    content: "☢️";
 }
 
 body.fail #meta-header #selected-tags b:before,
@@ -492,6 +495,11 @@ body.fart #meta-header #selected-tags b:before,
 
 body.happy #meta-header #selected-tags b:before,
 #tag-list span[data-tag="happy"]:before {
+    content: "🤗";
+}
+
+body.enthusiasm #meta-header #selected-tags b:before,
+#tag-list span[data-tag="enthusiasm"]:before {
     content: "🦄";
 }
 
@@ -522,7 +530,7 @@ body.winning #meta-header #selected-tags b:before,
 
 body.gun #meta-header #selected-tags b:before,
 #tag-list span[data-tag="gun"]:before {
-    content: "💥";
+    content: "🔫";
 }
 
 body.insult #meta-header #selected-tags b:before,
@@ -549,11 +557,40 @@ body.meeting #meta-header #selected-tags b:before,
 #tag-list span[data-tag="meeting"]:before {
     content: "🤺";
 }
+body.excuses #meta-header #selected-tags b:before,
+#tag-list span[data-tag="excuses"]:before {
+    content: "💡";
+}
+body.desperation #meta-header #selected-tags b:before,
+#tag-list span[data-tag="desperation"]:before {
+    content: "😭";
+}
+
+body.sarcasm #meta-header #selected-tags b:before,
+#tag-list span[data-tag="sarcasm"]:before {
+    content: "🙃";
+}
+body.sexy #meta-header #selected-tags b:before,
+#tag-list span[data-tag="sexy"]:before {
+    content: "💋";
+}
+body.foley #meta-header #selected-tags b:before,
+#tag-list span[data-tag="foley"]:before {
+    content: "🔊";
+}
+body.theme-song #meta-header #selected-tags b:before,
+#tag-list span[data-tag="theme-song"]:before {
+    content: "📽️";
+}
 
 /* hide tags */
 #tag-list span[data-tag="ro"],
 #tag-list span[data-tag="manele"],
-#tag-list span[data-tag="supportive"],
+/* #tag-list span[data-tag="supportive"], */
+#tag-list span[data-tag="drama"],
+#tag-list span[data-tag="song"],
+#tag-list span[data-tag="tv-show"],
+#tag-list span[data-tag="movies"],
 #tag-list span[data-tag="approve"],
 #tag-list span[data-tag="conclusion"],
 #tag-list span[data-tag="darth-vader"],
@@ -571,6 +608,7 @@ body.meeting #meta-header #selected-tags b:before,
 #tag-list span[data-tag="cheering"],
 #tag-list span[data-tag="aggressive"],
 #tag-list span[data-tag="error"],
+#tag-list span[data-tag="drum"],
 #tag-list span[data-tag="scream"],
 #tag-list span[data-tag="metal"],
 #tag-list span[data-tag="happy-birthday"],

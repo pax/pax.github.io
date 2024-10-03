@@ -121,11 +121,21 @@
             progressBar.style.width = `${progress}%`;
         }
     }
+
+    // temporarily bypassed
+    
     function renderTags() {
-        const sortedTags = Array.from(allTags).sort();
-        tagList.innerHTML = sortedTags.map(tag => `
+        // const sortedTags = Array.from(allTags).sort();
+        // tagList.innerHTML = sortedTags.map(tag => `
+        //     <span class="tag" data-tag="${tag}">${tag}</span>
+        // `).join('');
+        const ziTags = ["yes", "no", "meeting", "excuses", "happy", "enthusiasm", "supportive", "winning", "sarcasm", "angry", "dismissive", "insult", "laugh", "fail", "danger", "desperation", "confusion", "impatience", "action",  "sad",  "sexy", "ringtone", "theme-song", "fart", "gun", "foley", "suspense", "song"]
+        tagList.innerHTML = ziTags.map(tag => `
             <span class="tag" data-tag="${tag}">${tag}</span>
         `).join('');
+
+        
+
         // const allTag = document.createElement('span');
         // allTag.className = 'tag';
         // allTag.textContent = 'All';
@@ -140,6 +150,10 @@
             tag.addEventListener('click', () => handleTagClick(tag));
         });
     }
+
+   
+
+
     function handleTagClick(clickedTag) {
         const tag = clickedTag.dataset.tag;
         if (tag === 'all') {
@@ -289,6 +303,8 @@
             firstHalf += ' ' + words[i];
         }
     }
+
+
     fetch(listfile)
         .then(response => response.text())
         .then(csv => {
