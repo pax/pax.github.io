@@ -10,10 +10,10 @@ all-right,All Right,"movies, approve, yes, winning",
 alrighty-then_BurQE5H,Alrighty then - Ace Ventura,"confirmation, lets-do-it, fake-enthusiasm, yes",ace-ventura.png
 announcer_kill_monster_01_1,Monster Kill,"games, drama, winning",
 are-you-crazy-out-of-your-mind,Are You Crazy Out of Your Mind,"insult, dismissive",
-badumtss.swf,Rimshot,"drum, conclusion",drumroll.png
+badumtss.swf,Ba Dum Tss 2,"drum, conclusion, foley, meeting",drumroll.png
 baldo-scream,Scream,"scream, danger",
 barney-the-whisper-song,Whisper Song,sexy,
-bb-drum-roll,Drum roll,"foley, drum",drumroll.png
+bb-drum-roll,Drum roll,"foley, drum, suspense",drumroll.png
 beavis-and-butthead-laughing,Beavis & Butthead,"laugh, cartoons",beavis-butthead.png
 benders-doomed,Our Universe is Doomed,"fail, cartoons, futurama",bender-futurama.png
 bitch-said-what-i-said,"Bitch, I Said What I Said!","winning, song",
@@ -44,7 +44,7 @@ dont-worry-be-happy-lyrics-loudtronix-hq-mp3cut,Don't worry be happy,"chill-down
 doom,Doom button,"action, metal, games",doom-game.png
 doom-eternal,Doom Eternal,"action, metal, games",doom-game.png
 dramatic.swf,Dramatic Chipmunk,"suspense, drama",
-drum-roll-gaming-sound-effect-hd,Drum Roll Effect,"drum, drama, suspense, filler",drumroll.png
+drum-roll-gaming-sound-effect-hd,Drum Roll Effect,"drum, drama, suspense, filler, foley",drumroll.png
 dry-fart,Fart,"fart, meeting",
 duke_nukem_time_to_kick_ass,It's Time to Kick Ass,"dukenukem, action",duke-nukem.png
 duke-1,Duke Nukem riff 1,"dukenukem, action",duke-nukem.png
@@ -64,7 +64,7 @@ funny_82hiegE,Chipmunk Laugh,laugh,
 george-micael-wham-careless-whisper-1,Sexy Sax,sexy,
 get-yo-fat-ass-back-here,Get yo fat Ass Back,"quote, sexy, female-voice",
 gunshot-one,Load and Gunshot Fire,"gun, foley",
-half-life-2-stalker-scream,Stalker Scream,"scream, danger",
+half-life-2-stalker-scream,Stalker Scream,"scream, danger,excuses",
 hallelujah-long,Hallelujah long,"yes, meeting",
 hallelujah-short,Hallelujah short,"yes, meeting",
 hallelujah-song-shrek,Hallelujah Song Shrek,"song, happy",
@@ -82,8 +82,8 @@ inceptionbutton,Inception Button,"action, suspense, movies",
 incorrect-buzzer,Loud Buzzer Incorrect,fail,
 indian-action,Indian Action Theme,"action, theme-song",
 insha-allah-song,Inshallah,"yes, song",
-ios-ringtone3,iPhone Ringtone 1,"ringtone, foley, meeting",
-iphone-ring2,iPhone Ringtone 2,"ringtone, foley, meeting",
+ios-ringtone3,iPhone Ringtone 1,"ringtone, foley, meeting, excuses",
+iphone-ring2,iPhone Ringtone 2,"ringtone, foley, meeting, excuses",
 it-is-pointless-to-resist,It is pointless to resist,"quote, darth-vader, robot-voice, movies, no",darth-vader-small.png
 joinus-online-audio-converter,Join Us,"darth-vader, movies",darth-vader-small.png
 just-do-it,JUST DO IT!,"action, meeting",
@@ -104,7 +104,7 @@ no-god-please-no_F2DnCFM,No God Please,no,the-office.png
 nobody-cares-robotnik,Nobody Cares!,"sarcasm, dismissive",
 nooo,NOOO!,"darth-vader, movies, dismissive, no",darth-vader-small.png
 nooo.swf,Noooo!,no,
-nuclear-alarm-siren,Nuclear Alarm Siren,"foley, alarm, danger",
+nuclear-alarm-siren,Nuclear Alarm Siren,"foley, alarm, danger, excuses",
 official-duke-nukem-forever-theme-song-grabbag-mix1-v2-phomastered,Duke Nukem,"dukenukem, action, metal",duke-nukem.png
 oh-no-no-no-no-laugh,Oh No no no laugh,_unfilled,
 oh-no-no-no-tik-tok-song-sound-effect,Oh No No No Song,"_unfilled, sad",
@@ -129,7 +129,7 @@ sexy-and-i-know-it_crWNUGY,Sexy and I know it,sexy,
 sexy-sexy-sexy-adasdasdasd,Sexy sexy sexy,sexy,
 shut-up-male,Shut Up!,"dismissive, insult, male-voice, meeting",
 sitcom-laughing-1,Sitcom laugh,"laugh, tv-show, meeting",
-skype-ringtone,Skype Ringtone,"ringtone, foley, meeting",
+skype-ringtone,Skype Ringtone,"ringtone, foley, meeting, excuses",
 sony-ericsson-ringtone,Sony Ringtone,"ringtone, foley",
 south-park-intro-season-12,South Park intro,"tv-show, theme-song",south-park.png
 star-wars-rock-darth-vader,Star Wars theme,"darth-vader, action, theme-song",darth-vader-small.png
@@ -169,10 +169,16 @@ you-dirty-bitch,You Dirty Bitch,"angry, insult, female-voice",
 you-dont-know-the-power-of-the-dark-side_T8I6URq,U Don't Know the Power of Darkside,"darth-vader, movies",darth-vader-small.png
 youre-despicable_7UReTnU,You're Despicable,"angry, dismissive, insult",
 youre-fired,You're Fired!,"dismissive, quote",
-youre-god-damn-right,You're God Damn Right,"yes, enthusiasm, meeting",
+youre-god-damn-right,You're God Damn Right,"yes, enthusiasm, meeting, supportive",
 fart-2,Fart 2,fart,
 heimerdinger-very-interesting,Very Interesting,meeting,
 loud-fart,Loud Fart,fart,
 pana-aici-diana-sosoaca,șoșo: Până aici!,ro,
 sandu-ciorba-ale,Sandu Ciorbă: Căpitan Major,ro,
 spor-la-cafeaaa,Spor la cafea,ro,
+theatre-applauding,Theater Applause 2,"enthusiasm, approve, meeting, supportive",
+audience-clapping,Audience Clapping,"enthusiasm, approve, meeting, supportive",
+baby-crying,Baby Crying,"meeting, excuses",
+small-crowd-cheering-clapping,Small Crowd Cheering,"enthusiasm, approve, meeting",
+sus-clapping,"Clapping (muted, sarcastic)","meeting, sarcasm",
+theater-applause,Theater Applause,"enthusiasm, approve, meeting, supportive",
