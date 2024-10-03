@@ -308,8 +308,8 @@ a#reset:hover {
     cursor: pointer;
     z-index: 1000;
     line-height: 1;
-    bottom: 2px;
-    right: 2px;
+    bottom: 0;
+    right: 0;
     height: 1em;
     box-shadow: 2px 1px 8px rgba(0, 0, 0, .5);
     font-size: 1.4em;
@@ -410,6 +410,31 @@ body:not(._filtered) #about {
     text-shadow: 0 1px 2px rgba(0, 0, 0, .2);
 }
 
+#toggle-ctgs {
+    display: none; 
+    position: fixed;  
+    background-color: var(--base-color); 
+    color: white;
+
+    padding: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    line-height: 1;
+    bottom: 0;
+    left: 0;
+    height: 1em;
+    box-shadow: 2px 1px 8px rgba(0, 0, 0, .5);
+    font-size: 1.4em;
+    border-top-right-radius: .66em;
+    padding: .7ex 1.2ex;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+    outline: 1px solid white;
+
+}
+
+#toggle-ctgs.shown {
+    display: inline-block;
+}
 body #meta-header #selected-tags b:before {
     font-size: 1.5em;
     margin-right: 4px;
@@ -526,6 +551,8 @@ body.meeting #meta-header #selected-tags b:before,
 }
 
 /* hide tags */
+#tag-list span[data-tag="ro"],
+#tag-list span[data-tag="manele"],
 #tag-list span[data-tag="supportive"],
 #tag-list span[data-tag="approve"],
 #tag-list span[data-tag="conclusion"],
