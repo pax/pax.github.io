@@ -45,16 +45,24 @@ body {
 
 .tag.active {
     background-color: var(--base-color);
-    background-image: linear-gradient(to right, var(--base-color) 50%, #009bCC);
+    background-image: linear-gradient(to right, var(--base-color) 50%, #adcc00);
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
     outline: 1px solid whitesmoke;
     text-shadow: 1px 2px 1px rgba(0, 0, 0, .3);
+    text-decoration: underline;
+    text-decoration-color: rgba(230, 225, 173, 0.725);
+    text-decoration-thickness: 5px;
 }
 
 .tag.highlighted {
     outline: 2px solid var(--base-color);
     box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    text-decoration: underline;
+    text-decoration-color: lightblue;
+    text-decoration-thickness: 5px;
+
+
 }
 
 #audio-list {
