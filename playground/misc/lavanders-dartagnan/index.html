@@ -321,6 +321,29 @@
             background: #545b62;
         }
 
+        .mobile-menu-toggle {
+            display: none;
+            background: #8b4513;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: #a0522d;
+        }
+
+        .mobile-menu-toggle.active {
+            background: #a0522d;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -349,8 +372,22 @@
             .post-sidebar {
                 position: static;
                 order: -1;
+                display: none;
+                margin-bottom: 1rem;
             }
-            
+
+            .post-sidebar.mobile-open {
+                display: block;
+            }
+
+            .mobile-menu-toggle {
+                display: inline-flex;
+                order: -2;
+            }
+
+            .post-main {
+                order: 0;
+            }
 
             header h1 {
                 font-size: 2rem;
@@ -396,7 +433,11 @@
             </button>
             
             <div class="post-layout">
-                <aside class="post-sidebar">
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <span>☰</span> All Posts
+                </button>
+                
+                <aside class="post-sidebar" id="post-sidebar">
                     <h3 class="sidebar-title">All Posts</h3>
                     <nav>
                         <ul class="sidebar-nav" id="sidebar-nav"></ul>
@@ -641,6 +682,22 @@
                 showTOC();
             }
         });
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('post-sidebar');
+            const toggle = document.getElementById('mobile-menu-toggle');
+            
+            if (sidebar.classList.contains('mobile-open')) {
+                sidebar.classList.remove('mobile-open');
+                toggle.classList.remove('active');
+                toggle.innerHTML = '<span>☰</span> All Posts';
+            } else {
+                sidebar.classList.add('mobile-open');
+                toggle.classList.add('active');
+                toggle.innerHTML = '<span>✕</span> Close Menu';
+            }
+        }
 
         // Initialize the application
         loadPosts();
