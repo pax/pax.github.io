@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Château de Lavardens - Posts Viewer</title>
+    <title>D’Artagnan. Héros gascon. - Château de Lavardens</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
         * {
@@ -37,7 +37,9 @@
             font-size: 1.1rem;
             opacity: 0.9;
         }
-
+        /* header#leheader{
+            visibility: hidden; display: none;
+        } */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -87,12 +89,15 @@
         .post-card-content {
             padding: 1.5rem;
         }
-
+        #post-title {
+            color: white;
+        }
         .post-title {
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
             color: #2c3e50;
+            
             line-height: 1.3;
         }
 
@@ -106,6 +111,44 @@
             color: #555;
             font-size: 0.95rem;
             line-height: 1.5;
+        }
+
+        .exhibition-cover {
+            display: block;
+            width: 100%;
+            max-width: calc(350px * 2 + 2rem);
+            margin: 0 auto 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .exhibition-cover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .exhibition-cover-grid-item {
+            grid-column: span 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .exhibition-cover-grid-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .exhibition-cover-grid-item img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         /* Post Detail View */
@@ -284,6 +327,15 @@
                 padding: 0 15px;
             }
 
+            .exhibition-cover {
+                max-width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .exhibition-cover-grid-item {
+                grid-column: span 1;
+            }
+
             .posts-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
@@ -298,6 +350,7 @@
                 position: static;
                 order: -1;
             }
+            
 
             header h1 {
                 font-size: 2rem;
@@ -326,12 +379,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Château de Lavardens</h1>
-            <p>Explore the Posts Collection</p>
-        </div>
-    </header>
+
 
     <div class="container">
         <div id="loading" class="loading">Loading posts...</div>
@@ -360,7 +408,7 @@
                     <header class="post-header">
                         <h1 id="post-title"></h1>
                         <div class="meta">
-                            <span id="post-category"></span>
+                            <span id="post-category" style="display: none"></span>
                         </div>
                     </header>
                     <div id="post-content" class="post-content"></div>
@@ -376,7 +424,13 @@
             </div>
         </div>
     </div>
-
+    <header id="leheader">
+        <div class="container">
+            <h1>D’Artagnan. Héros gascon.</h1>
+            <h2>Château de Lavardens</h2>
+            
+        </div>
+    </header>
     <script>
         let posts = [];
         let currentPostIndex = -1;
@@ -430,6 +484,14 @@
         function renderTOC() {
             const grid = document.getElementById('posts-grid');
             grid.innerHTML = '';
+
+            // Add exhibition cover as first item in grid
+            const coverItem = document.createElement('div');
+            coverItem.className = 'exhibition-cover-grid-item';
+            coverItem.innerHTML = `
+                <img src="https://chateaulavardens.fr/wp-content/uploads/2025/05/Affiche-d_artagnan-web.jpg" alt="D'Artagnan exhibition cover">
+            `;
+            grid.appendChild(coverItem);
 
             posts.forEach((post, index) => {
                 const card = document.createElement('div');
