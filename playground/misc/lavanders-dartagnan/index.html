@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Château de Lavardens - Posts Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+        }
+
+        header {
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Table of Contents View */
+        .toc-view {
+            display: block;
+            padding: 2rem 0;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .post-thumbnail {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        .post-card-content {
+            padding: 1.5rem;
+        }
+
+        .post-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            line-height: 1.3;
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .post-excerpt {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Post Detail View */
+        .post-view {
+            display: none;
+            padding: 2rem 0;
+        }
+
+        .post-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .post-sidebar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #8b4513;
+            padding-bottom: 0.5rem;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: block;
+            padding: 0.3rem 0;
+            border-left: 3px solid transparent;
+            padding-left: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-nav a:hover {
+            color: #8b4513;
+            border-left-color: #8b4513;
+        }
+
+        .sidebar-nav a.active {
+            color: #8b4513;
+            font-weight: 600;
+            border-left-color: #8b4513;
+            background-color: rgba(139, 69, 19, 0.05);
+        }
+
+        .post-main {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .post-cover {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-style: italic;
+            position: relative;
+        }
+
+        .post-cover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.3));
+        }
+
+        .post-header {
+            padding: 2rem 2rem 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .post-header h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .post-header .meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            padding: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .post-content p {
+            margin-bottom: 1rem;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .post-navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+
+        .nav-btn {
+            background: #8b4513;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover {
+            background: #a0522d;
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn:hover {
+            background: #545b62;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .post-layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .post-sidebar {
+                position: static;
+                order: -1;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .post-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .post-content {
+                padding: 1rem;
+            }
+
+            .post-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Château de Lavardens</h1>
+            <p>Explore the Posts Collection</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="loading" class="loading">Loading posts...</div>
+        
+        <!-- Table of Contents View -->
+        <div id="toc-view" class="toc-view">
+            <div class="posts-grid" id="posts-grid"></div>
+        </div>
+
+        <!-- Post Detail View -->
+        <div id="post-view" class="post-view">
+            <button class="nav-btn back-btn" onclick="showTOC()">
+                ← Back to All Posts
+            </button>
+            
+            <div class="post-layout">
+                <aside class="post-sidebar">
+                    <h3 class="sidebar-title">All Posts</h3>
+                    <nav>
+                        <ul class="sidebar-nav" id="sidebar-nav"></ul>
+                    </nav>
+                </aside>
+                
+                <main class="post-main">
+                    <div id="post-cover" class="post-cover"></div>
+                    <header class="post-header">
+                        <h1 id="post-title"></h1>
+                        <div class="meta">
+                            <span id="post-category"></span>
+                        </div>
+                    </header>
+                    <div id="post-content" class="post-content"></div>
+                    <nav class="post-navigation">
+                        <button id="prev-btn" class="nav-btn" onclick="navigatePost(-1)">
+                            ← Previous
+                        </button>
+                        <button id="next-btn" class="nav-btn" onclick="navigatePost(1)">
+                            Next →
+                        </button>
+                    </nav>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let posts = [];
+        let currentPostIndex = -1;
+
+        // Load and parse CSV data
+        async function loadPosts() {
+            try {
+                const response = await fetch('posts.csv');
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                const csvContent = await response.text();
+                
+                Papa.parse(csvContent, {
+                    header: true,
+                    dynamicTyping: true,
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        posts = results.data.map((post, index) => ({
+                            ...post,
+                            index: index,
+                            slug: generateSlug(post.Title || `post-${index}`)
+                        }));
+                        
+                        document.getElementById('loading').style.display = 'none';
+                        renderTOC();
+                        renderSidebar();
+                        handleURL();
+                    },
+                    error: function(error) {
+                        console.error('Error parsing CSV:', error);
+                        document.getElementById('loading').innerHTML = 'Error parsing posts data.';
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                document.getElementById('loading').innerHTML = 'Error loading posts file. Make sure "posts.csv" is in the same directory as this HTML file.';
+            }
+        }
+
+        // Generate URL-friendly slug from title
+        function generateSlug(title) {
+            return title.toLowerCase()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+        }
+
+        // Render table of contents
+        function renderTOC() {
+            const grid = document.getElementById('posts-grid');
+            grid.innerHTML = '';
+
+            posts.forEach((post, index) => {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.onclick = () => showPost(index);
+
+                const thumbnail = post['OG Image'] ? 
+                    `background-image: url('${post['OG Image']}')` : 
+                    '';
+
+                const excerpt = post['Meta Description'] || post['OG Description'] || '';
+                const truncatedExcerpt = excerpt.length > 150 ? 
+                    excerpt.substring(0, 150) + '...' : excerpt;
+
+                card.innerHTML = `
+                    <div class="post-thumbnail" style="${thumbnail}">
+                        ${!post['OG Image'] ? 'No image available' : ''}
+                    </div>
+                    <div class="post-card-content">
+                        <h3 class="post-title">${post.Title || 'Untitled'}</h3>
+                        <div class="post-meta">${post['Category Names'] || 'Uncategorized'}</div>
+                        <p class="post-excerpt">${truncatedExcerpt}</p>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Render sidebar navigation
+        function renderSidebar() {
+            const nav = document.getElementById('sidebar-nav');
+            nav.innerHTML = '';
+
+            posts.forEach((post, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${post.slug}`;
+                a.textContent = post.Title || 'Untitled';
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    showPost(index);
+                };
+
+                li.appendChild(a);
+                nav.appendChild(li);
+            });
+        }
+
+        // Show table of contents
+        function showTOC() {
+            document.getElementById('toc-view').style.display = 'block';
+            document.getElementById('post-view').style.display = 'none';
+            currentPostIndex = -1;
+            window.location.hash = '';
+            updateSidebarActive();
+        }
+
+        // Show specific post
+        function showPost(index) {
+            if (index < 0 || index >= posts.length) return;
+
+            currentPostIndex = index;
+            const post = posts[index];
+
+            // Update URL hash
+            window.location.hash = post.slug;
+
+            // Show post view
+            document.getElementById('toc-view').style.display = 'none';
+            document.getElementById('post-view').style.display = 'block';
+
+            // Update cover image
+            const cover = document.getElementById('post-cover');
+            if (post['OG Image']) {
+                cover.style.backgroundImage = `url('${post['OG Image']}')`;
+                cover.textContent = '';
+            } else {
+                cover.style.backgroundImage = 'none';
+                cover.textContent = 'No cover image available';
+            }
+
+            // Update post content
+            document.getElementById('post-title').textContent = post.Title || 'Untitled';
+            document.getElementById('post-category').textContent = post['Category Names'] || 'Uncategorized';
+            document.getElementById('post-content').innerHTML = post['Post Content (Cleaned HTML)'] || '<p>No content available</p>';
+
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === posts.length - 1;
+
+            // Update sidebar active state
+            updateSidebarActive();
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Update sidebar active state
+        function updateSidebarActive() {
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+            navLinks.forEach((link, index) => {
+                if (index === currentPostIndex) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // Navigate between posts
+        function navigatePost(direction) {
+            const newIndex = currentPostIndex + direction;
+            if (newIndex >= 0 && newIndex < posts.length) {
+                showPost(newIndex);
+            }
+        }
+
+        // Handle URL changes
+        function handleURL() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const postIndex = posts.findIndex(post => post.slug === hash);
+                if (postIndex !== -1) {
+                    showPost(postIndex);
+                    return;
+                }
+            }
+            showTOC();
+        }
+
+        // Handle browser back/forward
+        window.addEventListener('hashchange', handleURL);
+
+        // Handle keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (currentPostIndex === -1) return;
+            
+            if (e.key === 'ArrowLeft' && currentPostIndex > 0) {
+                navigatePost(-1);
+            } else if (e.key === 'ArrowRight' && currentPostIndex < posts.length - 1) {
+                navigatePost(1);
+            } else if (e.key === 'Escape') {
+                showTOC();
+            }
+        });
+
+        // Initialize the application
+        loadPosts();
+    </script>
+</body>
+</html>
