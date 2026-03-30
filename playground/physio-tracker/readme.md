@@ -6,7 +6,7 @@ see [initial prompt](https://www.perplexity.ai/search/i-just-found-out-i-have-a-
 - [x] parametrize
 - [x] PWA
 - [ ] tick for each second?
-  - [ ] or parametrize exervise time. 
+  - [ ] or parametrize exercise time. 
 - [ ] press something between exercises!
 - [ ] nicer UI
   - [ ] name each exercise
@@ -14,14 +14,25 @@ see [initial prompt](https://www.perplexity.ai/search/i-just-found-out-i-have-a-
   - [ ] find image online for each exercise?
 - [ ] make it generic, add more trackers / profiles (physio, push-ups, meditation)
 - [ ] publish to web for accountability partners? (donationware?)
-- [ ] save state in the cloud? - gogole sheets etc?
+- [ ] save state in the cloud? - gogole sheets, or?
 - [ ] multi lang
-- [ ] mobile app?!
+- [ ] mobile app?
 - [ ] use accelerometer for detection?!
 - [x] previous art?
   - [ ] analyze 
 - [ ] collect feedback
 - [ ] donations - track usage? pro version can have stats in the cloud, accountability partner?! or w pro needs login
+
+
+### Extras
+Nice to haves
+- [ ] add note after each rep?
+  - [ ] can be text or vartype, or picture?
+- [ ] skip weekends?
+- [ ] week / month goal?
+- [ ] send emails?
+
+see also [gxTracker](https://docs.google.com/document/d/1H17bmIHoe4wZtR4Xlw7CueUWt2kY0j8-/edit#heading=h.q9r5w39bxu1) (private)
 
 ## Previous Art
 
