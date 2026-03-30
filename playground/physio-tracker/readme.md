@@ -1,25 +1,29 @@
-# Physiotherapy tracker/counter
+# Physiotherapy Tracker/Counter
 
-  see [initial prompt](https://www.perplexity.ai/search/i-just-found-out-i-have-a-rupt-5j.jnuDLS1qglBFa_Pgizw?preview=1#3 ) 
+see [initial prompt](https://www.perplexity.ai/search/i-just-found-out-i-have-a-rupt-5j.jnuDLS1qglBFa_Pgizw) 
 
 ## Roadmap
 - [x] parametrize
 - [x] PWA
+- [ ] tick for each second?
+  - [ ] or parametrize exervise time. 
 - [ ] press something between exercises!
 - [ ] nicer UI
   - [ ] name each exercise
+  - [ ] exercise can be mirrored or not
   - [ ] find image online for each exercise?
-- [ ] save state in the cloud?
+- [ ] make it generic, add more trackers / profiles (physio, push-ups, meditation)
+- [ ] publish to web for accountability partners? (donationware?)
+- [ ] save state in the cloud? - gogole sheets etc?
 - [ ] multi lang
-- [ ] name exercises?
 - [ ] mobile app?!
+- [ ] use accelerometer for detection?!
 - [x] previous art?
   - [ ] analyze 
 - [ ] collect feedback
-- [ ] donations, monetize? - track usage?
+- [ ] donations - track usage? pro version can have stats in the cloud, accountability partner?! or w pro needs login
 
-
-### Previous Art
+## Previous Art
 
 | App / tool                                | Main focus                         | Features most similar to your PWA                                        | Platform / model                         |
 | ----------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------- |
