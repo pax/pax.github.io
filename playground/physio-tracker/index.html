@@ -54,7 +54,7 @@
         </div>
         <div>
           <label for="reps">Repetitions</label>
-          <input id="reps" type="number" min="1" step="1" value="25" />
+          <input id="reps" type="number" min="1" step="1" value="5" />
         </div>
         <div>
           <label for="seconds">Seconds per hold</label>
@@ -66,7 +66,15 @@
         </div>
         <div>
           <label for="pauseMs">Pause between transitions (ms)</label>
-          <input id="pauseMs" type="number" min="0" step="50" value="250" />
+          <input id="pauseMs" type="number" min="0" step="50" value="150" />
+        </div>
+        <div>
+          <label for="typePause">Pause between exercise types</label>
+          <input type="checkbox" id="typePause" />
+        </div>
+        <div>
+          <label for="typePauseMs">Type pause duration (ms)</label>
+          <input id="typePauseMs" type="number" min="0" step="100" value="1500" />
         </div>
         <div>
           <label for="dailyGoal">Daily sessions goal</label>
@@ -126,11 +134,11 @@
 
 <script>
 let wakeLock = null, running = false, paused = false, interval = null
-let state = {type:1,rep:1,leg:1,sec:10,remaining:10,types:4,reps:25,pauseMs:250,dailyGoal:4,legsPerRep:2}
-const STORAGE_KEY = 'knee_timer_daily_v3'
+let state = {type:1,rep:1,leg:1,sec:10,remaining:10,types:4,reps:25,pauseMs:250,dailyGoal:4,legsPerRep:2,typePauseMs:1500,typePause:1}
+const STORAGE_KEY = 'knee_timer_v4'
 const el = id => document.getElementById(id)
 const drawerBtn=el('drawerBtn'), drawer=el('drawer')
-const typesEl=el('types'), repsEl=el('reps'), legsEl=el('legsPerRep'), secondsEl=el('seconds'), pauseMsEl=el('pauseMs'), voiceEl=el('voice'), dailyGoalEl=el('dailyGoal')
+const typesEl=el('types'), repsEl=el('reps'), legsEl=el('legsPerRep'), secondsEl=el('seconds'), pauseMsEl=el('pauseMs'), typePauseEl=el('typePause'), typePauseMsEl=el('typePauseMs'), voiceEl=el('voice'), dailyGoalEl=el('dailyGoal')
 const timerEl=el('timer'), repNumEl=el('repNum'), repTotalEl=el('repTotal'), legNumEl=el('legNum'), legTotalEl=el('legTotal'), typeNumEl=el('typeNum'), typeTotalEl=el('typeTotal'), labelEl=el('exerciseLabel'), barEl=el('bar')
 const mainBtn=el('mainBtn'), resetBtn=el('resetBtn'), doneCountEl=el('doneCount'), goalCountEl=el('goalCount'), checksEl=el('checks'), clearTodayBtn=el('clearTodayBtn'), weekGrid=el('weekGrid')
 function fmtKey(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}` }
@@ -160,22 +168,22 @@ function renderWeekly(){ const store=loadStore(); weekGrid.innerHTML=''; const n
 function markSessionComplete(){ const data=getTodayData(); data.completed = data.completed + 1; setTodayData(data); renderDaily() }
 function clearToday(){ const data=getTodayData(); data.completed=0; setTodayData(data); renderDaily() }
 function beep(freq=880, duration=140, wave='sine', gain=0.12){ const C=window.AudioContext||window.webkitAudioContext; if(!C) return; const ctx=beep.ctx||(beep.ctx=new C()); if(ctx.state==='suspended') ctx.resume().catch(()=>{}); const o=ctx.createOscillator(), g=ctx.createGain(); o.type=wave; o.frequency.value=freq; g.gain.value=gain; o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + duration/1000) }
-function playSound(kind){ const style=voiceEl.value; const gain = style==='soft' ? 0.07 : 0.12; const wave = style==='bright' ? 'square' : 'sine'; if(kind==='switch-knee'){ beep(900,140,wave,gain) } else if(kind==='back-start-knee'){ beep(620,180,'triangle',gain) } else if(kind==='type-done'){ beep(1040,120,wave,gain); setTimeout(()=>beep(1310,160,wave,gain),170) } else if(kind==='session-done'){ beep(780,100,wave,gain); setTimeout(()=>beep(1040,120,wave,gain),130); setTimeout(()=>beep(1310,180,wave,gain),280) } }
-function readSettings(){ state.types=Math.max(1,parseInt(typesEl.value||'4',10)); state.reps=Math.max(1,parseInt(repsEl.value||'25',10)); state.legsPerRep=Math.max(1,parseInt(legsEl.value||'2',10)); state.sec=Math.max(1,parseInt(secondsEl.value||'10',10)); state.pauseMs=Math.max(0,parseInt(pauseMsEl.value||'250',10)); state.dailyGoal=Math.max(1,parseInt(dailyGoalEl.value||'4',10)) }
+function playSound(kind){ const style=voiceEl.value; const gain = style==='soft' ? 0.07 : 0.12; const wave = style==='bright' ? 'square' : 'sine'; if(kind==='switch-knee'){ beep(900,140,wave,gain) } else if(kind==='rep-done'){ beep(620,180,'triangle',gain) } else if(kind==='type-done'){ beep(1040,120,wave,gain); setTimeout(()=>beep(1310,160,wave,gain),170) } else if(kind==='session-done'){ beep(780,100,wave,gain); setTimeout(()=>beep(1040,120,wave,gain),130); setTimeout(()=>beep(1310,180,wave,gain),280) } }
+function readSettings(){ state.types=Math.max(1,parseInt(typesEl.value||'4',10)); state.reps=Math.max(1,parseInt(repsEl.value||'25',10)); state.legsPerRep=Math.max(1,parseInt(legsEl.value||'2',10)); state.sec=Math.max(1,parseInt(secondsEl.value||'10',10)); state.pauseMs=Math.max(0,parseInt(pauseMsEl.value||'250',10)); state.typePause=typePauseEl.checked; state.typePauseMs=Math.max(0,parseInt(typePauseMsEl.value||'1500',10)); state.dailyGoal=Math.max(1,parseInt(dailyGoalEl.value||'4',10)) }
 async function keepAwake(){ try{ if('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen') }catch(e){} }
 function releaseAwake(){ if(wakeLock){ wakeLock.release().catch(()=>{}); wakeLock=null } }
 function updateButtons(){ if(!running){ mainBtn.textContent='Start'; mainBtn.classList.remove('dim') } else if(paused){ mainBtn.textContent='Resume'; mainBtn.classList.add('dim') } else { mainBtn.textContent='Pause'; mainBtn.classList.remove('dim') } }
 function updateUI(){ repTotalEl.textContent=state.reps; typeTotalEl.textContent=state.types; repNumEl.textContent=running?state.rep:0; legNumEl.textContent=running?state.leg:0; typeNumEl.textContent=running?state.type:0; timerEl.textContent=running?state.remaining:'--'; labelEl.textContent = !running ? 'Ready' : paused ? 'Paused' : `Type ${state.type} of ${state.types}`; const totalSteps=state.types*state.reps*state.legsPerRep, done=((state.type-1)*state.reps*state.legsPerRep)+((state.rep-1)*state.legsPerRep)+(state.leg-1); barEl.style.width = running && totalSteps ? `${Math.max(0,Math.min(100,(done/totalSteps)*100))}%` : '0%'; updateButtons(); renderDaily() }
 function finish(){ running=false; paused=false; clearInterval(interval); interval=null; releaseAwake(); playSound('session-done'); labelEl.textContent='Done'; timerEl.textContent='0'; markSessionComplete(); updateUI() }
-function nextStep(){ if(state.leg < state.legsPerRep){ state.leg += 1; state.remaining = state.sec; setTimeout(()=>playSound('switch-knee'), state.pauseMs) } else { state.leg = 1; if(state.rep < state.reps){ state.rep += 1; state.remaining = state.sec; setTimeout(()=>playSound('back-start-knee'), state.pauseMs) } else if(state.type < state.types){ state.type += 1; state.rep = 1; state.remaining = state.sec; setTimeout(()=>playSound('type-done'), state.pauseMs) } else { finish(); return } } updateUI() }
+function nextStep(){ if(state.leg < state.legsPerRep){ state.leg += 1; state.remaining = state.sec; setTimeout(()=>playSound('switch-knee'), state.pauseMs) } else { state.leg = 1; if(state.rep < state.reps){ state.rep += 1; state.remaining = state.sec; setTimeout(()=>playSound('rep-done'), state.pauseMs) } else if(state.type < state.types){ state.type += 1; state.rep = 1; state.remaining = state.sec; if(state.typePause){ setTimeout(()=>playSound('type-done'), state.typePauseMs) } else { setTimeout(()=>playSound('type-done'), state.pauseMs) } } else { finish(); return } } updateUI() }
 function tick(){ if(!running || paused) return; state.remaining -= 1; timerEl.textContent = state.remaining; if(state.remaining <= 0){ if(state.leg < state.legsPerRep) playSound('switch-knee'); else if(state.rep < state.reps || state.type < state.types) playSound('back-start-knee'); else playSound('type-done'); nextStep() } }
-function startRun(){ readSettings(); state.type=1; state.rep=1; state.leg=1; state.remaining=state.sec; running=true; paused=false; keepAwake(); clearInterval(interval); interval=setInterval(tick,1000); playSound('type-done'); updateUI() }
+function startRun(){ readSettings(); const store=loadStore(); store.settings={types:state.types,reps:state.reps,legsPerRep:state.legsPerRep,sec:state.sec,pauseMs:state.pauseMs,typePause:state.typePause,typePauseMs:state.typePauseMs,voice:voiceEl.value,dailyGoal:state.dailyGoal}; saveStore(store); state.type=1; state.rep=1; state.leg=1; state.remaining=state.sec; running=true; paused=false; keepAwake(); clearInterval(interval); interval=setInterval(tick,1000); playSound('type-done'); updateUI() }
 function handleMain(){ if(!running){ startRun(); return } paused = !paused; updateUI() }
 function resetRun(){ running=false; paused=false; clearInterval(interval); interval=null; releaseAwake(); readSettings(); state.type=1; state.rep=1; state.leg=1; state.remaining=state.sec; labelEl.textContent='Ready'; updateUI() }
 drawerBtn.onclick=()=> drawer.classList.toggle('open')
 mainBtn.onclick=handleMain; resetBtn.onclick=resetRun; clearTodayBtn.onclick=clearToday
-;[typesEl,repsEl,legsEl,secondsEl,pauseMsEl,voiceEl,dailyGoalEl].forEach(x=>x.onchange=()=>{ if(!running){ readSettings(); state.remaining=state.sec } renderDaily(); updateUI() })
-window.addEventListener('load', ()=>{ readSettings(); state.remaining=state.sec; updateUI(); renderWeekly() })
+;[typesEl,repsEl,legsEl,secondsEl,pauseMsEl,typePauseEl,typePauseMsEl,voiceEl,dailyGoalEl].forEach(x=>x.onchange=()=>{ if(!running){ readSettings(); state.remaining=state.sec } renderDaily(); updateUI() })
+window.addEventListener('load', ()=>{ const store=loadStore(); typesEl.value=store.settings?.types||4; repsEl.value=store.settings?.reps||25; legsEl.value=store.settings?.legsPerRep||2; secondsEl.value=store.settings?.sec||10; pauseMsEl.value=store.settings?.pauseMs||250; typePauseEl.checked=store.settings?.typePause!==false; typePauseMsEl.value=store.settings?.typePauseMs||1500; voiceEl.value=store.settings?.voice||'default'; dailyGoalEl.value=store.settings?.dailyGoal||4; readSettings(); state.remaining=state.sec; updateUI(); renderWeekly() })
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}) }
 </script>
 </body>

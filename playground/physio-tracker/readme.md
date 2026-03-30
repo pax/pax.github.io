@@ -26,6 +26,7 @@ see [initial prompt](https://www.perplexity.ai/search/i-just-found-out-i-have-a-
 
 ### Extras
 Nice to haves
+- [ ] notifications, schedule?
 - [ ] add note after each rep?
   - [ ] can be text or vartype, or picture?
 - [ ] skip weekends?
