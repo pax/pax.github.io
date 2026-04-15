@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced ACL Prehab Animations</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --accent: #ff4757; /* Active Muscle/Target */
+            --body-main: #2f3542; /* Working side */
+            --body-ghost: #a4b0be; /* Resting side */
+            --prop: #dfe4ea;
+            --floor: #ced6e0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--body-main);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            grid-column: 1 / -1;
+            font-size: 1.5rem;
+            color: var(--body-main);
+            border-bottom: 2px solid var(--prop);
+            padding-bottom: 15px;
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            margin: 0 0 10px 0;
+            color: var(--body-main);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 span {
+            background: var(--accent);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            flex-grow: 1;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .svg-container {
+            background: #f1f2f6;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--prop);
+        }
+
+        svg {
+            width: 100%;
+            height: 220px;
+            display: block;
+        }
+
+        /* SVG Styling Rules */
+        .floor { stroke: var(--floor); stroke-width: 6; stroke-linecap: round; }
+        .prop { stroke: var(--prop); stroke-width: 12; stroke-linecap: round; fill: none; }
+        .prop-box { fill: var(--prop); rx: 8; }
+        
+        .limb { stroke: var(--body-main); stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+        .limb-ghost { stroke: var(--body-ghost); stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+        
+        .joint { fill: #ffffff; stroke: var(--body-main); stroke-width: 4; }
+        .joint-ghost { fill: #ffffff; stroke: var(--body-ghost); stroke-width: 4; }
+        
+        .head { fill: var(--body-main); }
+        .head-ghost { fill: var(--body-ghost); }
+        
+        .muscle { stroke: var(--accent); stroke-width: 16; stroke-linecap: round; fill: none; opacity: 0.9;}
+        .band { stroke: #2ed573; stroke-width: 6; stroke-dasharray: 6 4; stroke-linecap: round; }
+        
+        .indicator { fill: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Advanced ACL Prehab Guide</h1>
+        <p>Follow these precise kinematic animations. The <strong style="color: #ff4757;">red highlights</strong> indicate the exact muscle group you should feel working. Move slowly and control the descent.</p>
+    </div>
+
+    <div class="container">
+        
+        <!-- ================= PHASE 1 ================= -->
+        <h2 class="section-title">Phase 1: Activation & Mobility</h2>
+
+        <!-- 1. Heel Slides -->
+        <div class="card">
+            <h3>Heel Slides <span>Mobility</span></h3>
+            <p>Slide your heel toward your body. Focus on closing the angle at the knee smoothly without lifting the foot off the ground.</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 400 250">
+                    <line x1="40" y1="210" x2="360" y2="210" class="floor"/>
+                    
+                    <!-- Head & Torso -->
+                    <circle cx="80" cy="195" r="16" class="head"/>
+                    <path d="M 96 200 L 160 200" class="limb"/>
+                    
+                    <!-- Ghost Leg -->
+                    <path d="M 160 200 L 220 200 L 290 200" class="limb-ghost"/>
+                    <circle cx="220" cy="200" r="5" class="joint-ghost"/>
+                    
+                    <!-- Active Leg -->
+                    <path class="limb muscle">
+                        <animate attributeName="d" 
+                                 values="M 160 200 L 230 200 L 310 200; M 160 200 L 210 130 L 250 200; M 160 200 L 230 200 L 310 200" 
+                                 dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                    </path>
+                    
+                    <!-- Joints overlay (animated) -->
+                    <circle cx="160" cy="200" r="6" class="joint"/> <!-- Hip -->
+                    <circle r="6" class="joint"> <!-- Knee -->
+                        <animate attributeName="cx" values="230; 210; 230" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                        <animate attributeName="cy" values="200; 130; 200" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                    </circle>
+                    <circle r="6" class="joint"> <!-- Ankle -->
+                        <animate attributeName="cx" values="310; 250; 310" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                        <animate attributeName="cy" values="200; 200; 200" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 2. Quad Set -->
+        <div class="card">
+            <h3>Quad Sets <span>VMO Focus</span></h3>
+            <p>Squeeze the front of your thigh. The goal is to push the back of the knee absolutely flat against the mat.</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 400 250">
+                    <line x1="40" y1="210" x2="360" y2="210" class="floor"/>
+                    
+                    <!-- Torso propped up -->
+                    <circle cx="90" cy="90" r="16" class="head"/>
+                    <path d="M 90 110 L 140 200" class="limb"/> <!-- Torso -->
+                    <path d="M 110 130 L 70 200" class="limb" stroke-width="10"/> <!-- Arm supporting -->
+                    
+                    <!-- Leg -->
+                    <path class="limb">
+                        <animate attributeName="d" values="M 140 200 L 230 190 L 320 200; M 140 200 L 230 200 L 320 200; M 140 200 L 230 190 L 320 200" dur="3s" repeatCount="indefinite"/>
+                    </path>
+                    
+                    <!-- Quad Muscle Highlight -->
+                    <path class="muscle">
+                        <animate attributeName="d" values="M 155 195 L 210 185; M 155 198 L 210 198; M 155 195 L 210 185" dur="3s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0; 1; 0" dur="3s" repeatCount="indefinite"/>
+                    </path>
+
+                    <!-- Pressure Arrow -->
+                    <g fill="var(--accent)">
+                        <polygon points="220,150 240,150 230,170" />
+                        <rect x="226" y="120" width="8" height="30" rx="4"/>
+                        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="3s" repeatCount="indefinite"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 3. TKE -->
+        <div class="card">
+            <h3>Terminal Knee Ext. <span>Quad/Stability</span></h3>
+            <p>Using a resistance band, forcefully straighten the knee against the tension, squeezing the quad at the end.</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 400 250">
+                    <line x1="40" y1="220" x2="360" y2="220" class="floor"/>
+                    <line x1="60" y1="40" x2="60" y2="220" class="prop"/> <!-- Wall -->
+                    
+                    <!-- Ghost Leg (Standing straight) -->
+                    <path d="M 230 110 L 230 160 L 230 210" class="limb-ghost"/>
+                    
+                    <!-- Torso -->
+                    <circle cx="230" cy="40" r="16" class="head"/>
+                    <path d="M 230 60 L 230 110" class="limb"/>
+                    
+                    <!-- Active Leg -->
+                    <path class="limb muscle">
+                        <animate attributeName="d" values="M 230 110 L 260 160 L 240 210; M 230 110 L 230 160 L 240 210; M 230 110 L 260 160 L 240 210" dur="3s" repeatCount="indefinite"/>
+                    </path>
+
+                    <!-- Band -->
+                    <line x1="60" y1="160" class="band">
+                        <animate attributeName="x2" values="260; 230; 260" dur="3s" repeatCount="indefinite"/>
+                        <animate attributeName="y2" values="160; 160; 160" dur="3s" repeatCount="indefinite"/>
+                    </line>
+                    
+                    <!-- Joints -->
+                    <circle cx="230" cy="110" r="6" class="joint"/>
+                    <circle r="6" class="joint">
+                        <animate attributeName="cx" values="260; 230; 260" dur="3s" repeatCount="indefinite"/>
+                        <animate attributeName="cy" values="160; 160; 160" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+            </div>
+        </div>
+
+        <!-- ================= PHASE 2 ================= -->
+        <h2 class="section-title">Phase 2: Core Strength (The Muscle Splint)</h2>
+
+        <!-- 4. Straight Leg Raise -->
+        <div class="card">
+            <h3>Straight Leg Raise <span>Hip/Quad</span></h3>
+            <p>Lock the knee entirely straight first, then lift from the hip. Lower it slowly to resist gravity.</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 400 250">
+                    <line x1="40" y1="210" x2="360" y2="210" class="floor"/>
+                    
+                    <!-- Ghost Leg (Bent for back support) -->
+                    <path d="M 160 200 L 220 130 L 270 200" class="limb-ghost"/>
+                    
+                    <!-- Torso -->
+                    <circle cx="80" cy="195" r="16" class="head"/>
+                    <path d="M 96 200 L 160 200" class="limb"/>
+                    <circle cx="160" cy="200" r="6" class="joint"/>
+                    
+                    <!-- Active Leg Group (Pivoting at hip 160,200) -->
+                    <g>
+                        <animateTransform attributeName="transform" type="rotate" values="0 160 200; -45 160 200; 0 160 200" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                        <path d="M 160 200 L 320 200" class="limb muscle"/>
+                        <circle cx="240" cy="200" r="6" class="joint"/> <!-- Knee locked -->
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 5. Glute Bridge -->
+        <div class="card">
+            <h3>Glute Bridge <span>Hamstrings/Glutes</span></h3>
+            <p>Drive through the heels. Squeeze the glutes to lift the hips until your body forms a straight line.</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 400 250">
+                    <line x1="40" y1="210" x2="360" y2="210" class="floor"/>
+                    
+                    <circle cx="90" cy="195" r="16" class="head"/>
+                    
+                    <!-- Torso & Thigh Morphing -->
+                    <path class="limb muscle">
+                        <animate attributeName="d" 
+                                 values="M 106 200 L 190 200 L 260 120 L 280 200; 
+                                         M 106 200 L 170 140 L 260 120 L 280 200; 
+                                         M 106 200 L 190 200 L 260 120 L 280 200" 
+                                 dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                    </path>
+                    
+                    <!-- Arms flat on floor -->
+                    <path d="M 106 200 L 170 200" class="limb-ghost"/>
+
+                    <!-- Animated Hip Joint -->
+                    <circle r="6" class="joint">
+                        <animate attributeName="cx" values="190; 170; 190" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                        <animate attributeName="cy" values="200; 140; 200" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                    </circle>
+                    <!-- Static Knee Joint -->
+                    <circle cx="260" cy="120" r="6" class="joint"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 6. Long Arc Quads -->
+        <div class="card">
+            <h3>Long Arc Quads <span>Eccentric Control</span></h3>
+            <p>From a seated position, fully extend the leg, squeeze, and slowly lower it back down.</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 400 250">
+                    <line x1="40" y1="230" x2="360" y2="230" class="floor"/>
+                    <rect x="100" y="120" width="80" height="110" class="prop-box"/> <!-- Chair -->
+                    
+                    <!-- Torso -->
+                    <circle cx="130" cy="40" r="16" class="head"/>
+                    <path d="M 130 60 L 130 120" class="limb"/>
+                    
+                    <!-- Thigh -->
+                    <path d="M 130 120 L 190 120" class="limb"/>
+                    <circle cx="130" cy="120" r="6" class="joint"/>
+                    
+                    <!-- Active Calf Group (Pivoting at Knee 190,120) -->
+                    <g>
+                        <animateTransform attributeName="transform" type="rotate" values="0 190 120; 90 190 120; 0 190 120" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                        <path d="M 190 120 L 190 200" class="limb muscle"/>
+                    </g>
+                    <!-- Knee Over top -->
+                    <circle cx="190" cy="120" r="6" class="joint"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- ================= PHASE 3 ================= -->
+        <h2 class="section-title">Phase 3: Stability & Proprioception</h2>
+
+        <!-- 7. Clamshells -->
+        <div class="card">
+            <h3>Clamshells <span>Glute Medius</span></h3>
+            <p>Lie on your side. Keep ankles together and rotate the top knee upward to build hip stability.</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 400 250">
+                    <line x1="40" y1="210" x2="360" y2="210" class="floor"/>
+                    
+                    <!-- Torso (Lying sideways) -->
+                    <circle cx="80" cy="200" r="16" class="head"/>
+                    <path d="M 100 200 L 180 200" class="limb"/>
+                    
+                    <!-- Bottom Leg (Ghost) -->
+                    <path d="M 180 200 L 250 215 L 290 200" class="limb-ghost"/>
+                    <circle cx="250" cy="215" r="5" class="joint-ghost"/>
+                    
+                    <!-- Top Active Leg -->
+                    <path class="limb muscle">
+                        <animate attributeName="d" 
+                                 values="M 180 200 L 250 215 L 290 200; 
+                                         M 180 200 L 240 140 L 290 200; 
+                                         M 180 200 L 250 215 L 290 200" 
+                                 dur="3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                    </path>
+                    
+                    <circle cx="180" cy="200" r="6" class="joint"/> <!-- Hip -->
+                    <!-- Animated Top Knee -->
+                    <circle r="6" class="joint">
+                        <animate attributeName="cx" values="250; 240; 250" dur="3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                        <animate attributeName="cy" values="215; 140; 215" dur="3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                    </circle>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 8. Monster Walks -->
+        <div class="card">
+            <h3>Monster Walks <span>Hip Abductors</span></h3>
+            <p>Stay in a mini-squat. Step side-to-side, maintaining tension on the band around your ankles.</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 400 250">
+                    <line x1="40" y1="220" x2="360" y2="220" class="floor"/>
+                    
+                    <!-- Group translates left and right -->
+                    <g>
+                        <animateTransform attributeName="transform" type="translate" values="0,0; -40,0; 40,0; 0,0" dur="5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                        
+                        <circle cx="200" cy="60" r="16" class="head"/>
+                        <path d="M 200 80 L 200 130" class="limb"/> <!-- Torso -->
+                        
+                        <!-- Legs -->
+                        <path d="M 200 130 L 170 170 L 170 210" class="limb muscle"/>
+                        <path d="M 200 130 L 230 170 L 230 210" class="limb muscle"/>
+                        
+                        <!-- Band -->
+                        <line x1="170" y1="190" x2="230" y2="190" class="band"/>
+                        
+                        <!-- Joints -->
+                        <circle cx="200" cy="130" r="6" class="joint"/>
+                        <circle cx="170" cy="170" r="5" class="joint"/>
+                        <circle cx="230" cy="170" r="5" class="joint"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 9. Bird-Dog -->
+        <div class="card">
+            <h3>Bird-Dog <span>Core/Anti-Rotation</span></h3>
+            <p>From a tabletop position, slowly extend the opposite arm and leg perfectly straight. Do not arch the back.</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 400 250">
+                    <line x1="40" y1="220" x2="360" y2="220" class="floor"/>
+                    
+                    <circle cx="130" cy="110" r="16" class="head"/>
+                    <path d="M 140 120 L 240 120" class="limb"/> <!-- Torso/Back -->
+                    
+                    <!-- Ghost limbs ( planted ) -->
+                    <path d="M 140 120 L 140 210" class="limb-ghost"/> <!-- Left Arm -->
+                    <path d="M 240 120 L 240 210" class="limb-ghost"/> <!-- Left Leg -->
+                    
+                    <!-- Active Arm (Pivots at 140, 120) -->
+                    <g>
+                        <animateTransform attributeName="transform" type="rotate" values="0 140 120; 90 140 120; 0 140 120" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                        <path d="M 140 120 L 140 210" class="limb muscle"/>
+                    </g>
+                    
+                    <!-- Active Leg (Pivots at 240, 120) -->
+                    <g>
+                        <animateTransform attributeName="transform" type="rotate" values="0 240 120; -90 240 120; 0 240 120" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1"/>
+                        <path d="M 240 120 L 240 210" class="limb muscle"/>
+                    </g>
+                    
+                    <!-- Joints -->
+                    <circle cx="140" cy="120" r="6" class="joint"/>
+                    <circle cx="240" cy="120" r="6" class="joint"/>
+                </svg>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

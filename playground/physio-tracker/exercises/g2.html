@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Prehab Animation Library</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        h2 { color: #2c3e50; }
+        .section-title {
+            grid-column: 1 / -1;
+            text-align: left;
+            border-bottom: 2px solid #bdc3c7;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            color: #2c3e50;
+        }
+        h3 { margin-top: 0; color: #e74c3c; font-size: 18px; }
+        p { font-size: 14px; color: #666; flex-grow: 1; margin-bottom: 15px; }
+        svg {
+            background: #eef2f5;
+            border-radius: 8px;
+            width: 100%;
+            height: 200px;
+        }
+        .floor { stroke: #bdc3c7; stroke-width: 4; stroke-linecap: round; }
+        .prop { stroke: #bdc3c7; stroke-width: 6; stroke-linecap: round; fill: none; }
+        .body-part { stroke: #2c3e50; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+        .active-muscle { stroke: #e74c3c; }
+        .ghost { stroke: #95a5a6; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; fill: none; opacity: 0.3; }
+        .band { stroke: #27ae60; stroke-width: 4; stroke-dasharray: 4; }
+    </style>
+</head>
+<body>
+
+    <h2>Complete ACL Prehab Library</h2>
+    <p>Perform these movements slowly and with control. Red highlights the active moving segments.</p>
+
+    <div class="container">
+        
+        <h2 class="section-title">Phase 1: Range of Motion & Activation</h2>
+
+        <div class="card">
+            <h3>1. Heel Slides</h3>
+            <p>Slowly slide your heel toward your glutes, keeping it on the floor. Hold, then slide back.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <circle cx="50" cy="160" r="12" fill="#2c3e50"/>
+                <line x1="62" y1="166" x2="140" y2="166" class="body-part"/>
+                <polyline class="body-part active-muscle">
+                    <animate attributeName="points" 
+                             values="140,166 210,166 260,166; 
+                                     140,166 190,100 220,166; 
+                                     140,166 210,166 260,166" 
+                             dur="4s" repeatCount="indefinite"/>
+                </polyline>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>2. Quad Sets</h3>
+            <p>Squeeze the thigh to push the back of the knee flat against the floor.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <circle cx="60" cy="50" r="15" fill="#2c3e50"/>
+                <line x1="60" y1="65" x2="60" y2="160" class="body-part"/>
+                <polyline class="body-part active-muscle">
+                    <animate attributeName="points" values="60,160 160,155 260,166; 60,160 160,166 260,166; 60,160 155,155 260,166" dur="3s" repeatCount="indefinite" />
+                </polyline>
+                <g fill="#e74c3c">
+                    <polygon points="150,130 170,130 160,145" />
+                    <rect x="157" y="110" width="6" height="20" />
+                    <animateTransform attributeName="transform" type="translate" values="0,0; 0,10; 0,0" dur="3s" repeatCount="indefinite"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>3. Terminal Knee Ext. (TKE)</h3>
+            <p>Attach a band behind the knee. Squeeze the quad to push the knee back, locking it straight.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <line x1="40" y1="20" x2="40" y2="170" class="prop"/> <circle cx="150" cy="40" r="12" fill="#2c3e50"/>
+                <line x1="150" y1="52" x2="150" y2="100" class="body-part"/>
+                
+                <line x1="40" y1="130" class="band">
+                    <animate attributeName="x2" values="170; 150; 170" dur="3s" repeatCount="indefinite"/>
+                    <animate attributeName="y2" values="130; 130; 130" dur="3s" repeatCount="indefinite"/>
+                </line>
+
+                <polyline class="body-part active-muscle">
+                    <animate attributeName="points" values="150,100 170,130 150,166; 150,100 150,130 150,166; 150,100 170,130 150,166" dur="3s" repeatCount="indefinite"/>
+                </polyline>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>4. Prone Knee Hangs</h3>
+            <p>Lie face down with your knees off a bed. Let gravity pull your legs perfectly straight.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="130" x2="180" y2="130" class="prop"/> <line x1="180" y1="130" x2="180" y2="190" class="prop"/> <circle cx="50" cy="120" r="12" fill="#2c3e50"/>
+                <line x1="62" y1="120" x2="180" y2="120" class="body-part"/>
+                <polyline class="body-part active-muscle">
+                    <animate attributeName="points" values="180,120 240,100; 180,120 240,140; 180,120 240,100" dur="4s" repeatCount="indefinite"/>
+                </polyline>
+            </svg>
+        </div>
+
+        <h2 class="section-title">Phase 2: Strength (The Muscle Splint)</h2>
+
+        <div class="card">
+            <h3>5. Straight Leg Raise</h3>
+            <p>Lock the knee fully straight (quad set), then lift the leg 12 inches. Lower slowly.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <circle cx="50" cy="160" r="12" fill="#2c3e50"/>
+                <line x1="62" y1="166" x2="140" y2="166" class="body-part"/>
+                <polyline points="140,166 190,100 240,166" class="ghost"/>
+                <line x1="140" y1="166" x2="260" y2="166" class="body-part active-muscle">
+                    <animateTransform attributeName="transform" type="rotate" values="0 140 166; -35 140 166; 0 140 166" dur="4s" repeatCount="indefinite"/>
+                </line>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>6. Glute Bridges</h3>
+            <p>Drive through your heels and squeeze your glutes/hamstrings to lift your hips.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <circle cx="50" cy="160" r="12" fill="#2c3e50"/>
+                <polyline class="body-part active-muscle">
+                    <animate attributeName="points" values="62,166 130,166 210,100 210,166; 62,166 130,100 210,100 210,166; 62,166 130,166 210,100 210,166" dur="4s" repeatCount="indefinite"/>
+                </polyline>
+                <line x1="62" y1="166" x2="130" y2="166" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>7. Clamshells</h3>
+            <p>Lie on your side, knees bent. Keep feet together and lift the top knee like a clamshell.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <circle cx="60" cy="160" r="12" fill="#2c3e50"/>
+                <line x1="72" y1="166" x2="140" y2="166" class="body-part"/> <polyline points="140,166 200,166 240,166" class="ghost"/> <polyline class="body-part active-muscle">
+                    <animate attributeName="points" values="140,166 200,166 240,166; 140,166 180,120 240,166; 140,166 200,166 240,166" dur="3s" repeatCount="indefinite"/>
+                </polyline>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>8. Long Arc Quads</h3>
+            <p>Sit on a chair. Slowly straighten the injured leg, squeeze at the top, and lower.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <rect x="100" y="90" width="50" height="80" class="prop"/> <circle cx="125" cy="30" r="12" fill="#2c3e50"/>
+                <line x1="125" y1="42" x2="125" y2="90" class="body-part"/>
+                <line x1="125" y1="90" x2="170" y2="90" class="body-part"/> <line x1="170" y1="90" x2="170" y2="160" class="body-part active-muscle">
+                    <animateTransform attributeName="transform" type="rotate" values="0 170 90; 90 170 90; 0 170 90" dur="4s" repeatCount="indefinite"/>
+                </line>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>9. Hamstring Curls</h3>
+            <p>Stand tall. Bend your knee, bringing your heel straight up toward your glutes.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <line x1="80" y1="50" x2="80" y2="170" class="prop"/> <circle cx="150" cy="30" r="12" fill="#2c3e50"/>
+                <line x1="150" y1="42" x2="150" y2="90" class="body-part"/>
+                <line x1="150" y1="90" x2="100" y2="90" class="ghost" stroke-width="4"/> <line x1="150" y1="90" x2="150" y2="130" class="body-part"/> <line x1="150" y1="130" x2="150" y2="166" class="body-part active-muscle">
+                    <animateTransform attributeName="transform" type="rotate" values="0 150 130; -90 150 130; 0 150 130" dur="4s" repeatCount="indefinite"/>
+                </line>
+            </svg>
+        </div>
+
+        <h2 class="section-title">Phase 3: Stability & Balance</h2>
+
+        <div class="card">
+            <h3>10. Single-Leg Stance</h3>
+            <p>Balance on the injured leg. Keep hips level and use arms for slight balance if needed.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <g>
+                    <animateTransform attributeName="transform" type="rotate" values="-2 150 166; 2 150 166; -2 150 166" dur="2s" repeatCount="indefinite"/>
+                    <circle cx="150" cy="40" r="12" fill="#2c3e50"/>
+                    <line x1="150" y1="52" x2="150" y2="100" class="body-part"/>
+                    <line x1="100" y1="70" x2="200" y2="70" class="body-part"/> <polyline points="150,100 130,130 150,166" class="body-part active-muscle"/> </g>
+                <polyline points="150,100 180,100 180,140" class="ghost"/> </svg>
+        </div>
+
+        <div class="card">
+            <h3>11. Monster Walks</h3>
+            <p>Mini-squat position. Step sideways, driving off the hip to activate the glute medius.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <g>
+                    <animateTransform attributeName="transform" type="translate" values="0,0; -40,0; 40,0; 0,0" dur="6s" repeatCount="indefinite"/>
+                    <circle cx="150" cy="50" r="12" fill="#2c3e50"/>
+                    <line x1="150" y1="62" x2="150" y2="110" class="body-part"/>
+                    <polyline points="150,110 130,140 130,166" class="body-part active-muscle"/>
+                    <polyline points="150,110 170,140 170,166" class="body-part active-muscle"/>
+                    <line x1="130" y1="150" x2="170" y2="150" class="band"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>12. Bird-Dog</h3>
+            <p>Tabletop position. Extend the opposite arm and leg perfectly straight, engaging the core.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                <circle cx="110" cy="90" r="12" fill="#2c3e50"/>
+                <line x1="120" y1="96" x2="190" y2="96" class="body-part"/> <line x1="120" y1="96" x2="120" y2="166" class="ghost"/> <line x1="190" y1="96" x2="190" y2="166" class="ghost"/> <line x1="120" y1="96" x2="120" y2="166" class="body-part active-muscle">
+                    <animateTransform attributeName="transform" type="rotate" values="0 120 96; 90 120 96; 0 120 96" dur="4s" repeatCount="indefinite"/>
+                </line>
+                <line x1="190" y1="96" x2="190" y2="166" class="body-part active-muscle">
+                    <animateTransform attributeName="transform" type="rotate" values="0 190 96; -90 190 96; 0 190 96" dur="4s" repeatCount="indefinite"/>
+                </line>
+            </svg>
+        </div>
+
+    </div>
+</body>
+</html>

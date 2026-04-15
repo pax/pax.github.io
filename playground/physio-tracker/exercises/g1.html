@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prehab Exercises</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 320px;
+            padding: 20px;
+        }
+        h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        p {
+            font-size: 14px;
+            color: #666;
+        }
+        svg {
+            background: #eef2f5;
+            border-radius: 8px;
+            width: 100%;
+            height: 200px;
+        }
+        .floor {
+            stroke: #bdc3c7;
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+        .body-part {
+            stroke: #2c3e50;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        .active-muscle {
+            stroke: #e74c3c;
+        }
+        .ghost-leg {
+            stroke: #95a5a6;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Minimalist Prehab Animations</h2>
+    
+    <div class="container">
+        
+        <div class="card">
+            <h3>1. Quad Set</h3>
+            <p>Squeeze the thigh to push the knee down flat against the floor. Hold, then release.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                
+                <circle cx="60" cy="50" r="15" fill="#2c3e50"/>
+                <line x1="60" y1="65" x2="60" y2="160" class="body-part"/>
+                <line x1="60" y1="90" x2="40" y2="160" class="body-part" stroke-width="5"/> <polyline points="60,160 120,100 150,160" class="ghost-leg"/>
+                
+                <polyline class="body-part active-muscle">
+                    <animate attributeName="points" 
+                             values="60,160 160,155 260,166; 
+                                     60,160 160,166 260,166; 
+                                     60,160 160,155 260,166" 
+                             dur="3s" repeatCount="indefinite" />
+                </polyline>
+
+                <g fill="#e74c3c">
+                    <polygon points="150,130 170,130 160,145" />
+                    <rect x="157" y="110" width="6" height="20" />
+                    <animateTransform attributeName="transform" type="translate" 
+                                      values="0,0; 0,10; 0,0" dur="3s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0.3; 1; 0.3" dur="3s" repeatCount="indefinite"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>2. Straight Leg Raise</h3>
+            <p>Lock the knee entirely straight, then lift from the hip. Lower slowly.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                
+                <circle cx="50" cy="160" r="12" fill="#2c3e50"/>
+                <line x1="62" y1="166" x2="140" y2="166" class="body-part"/>
+                
+                <polyline points="140,166 190,100 240,166" class="ghost-leg"/>
+                
+                <line x1="140" y1="166" x2="260" y2="166" class="body-part active-muscle">
+                    <animateTransform attributeName="transform" type="rotate" 
+                                      values="0 140 166; -35 140 166; 0 140 166" 
+                                      dur="4s" repeatCount="indefinite"/>
+                </line>
+            </svg>
+        </div>
+
+        <div class="card">
+            <h3>3. Glute Bridge</h3>
+            <p>Squeeze glutes and drive through the heels to lift the hips toward the ceiling.</p>
+            <svg viewBox="0 0 300 200">
+                <line x1="20" y1="170" x2="280" y2="170" class="floor"/>
+                
+                <circle cx="50" cy="160" r="12" fill="#2c3e50"/>
+                
+                <polyline class="body-part active-muscle">
+                    <animate attributeName="points" 
+                             values="62,166 130,166 210,100 210,166; 
+                                     62,166 130,100 210,100 210,166; 
+                                     62,166 130,166 210,100 210,166" 
+                             dur="4s" repeatCount="indefinite"/>
+                </polyline>
+                
+                <line x1="62" y1="166" x2="130" y2="166" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+    </div>
+</body>
+</html>

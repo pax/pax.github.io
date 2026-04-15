@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACL Prehab Animations</title>
+  <style>
+    :root{
+      --bg:#f6f4ef;--surface:#fcfbf8;--surface2:#f0ede5;--line:#d6d0c5;--text:#1f1d19;--muted:#6c685f;--accent:#0b6972;--accentSoft:#cfe2e5;--accent2:#5a8f95;--good:#3d6f22;--warn:#995415;--shadow:0 12px 34px rgba(0,0,0,.06);--radius:20px;
+    }
+    [data-theme="dark"]{
+      --bg:#141311;--surface:#1c1a17;--surface2:#25231f;--line:#3b3832;--text:#ece6da;--muted:#b2ab9d;--accent:#6eb5bc;--accentSoft:#20363a;--accent2:#8ec5cb;--good:#91bf65;--warn:#e0a463;--shadow:0 16px 40px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    body{min-height:100vh}
+    .wrap{max-width:1200px;margin:0 auto;padding:24px}
+    .top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px}
+    h1{margin:0 0 8px;font-size:clamp(2rem,4vw,3.2rem);line-height:1.03;letter-spacing:-.03em}
+    .lede{max-width:74ch;margin:0;color:var(--muted)}
+    .btns,.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    button,select,input{font:inherit}
+    .btn{border:1px solid var(--line);background:var(--surface);color:var(--text);padding:10px 14px;border-radius:999px;cursor:pointer;box-shadow:0 1px 0 rgba(255,255,255,.2) inset}
+    .btn.primary{background:var(--accent);color:#fff;border-color:transparent}
+    .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
+    .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .sidebar{padding:18px;position:sticky;top:12px;align-self:start}
+    .content{padding:18px}
+    .section-title{font-size:.92rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0 0 12px}
+    .exercise-list{display:grid;gap:10px}
+    .exercise-item{padding:13px 14px;border:1px solid var(--line);border-radius:16px;background:var(--bg);cursor:pointer;text-align:left}
+    .exercise-item.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface));box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 10%,transparent)}
+    .exercise-item strong{display:block;font-size:1rem}
+    .exercise-item span{display:block;margin-top:4px;font-size:.92rem;color:var(--muted)}
+    .footer-note{margin-top:14px;color:var(--muted);font-size:.9rem}
+    .title-row{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}
+    .tag-row,.meter{display:flex;gap:8px;flex-wrap:wrap}
+    .tag,.chip{font-size:.78rem;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface2);color:var(--muted)}
+    .tag.good{color:var(--good)} .tag.warn{color:var(--warn)}
+    .range-wrap{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+    .split{display:grid;grid-template-columns:1.14fr .86fr;gap:16px;margin-top:18px}
+    .viz{border:1px solid var(--line);border-radius:24px;overflow:hidden;background:linear-gradient(180deg,var(--surface2),transparent 55%),radial-gradient(circle at 82% 18%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 30%);padding:8px}
+    .details{padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--bg)}
+    .details h2{margin:0 0 8px;font-size:1.35rem}
+    .details p{margin:.55rem 0;color:var(--muted)}
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+    .card{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--bg)}
+    .card h3{margin:0 0 8px;font-size:1rem}
+    .card p,.card li{color:var(--muted);font-size:.94rem}
+    .card ul{margin:0;padding-left:18px}
+    svg{width:100%;height:auto;aspect-ratio:16/9;display:block}
+    .ground{stroke:var(--line);stroke-width:4}
+    .platform{fill:var(--surface2);stroke:var(--line);stroke-width:3}
+    .guide{stroke:var(--accent2);stroke-width:3;stroke-dasharray:8 8;fill:none;opacity:.9}
+    .ghost{stroke:var(--accent2);stroke-opacity:.28;fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+    .body{stroke:var(--text);fill:none;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+    .body.soft{stroke-width:6}
+    .accent-limb{stroke:var(--accent);stroke-width:8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .joint{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+    .label{font-size:20px;fill:var(--muted);font-weight:600;letter-spacing:.03em}
+    .labelStrong{font-size:22px;fill:var(--text);font-weight:700}
+    .small{font-size:18px;fill:var(--muted)}
+    .paneTitle{display:flex;justify-content:space-between;align-items:center;padding:10px 10px 0 10px;color:var(--muted);font-size:.9rem}
+    .legend{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .dot{width:10px;height:10px;border-radius:999px;background:var(--accent);display:inline-block}
+    .dot.ghost{background:var(--accent2);opacity:.45}
+    .hidden{display:none}
+    @media (max-width:940px){.grid,.split,.cards{grid-template-columns:1fr}.sidebar{position:static}}
+    @media (prefers-reduced-motion: reduce){svg *{animation:none !important;transition:none !important}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>ACL Prehab Animations</h1>
+        <p class="lede">A clearer minimal guide for the phase before your final decision about surgery. The app now shows start and end ghost poses, the active moving limb, and more distinct body positions so the motion path is easier to read at a glance.</p>
+      </div>
+      <div class="btns">
+        <button class="btn" id="themeBtn">Theme</button>
+        <button class="btn" id="pauseBtn">Pause</button>
+        <button class="btn primary" id="playBtn">Play</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <aside class="panel sidebar">
+        <p class="section-title">Exercise list</p>
+        <div class="exercise-list" id="exerciseList"></div>
+        <div class="footer-note">Most drills use side view. Front view appears only when it helps show pelvis or knee control better.</div>
+      </aside>
+
+      <main class="panel content">
+        <div class="title-row">
+          <div>
+            <h2 id="exTitle" style="margin:0 0 6px;font-size:1.75rem"></h2>
+            <div class="tag-row" id="tagRow"></div>
+          </div>
+          <div class="controls">
+            <label class="range-wrap">Speed <input id="speed" type="range" min="0.4" max="1.8" step="0.1" value="1"/> <span id="speedVal">1.0x</span></label>
+            <select id="scenario" class="btn" aria-label="Scenario filter">
+              <option value="both">Show both paths</option>
+              <option value="surgery">Likely surgery</option>
+              <option value="nonsurgical">Trying rehab first</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="split">
+          <section class="viz">
+            <div class="paneTitle">
+              <span id="viewLabel">Side view</span>
+              <span class="legend"><span class="dot"></span>moving segment <span class="dot ghost"></span>start / end pose</span>
+            </div>
+            <svg viewBox="0 0 960 540" aria-label="Animated exercise illustration">
+              <rect x="0" y="0" width="960" height="540" fill="transparent"></rect>
+              <line class="ground" x1="70" y1="450" x2="890" y2="450"></line>
+              <path id="motionGuide" class="guide" d=""></path>
+              <g id="propsLayer"></g>
+              <g id="ghostStart"></g>
+              <g id="ghostEnd"></g>
+              <g id="figure"></g>
+              <g id="frontFigure" class="hidden"></g>
+              <text x="84" y="75" class="labelStrong" id="cue"></text>
+              <text x="84" y="104" class="small" id="cue2"></text>
+            </svg>
+          </section>
+
+          <section class="details">
+            <h2 id="detailTitle"></h2>
+            <p id="goal"></p>
+            <p id="how"></p>
+            <div class="meter" id="dose"></div>
+            <p id="whenUse"></p>
+            <p id="stopIf"></p>
+          </section>
+        </div>
+
+        <div class="cards">
+          <section class="card">
+            <h3>Shared prehab goals</h3>
+            <ul>
+              <li>Calm swelling and pain.</li>
+              <li>Get the knee fully straight.</li>
+              <li>Regain flexion progressively.</li>
+              <li>Wake up the quadriceps and rebuild hip support.</li>
+            </ul>
+          </section>
+          <section class="card">
+            <h3>If surgery happens</h3>
+            <p>The same motion and strength work can help you arrive at surgery with a quieter knee and better early post-op readiness.</p>
+          </section>
+          <section class="card">
+            <h3>If surgery does not happen</h3>
+            <p>The same base work still matters, then later drills usually shift toward balance, step control, squats, cycling, and gradual return to function.</p>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+<script>
+const exercises = [
+  {
+    id:'heel-slide', title:'Heel Slide', view:'side', tags:['ROM','both'], cue:'Slide heel toward hips', cue2:'Gentle flexion without forcing pain or swelling.',
+    goal:'Goal: improve knee flexion gradually without forcing swelling or sharp pain.',
+    how:'How: lie on your back, slide the heel toward the hips, pause, then return slowly.',
+    dose:['8–15 reps','1–3 sets','gentle daily'],
+    whenUse:'Useful in both scenarios when the knee feels stiff and bent range is limited.',
+    stopIf:'Stop or scale down if swelling clearly jumps later that day or the knee catches painfully.',
+    pose:(p)=>poseSupineSlide(p)
+  },
+  {
+    id:'quad-set', title:'Quad Set', view:'side', tags:['quad activation','both'], cue:'Tighten the front thigh', cue2:'Aim for a straight relaxed knee, not a forced jam.',
+    goal:'Goal: restore quadriceps contraction and help get the knee fully straight.',
+    how:'How: keep the leg straight, tighten the thigh, press the knee gently downward, and hold.',
+    dose:['8–12 reps','5-second hold','2–4 times/day'],
+    whenUse:'Especially useful early, whether you are heading toward surgery or trying rehab first.',
+    stopIf:'Do not push through a painful block to extension or a cramping hamstring-dominant strategy.',
+    pose:(p)=>poseQuadSet(p)
+  },
+  {
+    id:'slr', title:'Straight-Leg Raise', view:'side', tags:['quad','hip flexor','both'], cue:'Lift whole leg as one unit', cue2:'Keep the knee locked straight through the lift.',
+    goal:'Goal: build straight-leg control once you can keep the knee locked without lag.',
+    how:'How: brace the thigh, lift the whole leg together, pause, then lower under control.',
+    dose:['8–12 reps','1–3 sets','slow lowering'],
+    whenUse:'Good in both paths after basic quad activation is present.',
+    stopIf:'If the knee sags into a bent position, return to quad sets first.',
+    pose:(p)=>poseStraightLegRaise(p)
+  },
+  {
+    id:'bridge', title:'Bridge', view:'side', tags:['glutes','hamstrings','both'], cue:'Lift hips, keep ribs quiet', cue2:'Drive through the feet, not through a twist.',
+    goal:'Goal: strengthen the posterior chain and pelvis control without knee twisting.',
+    how:'How: feet planted, lift hips into a bridge, pause, then lower smoothly.',
+    dose:['8–12 reps','1–3 sets','2–3 second hold'],
+    whenUse:'Helpful in both paths once basic swelling is settling and weight-bearing feels acceptable.',
+    stopIf:'Skip if it causes hamstring cramping right behind the injured knee or knee pain.',
+    pose:(p)=>poseBridge(p)
+  },
+  {
+    id:'calf-raise', title:'Calf Raise', view:'side', tags:['calf','gait','both'], cue:'Rise onto the toes', cue2:'Tall body, smooth controlled lowering.',
+    goal:'Goal: restore calf strength and quiet walking mechanics.',
+    how:'How: stand tall, rise onto the toes, pause briefly, and lower slowly.',
+    dose:['10–20 reps','1–3 sets','support as needed'],
+    whenUse:'Often fine in either path when standing is comfortable.',
+    stopIf:'Reduce range if you feel sharp front-of-knee pain or loss of balance.',
+    pose:(p)=>poseCalfRaise(p)
+  },
+  {
+    id:'mini-squat', title:'Mini Squat', view:'side', tags:['closed chain','control','both'], cue:'Sit back a little', cue2:'Stay shallow and keep the movement calm.',
+    goal:'Goal: improve closed-chain quad and hip control in a safer early range.',
+    how:'How: sit back slightly into a shallow squat, knees tracking calmly, then stand back up.',
+    dose:['8–15 reps','1–3 sets','stay shallow'],
+    whenUse:'Common in both paths, especially once swelling is improving and straight walking is possible.',
+    stopIf:'Avoid deep flexion, twisting, or pain that feels unstable or catches.',
+    pose:(p)=>poseMiniSquat(p)
+  },
+  {
+    id:'step-up', title:'Low Step-Up', view:'side', tags:['functional','mostly non-surgical later'], cue:'Step up, then control the way down', cue2:'Use a low box and avoid dropping inward.',
+    goal:'Goal: add controlled loading for stairs and daily function.',
+    how:'How: step onto a low platform, straighten the knee fully, then step back down with control.',
+    dose:['6–12 reps each side','1–3 sets','low step only'],
+    whenUse:'More relevant once the knee is calmer and feels trustworthy, especially in the rehab-first path.',
+    stopIf:'Do not use it early if you feel buckling, heavy swelling, or poor alignment.',
+    pose:(p)=>poseStepUp(p)
+  },
+  {
+    id:'single-leg-balance', title:'Single-Leg Balance', view:'front', tags:['balance','mostly non-surgical later'], cue:'Pelvis level, knee quiet', cue2:'Light fingertip support is fine at first.',
+    goal:'Goal: rebuild proprioception and frontal-plane control.',
+    how:'How: stand tall on one leg, keep the pelvis level, and lightly tap the other foot or hold still.',
+    dose:['20–30 seconds','2–4 rounds','light support allowed'],
+    whenUse:'Usually later than the basic ROM and strength drills, especially when trying non-surgical rehab.',
+    stopIf:'Skip if the knee repeatedly gives way or you cannot control wobbling safely.',
+    pose:(p)=>poseFrontBalance(p)
+  }
+];
+
+const state = { index:0, playing:true, speed:1, scenario:'both', start:performance.now() };
+const listEl = document.getElementById('exerciseList');
+const exTitle = document.getElementById('exTitle');
+const detailTitle = document.getElementById('detailTitle');
+const tagRow = document.getElementById('tagRow');
+const goal = document.getElementById('goal');
+const how = document.getElementById('how');
+const dose = document.getElementById('dose');
+const whenUse = document.getElementById('whenUse');
+const stopIf = document.getElementById('stopIf');
+const ghostStart = document.getElementById('ghostStart');
+const ghostEnd = document.getElementById('ghostEnd');
+const figure = document.getElementById('figure');
+const frontFigure = document.getElementById('frontFigure');
+const propsLayer = document.getElementById('propsLayer');
+const motionGuide = document.getElementById('motionGuide');
+const cue = document.getElementById('cue');
+const cue2 = document.getElementById('cue2');
+const viewLabel = document.getElementById('viewLabel');
+
+function filteredExercises(){
+  if (state.scenario === 'both') return exercises;
+  return exercises.filter(ex => ex.tags.includes('both') || (state.scenario === 'nonsurgical'));
+}
+function labelTag(ex){
+  if (ex.tags.includes('both')) return 'Useful in both paths';
+  if (ex.tags.includes('mostly non-surgical later')) return 'Usually later / rehab-first path';
+  return ex.tags.join(', ');
+}
+function renderList(){
+  const items = filteredExercises();
+  if (state.index >= items.length) state.index = 0;
+  listEl.innerHTML = items.map((ex,i)=>`<button class="exercise-item ${i===state.index?'active':''}" data-i="${i}"><strong>${ex.title}</strong><span>${labelTag(ex)}</span></button>`).join('');
+  [...listEl.querySelectorAll('[data-i]')].forEach(btn => btn.onclick = () => { state.index = +btn.dataset.i; state.start = performance.now(); renderText(); });
+}
+function renderText(){
+  const ex = filteredExercises()[state.index];
+  exTitle.textContent = ex.title;
+  detailTitle.textContent = ex.title;
+  cue.textContent = ex.cue;
+  cue2.textContent = ex.cue2;
+  goal.textContent = ex.goal;
+  how.textContent = ex.how;
+  whenUse.textContent = ex.whenUse;
+  stopIf.textContent = 'Caution: ' + ex.stopIf;
+  tagRow.innerHTML = ex.tags.map(t=>`<span class="tag ${t==='both'?'good':(t.includes('non-surgical')?'warn':'')}">${t}</span>`).join('');
+  dose.innerHTML = ex.dose.map(d=>`<span class="chip">${d}</span>`).join('');
+  viewLabel.textContent = ex.view === 'front' ? 'Front view' : 'Side view';
+  renderList();
+}
+
+function line(a,b,cls='body'){ return `<line class="${cls}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`; }
+function circle(p,r=6){ return `<circle class="joint" cx="${p.x}" cy="${p.y}" r="${r}"/>`; }
+function add(p,dx,dy){ return {x:p.x+dx,y:p.y+dy}; }
+function lerp(a,b,t){ return a + (b-a)*t; }
+function mix(p1,p2,t){ return {x:lerp(p1.x,p2.x,t), y:lerp(p1.y,p2.y,t)}; }
+function polar(base,len,ang){ return {x:base.x + len*Math.cos(ang), y:base.y + len*Math.sin(ang)}; }
+function easeInOut(t){ return .5 - .5*Math.cos(Math.PI*t); }
+function wave(tt){ return .5 + .5*Math.sin(tt*Math.PI*2); }
+function renderGhost(group, data){
+  group.innerHTML = renderBody(data,'ghost',true);
+}
+function renderBody(d, variant='body', ghost=false){
+  const armCls = ghost ? 'ghost' : 'body soft';
+  const trunkCls = ghost ? 'ghost' : 'body';
+  const activeCls = ghost ? 'ghost' : 'accent-limb';
+  const lowerCls = ghost ? 'ghost' : 'body';
+  const footCls = ghost ? 'ghost' : 'body';
+  const headCls = ghost ? 'ghost' : 'body';
+  const active = d.active || '';
+  return [
+    d.props || '',
+    `<circle class="${headCls}" cx="${d.head.x}" cy="${d.head.y}" r="${d.headR || 28}"/>`,
+    line(d.neck,d.shoulder, trunkCls),
+    line(d.shoulder,d.elbowL, armCls), line(d.elbowL,d.handL, armCls),
+    line(d.shoulder,d.elbowR, armCls), line(d.elbowR,d.handR, armCls),
+    line(d.shoulder,d.hip, trunkCls),
+    line(d.hip,d.kneeA, active==='legA' ? activeCls : lowerCls),
+    line(d.kneeA,d.ankleA, active==='legA' ? activeCls : lowerCls),
+    line(d.ankleA,d.footA, active==='legA' ? activeCls : footCls),
+    line(d.hip,d.kneeB, active==='legB' ? activeCls : lowerCls),
+    line(d.kneeB,d.ankleB, active==='legB' ? activeCls : lowerCls),
+    line(d.ankleB,d.footB, active==='legB' ? activeCls : footCls),
+    ghost ? '' : [circle(d.shoulder),circle(d.hip),circle(d.kneeA),circle(d.ankleA),circle(d.kneeB),circle(d.ankleB)].join('')
+  ].join('');
+}
+function setScene(start,end,current,isFront=false,guide=''){ 
+  propsLayer.innerHTML = current.props || '';
+  motionGuide.setAttribute('d', guide || '');
+  renderGhost(ghostStart,start);
+  renderGhost(ghostEnd,end);
+  if (isFront) {
+    figure.classList.add('hidden');
+    frontFigure.classList.remove('hidden');
+    frontFigure.innerHTML = renderBody(current,'body',false) + (current.extra || '');
+  } else {
+    frontFigure.classList.add('hidden');
+    figure.classList.remove('hidden');
+    figure.innerHTML = renderBody(current,'body',false) + (current.extra || '');
+  }
+}
+
+function baseSupine(){
+  const head={x:190,y:255}, neck={x:218,y:272}, shoulder={x:262,y:300}, hip={x:358,y:330};
+  const elbowL={x:220,y:330}, handL={x:160,y:342};
+  const elbowR={x:290,y:335}, handR={x:332,y:350};
+  return {head,neck,shoulder,hip,elbowL,handL,elbowR,handR,headR:30};
+}
+function poseSupineSlide(p){
+  const b = baseSupine();
+  const start = {...b, kneeA:{x:480,y:430}, ankleA:{x:640,y:430}, footA:{x:674,y:430}, kneeB:{x:246,y:388}, ankleB:{x:170,y:430}, footB:{x:140,y:430}, active:'legA'};
+  const end = {...b, kneeA:{x:484,y:386}, ankleA:{x:592,y:420}, footA:{x:624,y:420}, kneeB:{x:246,y:388}, ankleB:{x:170,y:430}, footB:{x:140,y:430}, active:'legA'};
+  const cur = interpPose(start,end,p); cur.active='legA';
+  setScene(start,end,cur,false,'M 640 430 Q 598 410 566 392');
+}
+function poseQuadSet(p){
+  const b = baseSupine();
+  const start = {...b, kneeA:{x:478,y:432}, ankleA:{x:650,y:432}, footA:{x:684,y:432}, kneeB:{x:246,y:388}, ankleB:{x:170,y:430}, footB:{x:140,y:430}, active:'legA', extra:`<path class="guide" d="M 470 428 q 24 -18 52 0"/>`};
+  const end = {...b, kneeA:{x:478,y:426}, ankleA:{x:650,y:426}, footA:{x:684,y:426}, kneeB:{x:246,y:388}, ankleB:{x:170,y:430}, footB:{x:140,y:430}, active:'legA', extra:`<path class="guide" d="M 470 422 q 24 -18 52 0"/>`};
+  const cur = interpPose(start,end,p); cur.active='legA';
+  setScene(start,end,cur,false,'M 472 432 L 474 422');
+}
+function poseStraightLegRaise(p){
+  const b = baseSupine();
+  const start = {...b, kneeA:{x:480,y:430}, ankleA:{x:642,y:430}, footA:{x:678,y:430}, kneeB:{x:246,y:388}, ankleB:{x:170,y:430}, footB:{x:140,y:430}, active:'legA'};
+  const end = {...b, kneeA:{x:490,y:364}, ankleA:{x:630,y:315}, footA:{x:664,y:307}, kneeB:{x:246,y:388}, ankleB:{x:170,y:430}, footB:{x:140,y:430}, active:'legA'};
+  const cur = interpPose(start,end,p); cur.active='legA';
+  setScene(start,end,cur,false,'M 646 430 Q 618 356 560 332');
+}
+function poseBridge(p){
+  const b = baseSupine();
+  const start = {...b, hip:{x:358,y:330}, kneeA:{x:472,y:382}, ankleA:{x:548,y:430}, footA:{x:582,y:430}, kneeB:{x:300,y:388}, ankleB:{x:236,y:430}, footB:{x:206,y:430}, active:'legA'};
+  const end = {...b, hip:{x:358,y:275}, kneeA:{x:472,y:352}, ankleA:{x:548,y:430}, footA:{x:582,y:430}, kneeB:{x:300,y:356}, ankleB:{x:236,y:430}, footB:{x:206,y:430}, active:'legA'};
+  const cur = interpPose(start,end,p); cur.active='';
+  setScene(start,end,cur,false,'M 358 330 Q 356 300 358 275');
+}
+function baseStanding(){
+  const head={x:430,y:98}, neck={x:430,y:126}, shoulder={x:430,y:165}, hip={x:430,y:255};
+  const elbowL={x:387,y:220}, handL={x:357,y:288};
+  const elbowR={x:473,y:220}, handR={x:503,y:288};
+  return {head,neck,shoulder,hip,elbowL,handL,elbowR,handR,headR:30};
+}
+function poseCalfRaise(p){
+  const b = baseStanding();
+  const start={...b,kneeA:{x:438,y:355},ankleA:{x:444,y:430},footA:{x:484,y:430},kneeB:{x:400,y:356},ankleB:{x:406,y:430},footB:{x:446,y:430},active:'legA'};
+  const end={...b,kneeA:{x:438,y:348},ankleA:{x:446,y:406},footA:{x:486,y:406},kneeB:{x:400,y:349},ankleB:{x:408,y:406},footB:{x:448,y:406},active:'legA'};
+  const cur=interpPose(start,end,p); cur.active='legA';
+  setScene(start,end,cur,false,'M 446 430 L 446 406');
+}
+function poseMiniSquat(p){
+  const b = baseStanding();
+  const start={...b,kneeA:{x:440,y:355},ankleA:{x:446,y:430},footA:{x:490,y:430},kneeB:{x:402,y:356},ankleB:{x:408,y:430},footB:{x:452,y:430},active:'legA'};
+  const end={...b,shoulder:{x:420,y:193},elbowL:{x:376,y:242},handL:{x:348,y:302},elbowR:{x:464,y:242},handR:{x:492,y:302},hip:{x:408,y:302},kneeA:{x:438,y:372},ankleA:{x:448,y:430},footA:{x:492,y:430},kneeB:{x:382,y:372},ankleB:{x:392,y:430},footB:{x:436,y:430},active:'legA'};
+  const cur=interpPose(start,end,p); cur.active='';
+  setScene(start,end,cur,false,'M 430 255 Q 402 278 408 302');
+}
+function poseStepUp(p){
+  const b = baseStanding();
+  const props=`<rect class="platform" x="478" y="372" width="250" height="78" rx="8"/><text x="525" y="365" class="label">low step</text>`;
+  const start={...b,props,kneeA:{x:446,y:356},ankleA:{x:454,y:430},footA:{x:495,y:430},kneeB:{x:404,y:360},ankleB:{x:412,y:430},footB:{x:452,y:430},active:'legA'};
+  const end={...b,props,shoulder:{x:452,y:155},elbowL:{x:408,y:210},handL:{x:374,y:278},elbowR:{x:496,y:210},handR:{x:530,y:278},hip:{x:456,y:238},kneeA:{x:494,y:332},ankleA:{x:510,y:372},footA:{x:550,y:372},kneeB:{x:422,y:372},ankleB:{x:408,y:430},footB:{x:448,y:430},active:'legA'};
+  const cur=interpPose(start,end,p); cur.active='legA';
+  setScene(start,end,cur,false,'M 454 430 Q 490 382 520 372');
+}
+function poseFrontBalance(p){
+  const sway=(p-.5)*44;
+  const base={head:{x:480,y:100},neck:{x:480,y:128},shoulder:{x:480,y:172},hip:{x:480+sway*0.15,y:252},elbowL:{x:428,y:222},handL:{x:390,y:282},elbowR:{x:532,y:222},handR:{x:570,y:282},headR:30,active:'legA'};
+  const start={...base,kneeA:{x:468,y:350},ankleA:{x:468,y:430},footA:{x:430,y:430},kneeB:{x:560,y:340},ankleB:{x:626,y:418},footB:{x:660,y:418},extra:`<line class="guide" x1="480" y1="150" x2="480" y2="430"></line><line class="guide" x1="430" y1="252" x2="530" y2="252"></line>`};
+  const end={...base,kneeA:{x:490,y:350},ankleA:{x:490,y:430},footA:{x:452,y:430},kneeB:{x:544,y:340},ankleB:{x:614,y:418},footB:{x:648,y:418},extra:`<line class="guide" x1="480" y1="150" x2="480" y2="430"></line><line class="guide" x1="430" y1="252" x2="530" y2="252"></line>`};
+  const cur=interpPose(start,end,wave(p)); cur.active='legA'; cur.extra=start.extra;
+  setScene(start,end,cur,true,'M 626 418 Q 608 404 592 418');
+}
+function interpPose(a,b,t){
+  const out={};
+  for (const k of Object.keys(a)) {
+    if (a[k] && typeof a[k] === 'object' && 'x' in a[k]) out[k]=mix(a[k],b[k],t);
+    else out[k]=a[k];
+  }
+  if (b.extra) out.extra = b.extra;
+  if (b.props) out.props = b.props;
+  return out;
+}
+function currentPhase(now){ return easeInOut(wave(((now - state.start)/1700) * state.speed)); }
+function animate(now){
+  const ex = filteredExercises()[state.index];
+  if (state.playing) ex.pose(currentPhase(now));
+  requestAnimationFrame(animate);
+}
+
+renderText();
+requestAnimationFrame(animate);
+
+document.getElementById('pauseBtn').onclick=()=>state.playing=false;
+document.getElementById('playBtn').onclick=()=>{state.playing=true; state.start=performance.now();};
+document.getElementById('themeBtn').onclick=()=>{document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';};
+document.getElementById('speed').oninput=e=>{state.speed=+e.target.value; document.getElementById('speedVal').textContent=(+e.target.value).toFixed(1)+'x'; state.start=performance.now();};
+document.getElementById('scenario').onchange=e=>{state.scenario=e.target.value; state.index=0; state.start=performance.now(); renderText();};
+</script>
+</body>
+</html>
