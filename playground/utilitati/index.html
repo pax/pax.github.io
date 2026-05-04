@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BillScan — Extractor Facturi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  :root {
+    --bg:        #0f1117;
+    --surface:   #171b26;
+    --surface2:  #1e2333;
+    --border:    #2c3147;
+    --border2:   #3a4060;
+    --text:      #ddd8cc;
+    --text-dim:  #8a8880;
+    --accent:    #e8a020;
+    --accent-dim:#7a4f08;
+    --green:     #4caf7a;
+    --green-dim: #1a3d2a;
+    --red:       #e05050;
+    --red-dim:   #3d1a1a;
+    --blue:      #5b8dee;
+    --blue-dim:  #1a2a4a;
+    --mono:      'JetBrains Mono', monospace;
+    --serif:     'DM Serif Display', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Layout ── */
+  .app { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── Header ── */
+  header {
+    display: flex; align-items: baseline; gap: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 32px;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  header h1 em { font-style: italic; color: var(--text); }
+  header span {
+    font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 2px 8px;
+    border: 1px solid var(--border); border-radius: 2px;
+  }
+
+  /* ── Drop zone ── */
+  #dropzone {
+    border: 1.5px dashed var(--border2);
+    border-radius: 4px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--surface);
+    position: relative;
+  }
+  #dropzone:hover, #dropzone.drag-over {
+    border-color: var(--accent);
+    background: #1c1f2d;
+  }
+  #dropzone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%;
+  }
+  .drop-icon {
+    font-size: 36px; margin-bottom: 12px; display: block;
+    filter: grayscale(0.4); opacity: 0.7;
+  }
+  .drop-title {
+    font-family: var(--serif); font-size: 18px;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .drop-sub { color: var(--text-dim); font-size: 12px; }
+  .drop-hint {
+    margin-top: 14px; font-size: 11px; color: var(--accent-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Controls ── */
+  .controls {
+    display: flex; gap: 12px; align-items: center;
+    margin: 18px 0;
+    flex-wrap: wrap;
+  }
+  .ctrl-label {
+    font-size: 11px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  select {
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border2); border-radius: 2px;
+    font-family: var(--mono); font-size: 12px;
+    padding: 6px 10px; cursor: pointer; outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a8880'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
+  select:focus { border-color: var(--accent); }
+
+  button {
+    font-family: var(--mono); font-size: 12px; cursor: pointer;
+    border-radius: 2px; border: 1px solid; padding: 6px 16px;
+    letter-spacing: 0.05em; transition: background 0.15s, color 0.15s;
+  }
+  .btn-primary {
+    background: var(--accent); color: #111; border-color: var(--accent);
+    font-weight: 700; text-transform: uppercase;
+  }
+  .btn-primary:hover { background: #ffc040; }
+  .btn-primary:disabled {
+    background: var(--surface2); color: var(--text-dim);
+    border-color: var(--border); cursor: not-allowed;
+  }
+  .btn-ghost {
+    background: transparent; color: var(--text-dim); border-color: var(--border2);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--border2); background: var(--surface2); }
+  .btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .spacer { flex: 1; }
+
+  /* ── File queue ── */
+  #file-queue {
+    display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px;
+  }
+  .file-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 8px 12px; border-radius: 2px;
+    font-size: 12px;
+  }
+  .file-item .fi-name { flex: 1; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .file-item .fi-size { color: var(--text-dim); font-size: 11px; min-width: 60px; text-align: right; }
+  .badge {
+    font-size: 10px; padding: 2px 7px; border-radius: 2px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-pending  { background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border); }
+  .badge-working  { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-dim); animation: pulse 1s infinite; }
+  .badge-done     { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-dim); }
+  .badge-error    { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-dim); }
+  .badge-unknown  { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-dim); }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+  .remove-btn {
+    background: none; border: none; color: var(--text-dim); font-size: 16px;
+    cursor: pointer; padding: 0 4px; line-height: 1;
+  }
+  .remove-btn:hover { color: var(--red); }
+
+  /* ── Results table ── */
+  #results-wrap { margin-top: 8px; }
+
+  .section-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--text-dim); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .results-table-wrap { overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+  }
+  thead tr {
+    border-bottom: 1px solid var(--border2);
+  }
+  th {
+    text-align: left; padding: 10px 14px;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-dim); font-weight: 500; white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:hover { background: var(--surface); }
+  td {
+    padding: 11px 14px; vertical-align: middle;
+  }
+  td.td-file { color: var(--text-dim); font-size: 11px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  td.td-furnizor { color: var(--text); font-weight: 500; }
+  td.td-nr { color: var(--accent); letter-spacing: 0.03em; }
+  td.td-valoare { color: var(--green); font-weight: 700; text-align: right; font-size: 13px; }
+  td.td-data { color: var(--text-dim); }
+  td.td-consum { color: var(--blue); }
+  td.td-na { color: var(--text-dim); font-size: 11px; }
+  td.td-missing { color: var(--red); font-size: 11px; }
+
+  .empty-state {
+    text-align: center; padding: 48px 24px;
+    color: var(--text-dim); font-size: 12px;
+    border: 1px solid var(--border); border-radius: 2px;
+    background: var(--surface);
+  }
+  .empty-state p { margin-bottom: 6px; }
+
+  /* ── Export bar ── */
+  .export-bar {
+    display: flex; gap: 10px; margin-top: 16px; align-items: center;
+    padding-top: 16px; border-top: 1px solid var(--border);
+  }
+  .export-bar .export-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── Recipes editor ── */
+  details {
+    margin-top: 32px; border: 1px solid var(--border); border-radius: 2px;
+  }
+  summary {
+    padding: 12px 16px; cursor: pointer; user-select: none;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-dim); display: flex; align-items: center; gap: 8px;
+  }
+  summary:hover { color: var(--text); background: var(--surface); }
+  summary::marker { content: ''; }
+  summary::before { content: '▶'; font-size: 8px; transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+
+  .recipes-inner { padding: 16px; border-top: 1px solid var(--border); }
+  .recipes-inner p { font-size: 11px; color: var(--text-dim); margin-bottom: 10px; }
+  #recipes-input {
+    width: 100%; height: 280px;
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--border2); border-radius: 2px;
+    font-family: var(--mono); font-size: 11px; padding: 12px;
+    resize: vertical; outline: none; line-height: 1.5;
+  }
+  #recipes-input:focus { border-color: var(--accent); }
+  .recipes-actions { display: flex; gap: 8px; margin-top: 10px; }
+  #recipe-status { font-size: 11px; color: var(--green); margin-left: 8px; align-self: center; }
+  #recipe-error  { font-size: 11px; color: var(--red);   margin-left: 8px; align-self: center; }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <h1>Bill<em>Scan</em></h1>
+    <span>Extractor Facturi PDF</span>
+  </header>
+
+  <!-- Drop zone -->
+  <div id="dropzone">
+    <input type="file" id="file-input" accept=".pdf" multiple>
+    <span class="drop-icon">📄</span>
+    <div class="drop-title">Trage facturile PDF aici</div>
+    <div class="drop-sub">sau click pentru a selecta fișiere</div>
+    <div class="drop-hint">ENGIE · ORANGE · PPC + rețete personalizate</div>
+  </div>
+
+  <!-- File queue -->
+  <div id="file-queue"></div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <span class="ctrl-label">Furnizor</span>
+    <select id="furnizor-select">
+      <option value="">⚡ Auto-detectare</option>
+      <option value="engie">ENGIE Romania</option>
+      <option value="orange">Orange Romania</option>
+      <option value="ppc">PPC Energie</option>
+    </select>
+    <button class="btn-primary" id="process-btn" disabled>Procesează</button>
+    <div class="spacer"></div>
+    <button class="btn-ghost" id="clear-btn" disabled>Șterge tot</button>
+  </div>
+
+  <!-- Results -->
+  <div id="results-wrap">
+    <div class="section-title">Rezultate</div>
+    <div class="empty-state">
+      <p>Niciun fișier procesat încă.</p>
+      <p>Adaugă fișiere PDF și apasă <strong>Procesează</strong>.</p>
+    </div>
+  </div>
+
+  <!-- Recipes editor -->
+  <details id="recipes-panel">
+    <summary>Editare rețete (recipes.json)</summary>
+    <div class="recipes-inner">
+      <p>Modifică rețetele de extracție sau importă un fișier <code>recipes.json</code> personalizat.
+         Adaugă noi furnizori urmând structura existentă.</p>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <input type="file" id="recipes-file" accept=".json" style="display:none">
+        <button class="btn-ghost" onclick="document.getElementById('recipes-file').click()">📂 Importă recipes.json</button>
+        <button class="btn-ghost" id="export-recipes-btn">💾 Exportă</button>
+      </div>
+      <textarea id="recipes-input" spellcheck="false"></textarea>
+      <div class="recipes-actions">
+        <button class="btn-primary" id="apply-recipes-btn">Aplică rețete</button>
+        <span id="recipe-status"></span>
+        <span id="recipe-error"></span>
+      </div>
+    </div>
+  </details>
+
+  <!-- Debug panel -->
+  <details id="debug-panel">
+    <summary>🔍 Text extras (debug)</summary>
+    <div class="recipes-inner">
+      <p>Textul brut extras de PDF.js din fiecare fișier — util pentru a ajusta pattern-urile.</p>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap" id="debug-tabs"></div>
+      <textarea id="debug-output" spellcheck="false" readonly
+        placeholder="Procesează un fișier pentru a vedea textul extras..."></textarea>
+    </div>
+  </details>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// PDF.js setup
+// ─────────────────────────────────────────────────────────────────────────────
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Bundled recipes (mirror of recipes.json)
+// ─────────────────────────────────────────────────────────────────────────────
+let RECIPES = {
+  furnizori: {
+    engie: {
+      display_name: "ENGIE Romania S.A.",
+      detection: {
+        filename_keywords: ["engie"],
+        content_keywords:  ["ENGIE Romania", "engie.ro"]
+      },
+      fields: {
+        numar_factura: {
+          patterns: ["Seria ENG nr\\.(\\d+)", "nr\\.\\s*(\\d{10,})"],
+          group: 1, transform: "strip"
+        },
+        valoare: {
+          patterns: [
+            "Factura curent[aă]:\\s*([\\d]+[,\\.][\\d]+)\\s*LEI",
+            "TOTAL DE PLAT(?:Ă|A) CU T\\.V\\.A\\.\\s*[\\d,\\.]+\\s*([\\d,\\.]+)\\s*LEI",
+            "TOTAL FACTUR(?:Ă|A) CURENT(?:Ă|A):\\s*[\\d,\\.]+\\s*[\\d,\\.]+\\s*([\\d,\\.]+)"
+          ],
+          group: 1, transform: "normalize_decimal", suffix: " LEI"
+        },
+        data_facturii: {
+          patterns: ["Data facturii:\\s*(\\d{2}\\.\\d{2}\\.\\d{4})"],
+          group: 1, transform: "strip"
+        },
+        consum: {
+          patterns: [
+            "CONSUM GAZE NATURALE \\(kWh\\)\\s*([\\d,\\.]+)",
+            "([\\d,\\.]+)\\s*43,85\\s*LEI"
+          ],
+          group: 1, transform: "normalize_decimal", suffix: " kWh", optional: true
+        }
+      }
+    },
+    orange: {
+      display_name: "Orange Romania S.A.",
+      detection: {
+        filename_keywords: ["orange"],
+        content_keywords:  ["Orange Romania", "orange.ro", "My Orange"]
+      },
+      fields: {
+        numar_factura: {
+          patterns: ["Numar factura:\\s*(\\S+)", "Referinta interna:\\s*(\\S+)"],
+          group: 1, transform: "strip"
+        },
+        valoare: {
+          patterns: [
+            "Total factura\\s+\\d+\\s+([\\d,\\.]+)",
+            "Total de plata\\s*\\(LEI\\)\\s*([\\d,\\.]+)",
+            "Total factura\\s*([\\d,\\.]+)$"
+          ],
+          group: 1, transform: "normalize_decimal", suffix: " LEI"
+        },
+        data_facturii: {
+          patterns: ["Data facturii:\\s*(\\d{2}\\.\\d{2}\\.\\d{4})"],
+          group: 1, transform: "strip"
+        },
+        consum: { patterns: [], optional: true, default: "N/A" }
+      }
+    },
+    ppc: {
+      display_name: "PPC Energie S.A.",
+      detection: {
+        filename_keywords: ["ppc", "25ei"],
+        content_keywords:  ["PPC Energie", "ppcenergy.ro", "PPC00000"]
+      },
+      fields: {
+        numar_factura: {
+          patterns: [
+            // Header line: "Factură fiscală seria 25EI nr. 18233070 din data de..."
+            "Factur(?:ă|a) fiscal(?:ă|a) seria (\\S+) nr\\.\\s*(\\d+)",
+            // Fallback: last page "la factura 25EI18233070"
+            "la factura\\s+(\\S+)"
+          ],
+          group: "concat_1_2", transform: "strip"
+        },
+        valoare: {
+          patterns: [
+            // Most reliable: "valoare de 590,77 Lei" from the QR/barcode caption sentence
+            "valoare de\\s*(\\d+[,\\.][\\d]+)\\s*Lei",
+            // Row-by-row table (works after sort fix): "Total de plată ( 7= 5+ 6) lei 590,77"
+            "Total de plat(?:ă|a)[^\\n]*\\(\\s*7=[^\\n]*\\)\\s*lei\\s*([\\d,\\.]+)",
+            // "Total de plata factura curenta ( 5= 4) lei 590,77"
+            "Total de plata factura curenta[^\\d\\n]+([\\d,\\.]+)",
+            // "Valoare factură curentă ( 4= 1+ 3) ... lei 590,77"
+            "Valoare factur(?:ă|a) curent(?:ă|a)[^\\d\\n]+([\\d,\\.]+)",
+            // Last-resort: grab last large-ish lei amount on the summary page
+            "lei\\s+(\\d{2,4}[,\\.]\\d{2})(?!\\s*\\/)"
+          ],
+          group: 1, transform: "normalize_decimal", suffix: " LEI"
+        },
+        data_facturii: {
+          patterns: [
+            "din data de (\\d{2}\\.\\d{2}\\.\\d{4})"
+          ],
+          group: 1, transform: "strip"
+        },
+        consum: {
+          patterns: [
+            // Row-by-row: "Consum energie activă kWh 370"
+            "Consum energie activ(?:ă|a)\\s*kWh\\s*(\\d+)",
+            // Detail table: "Energie activă ... autocitire 370 370 34 ..."
+            "autocitire\\s+(\\d+)\\s+\\d+\\s+\\d+",
+            // "kWh 370" anywhere on a line (after sort fix this should land correctly)
+            "\\bkWh\\b\\s+(\\d{2,4})\\b"
+          ],
+          group: 1, transform: "strip", suffix: " kWh", optional: true
+        }
+      }
+    }
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Recipe engine (JS port of Python extract_bills.py)
+// ─────────────────────────────────────────────────────────────────────────────
+function normalizeDecimal(v) {
+  v = v.trim();
+  if (/^\d{1,3}(\.\d{3})*,\d+$/.test(v))  return v.replace(/\./g, '').replace(',', '.');
+  if (/^\d+,\d+$/.test(v))                 return v.replace(',', '.');
+  return v;
+}
+
+function applyTransform(value, transform) {
+  if (transform === 'strip')            return value.trim();
+  if (transform === 'normalize_decimal') return normalizeDecimal(value);
+  return value;
+}
+
+function extractField(text, cfg) {
+  const patterns  = cfg.patterns || [];
+  const groupSpec = cfg.group ?? 1;
+  const transform = cfg.transform || 'strip';
+  const suffix    = cfg.suffix || '';
+  const def       = cfg.default ?? null;
+
+  for (const pat of patterns) {
+    try {
+      const rx = new RegExp(pat, 'is');
+      const m  = text.match(rx);
+      if (m) {
+        let value;
+        if (groupSpec === 'concat_1_2') {
+          value = [m[1], m[2]].filter(Boolean).join(' ');
+        } else {
+          value = m[Number(groupSpec)];
+        }
+        value = applyTransform(value, transform);
+        return suffix ? value + suffix : value;
+      }
+    } catch (e) { /* bad pattern, skip */ }
+  }
+  return def;
+}
+
+function detectFurnizor(filename, text) {
+  const fLower = filename.toLowerCase();
+  const tLower = text.toLowerCase();
+  for (const [key, recipe] of Object.entries(RECIPES.furnizori)) {
+    const det = recipe.detection || {};
+    for (const kw of det.filename_keywords || [])
+      if (fLower.includes(kw.toLowerCase())) return key;
+  }
+  for (const [key, recipe] of Object.entries(RECIPES.furnizori)) {
+    const det = recipe.detection || {};
+    for (const kw of det.content_keywords || [])
+      if (tLower.includes(kw.toLowerCase())) return key;
+  }
+  return null;
+}
+
+function processBillText(filename, text, forcedFurnizor) {
+  const key = forcedFurnizor || detectFurnizor(filename, text);
+  if (!key || !RECIPES.furnizori[key]) {
+    return { filename, furnizor: '—', numar_factura: '—', valoare: '—', data_facturii: '—', consum: '—', _unknown: true };
+  }
+  const recipe = RECIPES.furnizori[key];
+  const fields = recipe.fields || {};
+  const result = { filename, furnizor: recipe.display_name || key };
+  for (const f of ['numar_factura', 'valoare', 'data_facturii', 'consum']) {
+    const cfg = fields[f] || {};
+    const val = extractField(text, cfg);
+    if (val === null) result[f] = cfg.optional ? 'N/A' : 'LIPSĂ';
+    else              result[f] = val;
+  }
+  return result;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PDF text extraction
+// ─────────────────────────────────────────────────────────────────────────────
+async function extractTextFromPDF(arrayBuffer) {
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  let full = '';
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+
+    // Sort by y DESCENDING (PDF y is bottom-up, so higher y = top of page),
+    // then by x ASCENDING for left-to-right within the same line.
+    // This converts column-stream order into natural reading order for tables.
+    const items = content.items
+      .filter(it => it.str && it.str.trim())
+      .sort((a, b) => {
+        const dy = b.transform[5] - a.transform[5];
+        if (Math.abs(dy) > 3) return dy;           // different rows
+        return a.transform[4] - b.transform[4];    // same row → left to right
+      });
+
+    let prevY = null;
+    let line  = '';
+    for (const item of items) {
+      const y = Math.round(item.transform[5]);
+      if (prevY !== null && Math.abs(y - prevY) > 3) {
+        full += line.trim() + '\n';
+        line = '';
+      }
+      line += item.str + ' ';
+      prevY = y;
+    }
+    if (line.trim()) full += line.trim() + '\n';
+  }
+  return full;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────────────────────────────────────
+let files = [];       // { file, id, status, result }
+let results = [];
+let nextId = 0;
+const extractedTexts = {};  // id → raw text for debug panel
+
+const dropzone      = document.getElementById('dropzone');
+const fileInput     = document.getElementById('file-input');
+const fileQueue     = document.getElementById('file-queue');
+const furnizorSel   = document.getElementById('furnizor-select');
+const processBtn    = document.getElementById('process-btn');
+const clearBtn      = document.getElementById('clear-btn');
+const resultsWrap   = document.getElementById('results-wrap');
+const recipesInput  = document.getElementById('recipes-input');
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Drag & drop / file input
+// ─────────────────────────────────────────────────────────────────────────────
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault(); dropzone.classList.remove('drag-over');
+  addFiles([...e.dataTransfer.files].filter(f => f.name.endsWith('.pdf')));
+});
+fileInput.addEventListener('change', () => {
+  addFiles([...fileInput.files]);
+  fileInput.value = '';
+});
+
+function addFiles(newFiles) {
+  for (const f of newFiles) {
+    if (files.some(e => e.file.name === f.name && e.file.size === f.size)) continue;
+    files.push({ file: f, id: nextId++, status: 'pending', result: null });
+  }
+  renderQueue();
+  updateControls();
+}
+
+function removeFile(id) {
+  files = files.filter(e => e.id !== id);
+  results = results.filter(r => r._id !== id);
+  delete extractedTexts[id];
+  renderQueue();
+  renderResults();
+  renderDebugTabs();
+  updateControls();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Debug panel
+// ─────────────────────────────────────────────────────────────────────────────
+function renderDebugTabs() {
+  const tabsEl  = document.getElementById('debug-tabs');
+  const outputEl = document.getElementById('debug-output');
+  tabsEl.innerHTML = '';
+  const ids = Object.keys(extractedTexts);
+  if (!ids.length) { outputEl.value = ''; return; }
+  ids.forEach(id => {
+    const entry = files.find(f => f.id === Number(id));
+    const label = entry ? entry.file.name.replace(/\.pdf$/i,'') : `#${id}`;
+    const btn = document.createElement('button');
+    btn.className = 'btn-ghost';
+    btn.style.fontSize = '11px';
+    btn.textContent = label;
+    btn.addEventListener('click', () => {
+      outputEl.value = extractedTexts[id];
+      // highlight active tab
+      tabsEl.querySelectorAll('button').forEach(b => b.style.color = '');
+      btn.style.color = 'var(--accent)';
+    });
+    tabsEl.appendChild(btn);
+  });
+  // Auto-show the last one
+  tabsEl.lastChild.click();
+}
+
+function renderQueue() {
+  fileQueue.innerHTML = '';
+  for (const entry of files) {
+    const item = document.createElement('div');
+    item.className = 'file-item';
+    const badgeClass = { pending:'badge-pending', working:'badge-working', done:'badge-done', error:'badge-error', unknown:'badge-unknown' }[entry.status] || 'badge-pending';
+    const badgeText  = { pending:'aguanta', working:'procesează...', done:'✓ gata', error:'eroare', unknown:'? necunoscut' }[entry.status] || entry.status;
+    item.innerHTML = `
+      <span class="fi-name" title="${entry.file.name}">${entry.file.name}</span>
+      <span class="fi-size">${(entry.file.size/1024).toFixed(1)} KB</span>
+      <span class="badge ${badgeClass}">${badgeText}</span>
+      <button class="remove-btn" title="Șterge" onclick="removeFile(${entry.id})">×</button>
+    `;
+    fileQueue.appendChild(item);
+  }
+}
+
+function updateControls() {
+  processBtn.disabled = files.length === 0;
+  clearBtn.disabled   = files.length === 0;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Processing
+// ─────────────────────────────────────────────────────────────────────────────
+processBtn.addEventListener('click', async () => {
+  processBtn.disabled = true;
+  const forcedFurnizor = furnizorSel.value || null;
+
+  for (const entry of files) {
+    entry.status = 'working';
+    renderQueue();
+
+    try {
+      const buf  = await entry.file.arrayBuffer();
+      const text = await extractTextFromPDF(buf);
+      extractedTexts[entry.id] = text;         // store for debug panel
+      const res  = processBillText(entry.file.name, text, forcedFurnizor);
+      res._id = entry.id;
+      entry.status = res._unknown ? 'unknown' : 'done';
+      entry.result = res;
+      results = results.filter(r => r._id !== entry.id);
+      results.push(res);
+    } catch(e) {
+      entry.status = 'error';
+      entry.result = null;
+      console.error('Error processing', entry.file.name, e);
+    }
+
+    renderQueue();
+    renderResults();
+  }
+
+  updateControls();
+  processBtn.disabled = false;
+  renderDebugTabs();
+});
+
+clearBtn.addEventListener('click', () => {
+  files = []; results = [];
+  renderQueue(); renderResults(); updateControls();
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Results rendering
+// ─────────────────────────────────────────────────────────────────────────────
+const COLS = [
+  { key: 'filename',      label: 'Fișier',       cls: 'td-file'    },
+  { key: 'furnizor',      label: 'Furnizor',      cls: 'td-furnizor'},
+  { key: 'numar_factura', label: 'Nr. Factură',   cls: 'td-nr'      },
+  { key: 'valoare',       label: 'Valoare',       cls: 'td-valoare' },
+  { key: 'data_facturii', label: 'Dată Factură',  cls: 'td-data'    },
+  { key: 'consum',        label: 'Consum',        cls: 'td-consum'  },
+];
+
+function cellClass(col, val) {
+  if (val === 'N/A' || val === '—') return 'td-na';
+  if (val === 'LIPSĂ')              return 'td-missing';
+  return col.cls;
+}
+
+function renderResults() {
+  resultsWrap.innerHTML = '<div class="section-title">Rezultate</div>';
+  if (results.length === 0) {
+    resultsWrap.innerHTML += `
+      <div class="empty-state">
+        <p>Niciun fișier procesat încă.</p>
+        <p>Adaugă fișiere PDF și apasă <strong>Procesează</strong>.</p>
+      </div>`;
+    return;
+  }
+
+  const wrap = document.createElement('div');
+  wrap.className = 'results-table-wrap';
+  const table = document.createElement('table');
+  table.innerHTML = `<thead><tr>${COLS.map(c => `<th>${c.label}</th>`).join('')}</tr></thead>`;
+  const tbody = document.createElement('tbody');
+  for (const row of results) {
+    const tr = document.createElement('tr');
+    for (const col of COLS) {
+      const val = String(row[col.key] ?? '—');
+      const td = document.createElement('td');
+      td.className = cellClass(col, val);
+      td.textContent = val;
+      if (col.key === 'filename') td.title = val;
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  resultsWrap.appendChild(wrap);
+
+  // Export bar
+  const bar = document.createElement('div');
+  bar.className = 'export-bar';
+  bar.innerHTML = `
+    <span class="export-label">Export</span>
+    <button class="btn-ghost" id="exp-csv">📋 CSV</button>
+    <button class="btn-ghost" id="exp-json">{ } JSON</button>
+  `;
+  resultsWrap.appendChild(bar);
+  document.getElementById('exp-csv').addEventListener('click', exportCSV);
+  document.getElementById('exp-json').addEventListener('click', exportJSON);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Export
+// ─────────────────────────────────────────────────────────────────────────────
+function downloadFile(content, filename, mime) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type: mime }));
+  a.download = filename;
+  a.click();
+}
+
+function exportCSV() {
+  const header = COLS.map(c => c.label).join(',');
+  const rows   = results.map(r =>
+    COLS.map(c => `"${String(r[c.key] ?? '').replace(/"/g,'""')}"`).join(',')
+  );
+  downloadFile([header, ...rows].join('\r\n'), 'facturi.csv', 'text/csv;charset=utf-8');
+}
+
+function exportJSON() {
+  const clean = results.map(r => {
+    const obj = {};
+    for (const c of COLS) obj[c.key] = r[c.key] ?? '—';
+    return obj;
+  });
+  downloadFile(JSON.stringify(clean, null, 2), 'facturi.json', 'application/json');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Recipes editor
+// ─────────────────────────────────────────────────────────────────────────────
+function syncRecipesTextarea() {
+  recipesInput.value = JSON.stringify(RECIPES, null, 2);
+}
+syncRecipesTextarea();
+
+document.getElementById('apply-recipes-btn').addEventListener('click', () => {
+  const statusEl = document.getElementById('recipe-status');
+  const errorEl  = document.getElementById('recipe-error');
+  statusEl.textContent = '';
+  errorEl.textContent  = '';
+  try {
+    const parsed = JSON.parse(recipesInput.value);
+    if (!parsed.furnizori) throw new Error('Structura invalidă: lipsește câmpul "furnizori".');
+    RECIPES = parsed;
+    // Refresh furnizor dropdown
+    const sel = furnizorSel;
+    const prev = sel.value;
+    while (sel.options.length > 1) sel.remove(1);
+    for (const key of Object.keys(RECIPES.furnizori)) {
+      const opt = document.createElement('option');
+      opt.value = key; opt.textContent = RECIPES.furnizori[key].display_name || key;
+      sel.appendChild(opt);
+    }
+    sel.value = prev;
+    statusEl.textContent = '✓ Rețete aplicate cu succes.';
+    setTimeout(() => statusEl.textContent = '', 3000);
+  } catch(e) {
+    errorEl.textContent = '✗ ' + e.message;
+  }
+});
+
+document.getElementById('recipes-file').addEventListener('change', async function() {
+  if (!this.files[0]) return;
+  const text = await this.files[0].text();
+  recipesInput.value = text;
+  this.value = '';
+  document.getElementById('recipe-status').textContent = '';
+  document.getElementById('recipe-error').textContent  = '← Apasă "Aplică" pentru a activa rețetele importate.';
+});
+
+document.getElementById('export-recipes-btn').addEventListener('click', () => {
+  downloadFile(recipesInput.value, 'recipes.json', 'application/json');
+});
+</script>
+</body>
+</html>
