@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>typing…</title>
-<meta name="description" content="Someone is typing. They stop. They start again. No message ever arrives. A typing indicator that never resolves, with adjustable silences.">
+<meta name="description" content="Someone is typing. They stop. They start again. A message flashes, then gets deleted. Even that disappears.">
 <meta name="author" content="pax">
 <meta name="theme-color" content="#0b141a">
 <!-- TODO: open fullscreen from the home screen? Android needs a web app manifest. iOS needs its own meta tag. -->
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="pax">
 <meta property="og:title" content="typing…">
-<meta property="og:description" content="Someone is typing. They stop. They start again. No message ever arrives.">
+<meta property="og:description" content="Someone is typing. They stop. They start again. A message flashes, then gets deleted. Even that disappears.">
 <meta property="og:url" content="https://pax.github.io/playground/misc/typing-anxiety/">
 <meta property="og:image" content="https://pax.github.io/playground/misc/assets/og.png">
 <meta property="og:image:type" content="image/png">
@@ -74,9 +74,14 @@
   .status.typing { color: var(--accent); }
   body.no-status .status { opacity: 0; }
 
-  /* top-right corner sits on the screen centre */
-  .bubble {
+  /* stack incoming bubbles beneath the screen centre */
+  .conversation {
     position: absolute; right: 50%; top: 50%;
+    width: max(var(--w), 240px); max-width: calc(50vw - 16px);
+    display: flex; flex-direction: column; align-items: flex-end; gap: 12px;
+  }
+  .bubble {
+    position: relative; flex-shrink: 0; max-width: 100%;
     width: var(--w); aspect-ratio: 84 / 40;
     container-type: inline-size;
     transform-origin: 0 100%;
@@ -86,6 +91,20 @@
   .bubble.on { transform: scale(1); opacity: 1; }
   .bubble svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   body.light .bubble svg { filter: drop-shadow(0 1px .5px rgba(11,20,26,.13)); }
+  .bubble.message {
+    width: 100%;
+    aspect-ratio: auto; padding: .7em 1em;
+    background: var(--bubble); border-radius: 12px 12px 12px 3px;
+    font-size: clamp(16px, 1.8vw, 24px); line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .bubble.message::before {
+    content: ""; position: absolute; left: -7px; bottom: 0;
+    width: 12px; height: 16px; background: var(--bubble);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+  .message-text { display: block; white-space: pre-wrap; }
+  .bubble.deleted { color: var(--muted); font-style: italic; }
 
   .dots {
     position: absolute; top: 0; bottom: 0; right: 0; left: 12cqw; /* skip the tail */
@@ -141,6 +160,7 @@
   .row label { font-size: 14px; }
   .row output { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
   .row input[type=range] { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
+  .row input[type=file] { grid-column: 1 / -1; width: 100%; min-width: 0; font: inherit; font-size: 13px; }
   .row .hint { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
   .row select { font: inherit; font-size: 13px; background: transparent; color: var(--text);
     border: 1px solid var(--panel-line); border-radius: 6px; padding: 3px 6px; }
@@ -161,14 +181,19 @@
 <body>
   <div class="status" id="status">online</div>
 
-  <div class="bubble" id="bubble" aria-live="polite" aria-label="typing">
-    <!-- bubble with WhatsApp-style tail curling out at bottom-left -->
-    <svg viewBox="0 0 84 40" preserveAspectRatio="none">
-      <path fill="var(--bubble)"
-        d="M28 0h46a10 10 0 0 1 10 10v20a10 10 0 0 1-10 10H6
-           c-3 0-4-2.5-2-4.5C8 31 10 27 10 22V10A10 10 0 0 1 20 0z"/>
-    </svg>
-    <div class="dots"><span></span><span></span><span></span></div>
+  <div class="conversation">
+    <div class="bubble message" id="message-bubble" aria-live="polite" aria-hidden="true" hidden>
+      <span class="message-text" id="message-text"></span>
+    </div>
+    <div class="bubble" id="bubble" aria-live="polite" aria-label="typing" aria-hidden="true">
+      <!-- bubble with WhatsApp-style tail curling out at bottom-left -->
+      <svg viewBox="0 0 84 40" preserveAspectRatio="none">
+        <path fill="var(--bubble)"
+          d="M28 0h46a10 10 0 0 1 10 10v20a10 10 0 0 1-10 10H6
+             c-3 0-4-2.5-2-4.5C8 31 10 27 10 22V10A10 10 0 0 1 20 0z"/>
+      </svg>
+      <div class="dots"><span></span><span></span><span></span></div>
+    </div>
   </div>
 
   <button class="cog" id="cog" aria-label="Settings" title="Settings">
@@ -204,12 +229,18 @@
     { key: 'growCap',     label: 'Growth cap',             type: 'range', min: 0, max: 120, step: 1, def: 4, unit: 's',
       hint: 'Set high to let the silences keep stretching.' },
 
+    { group: 'Messages' },
+    { key: 'messageChance', label: 'Message chance per round', type: 'range', min: 0, max: 100, step: 1, def: 40, unit: '%',
+      hint: 'Messages from messages.csv flash, become “deleted”, then disappear.' },
+    { key: 'flashTime',   label: 'Visible before deletion', type: 'range', min: .1, max: 3, step: .01, def: .73, unit: 's' },
+    { key: 'deletedTime', label: '“deleted” stays for',      type: 'range', min: .5, max: 20, step: .5, def: 4, unit: 's' },
+
     { group: 'Leaving' },
     { key: 'leave',       label: '“Last seen” chance',     type: 'range', min: 0, max: 100, step: 1, def: 22, unit: '%' },
     { key: 'awayMin',     label: 'Away, shortest',         type: 'range', min: 1, max: 60, step: 1, def: 5, unit: 's' },
     { key: 'awayMax',     label: 'Away, longest',          type: 'range', min: 1, max: 120, step: 1, def: 9, unit: 's' },
     { key: 'giveUp',      label: 'Gives up after',         type: 'range', min: 0, max: 50, step: 1, def: 0, unit: ' rounds',
-      zero: 'never', hint: 'Then goes offline for good. No message, ever.' },
+      zero: 'never', hint: 'Then goes offline for good.' },
 
     { group: 'Look' },
     { key: 'size',        label: 'Bubble size',            type: 'range', min: 5, max: 50, step: 1, def: 20, unit: '% of width' },
@@ -223,6 +254,7 @@
 
   let cfg = { ...DEFAULTS };
   try { Object.assign(cfg, JSON.parse(localStorage.getItem(STORE) || '{}')); } catch {}
+  if (cfg.flashTime === .55) cfg.flashTime = DEFAULTS.flashTime;
   const save = () => { try { localStorage.setItem(STORE, JSON.stringify(cfg)); } catch {} };
 
   /* ---------- build the form ---------- */
@@ -233,6 +265,11 @@
     if (s.group) {
       fs = document.createElement('fieldset');
       fs.innerHTML = `<legend>${s.group}</legend>`;
+      if (s.group === 'Messages') fs.insertAdjacentHTML('beforeend', `<div class="row">
+        <label for="message-file">Message CSV</label>
+        <input type="file" id="message-file" accept=".csv,text/csv">
+        <p class="hint" id="message-source" role="status">Loading messages.csv…</p>
+      </div>`);
       form.append(fs);
       continue;
     }
@@ -305,7 +342,66 @@
 
   /* ---------- the loop ---------- */
   const bubble = document.getElementById('bubble');
+  const messageBubble = document.getElementById('message-bubble');
+  const messageText = document.getElementById('message-text');
   const status = document.getElementById('status');
+  let messages = [];
+  let previousMessage = -1;
+  let messageTask = Promise.resolve();
+
+  // CSV quoting supports commas, escaped quotes, and line breaks in a message.
+  function parseCSV(text) {
+    const rows = [];
+    let row = [], field = '', quoted = false;
+    text = text.replace(/^\uFEFF/, '');
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === '"') {
+        if (quoted && text[i + 1] === '"') { field += '"'; i++; }
+        else quoted = !quoted;
+      } else if (!quoted && (ch === ',' || ch === '\n' || ch === '\r')) {
+        row.push(field); field = '';
+        if (ch !== ',') {
+          rows.push(row); row = [];
+          if (ch === '\r' && text[i + 1] === '\n') i++;
+        }
+      } else field += ch;
+    }
+    if (quoted) throw new Error('Unclosed quote in messages.csv');
+    row.push(field);
+    rows.push(row);
+    return rows;
+  }
+
+  async function loadMessages(file) {
+    const source = document.getElementById('message-source');
+    if (!file && location.protocol === 'file:') {
+      source.textContent = 'Choose messages.csv to enable messages when opening this page directly.';
+      return;
+    }
+    try {
+      let text;
+      if (file) text = await file.text();
+      else {
+        const response = await fetch('messages.csv', { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`messages.csv: HTTP ${response.status}`);
+        text = await response.text();
+        // A file chosen while the request was pending takes precedence.
+        if (document.getElementById('message-file').files.length) return;
+      }
+      const rows = parseCSV(text).filter(row => row.some(cell => cell.trim()));
+      const column = rows[0]?.findIndex(cell => cell.trim().toLowerCase() === 'message') ?? -1;
+      if (column < 0) throw new Error('messages.csv needs a message header');
+      messages = rows.slice(1).map(row => (row[column] || '').trim()).filter(Boolean);
+      previousMessage = -1;
+      source.textContent = `${messages.length} message${messages.length === 1 ? '' : 's'} loaded from ${file ? file.name : 'messages.csv'}.`;
+      if (file) start();
+    } catch (error) {
+      source.textContent = `Could not load messages: ${error.message}. Choose a CSV to try again.`;
+      console.warn('Could not load messages; continuing with typing only.', error);
+    }
+  }
+
   const rand = (a, b) => a + Math.random() * (b - a);
   let gen = 0;                                  // bumping this kills the running loop
   const wait = (ms, g) => new Promise((res, rej) =>
@@ -317,7 +413,36 @@
   }
   function typing(on) {
     bubble.classList.toggle('on', on);
+    bubble.setAttribute('aria-hidden', String(!on));
     setStatus(on ? 'typing…' : 'online', on);
+  }
+  function clearMessage() {
+    messageBubble.classList.remove('on', 'deleted');
+    messageBubble.setAttribute('aria-hidden', 'true');
+    messageBubble.hidden = true;
+    messageText.textContent = '';
+  }
+  async function flashMessage(g) {
+    let index = Math.floor(Math.random() * messages.length);
+    if (messages.length > 1 && index === previousMessage) {
+      index = (index + 1 + Math.floor(Math.random() * (messages.length - 1))) % messages.length;
+    }
+    previousMessage = index;
+    messageText.textContent = messages[index];
+    messageBubble.hidden = false;
+    messageBubble.setAttribute('aria-hidden', 'false');
+    messageBubble.classList.add('on');
+    await wait(cfg.flashTime * 1000, g);
+    messageText.textContent = 'deleted';
+    messageBubble.classList.add('deleted');
+    messageTask = dismissMessage(g).catch(() => {});
+  }
+  async function dismissMessage(g) {
+    await wait(cfg.deletedTime * 1000, g);
+    messageBubble.classList.remove('on');
+    messageBubble.setAttribute('aria-hidden', 'true');
+    await wait(200, g); // let the bubble fade before clearing its contents
+    clearMessage();
   }
   const lastSeen = () => 'last seen today at ' +
     new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -335,7 +460,10 @@
         if (i < bursts - 1) await wait(rand(cfg.stutterGap * .5, cfg.stutterGap * 1.5) * 1000, g);
       }
 
-      if (cfg.giveUp && round >= cfg.giveUp) {   // the end. nothing comes.
+      if (messages.length && messageBubble.hidden && Math.random() * 100 < cfg.messageChance) await flashMessage(g);
+
+      if (cfg.giveUp && round >= cfg.giveUp) {
+        await messageTask;
         await wait(rand(1500, 3000), g);
         setStatus(lastSeen());
         return;
@@ -351,8 +479,18 @@
       }
     }
   }
-  function start() { const g = ++gen; loop(g).catch(() => {}); }
+  function start() {
+    const g = ++gen;
+    clearMessage();
+    messageTask = Promise.resolve();
+    loop(g).catch(() => {});
+  }
 
+  document.getElementById('message-file').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) loadMessages(file);
+  });
+  loadMessages();
   syncForm(); applyLook(); wake(); start();
 </script>
 </body>
