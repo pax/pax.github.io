@@ -4,6 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>typing…</title>
+<meta name="description" content="Someone is typing. They stop. They start again. No message ever arrives. A typing indicator that never resolves, with adjustable silences.">
+<meta name="author" content="pax">
+<meta name="theme-color" content="#0b141a">
+<!-- TODO: open fullscreen from the home screen? Android needs a web app manifest. iOS needs its own meta tag. -->
+<link rel="canonical" href="https://pax.github.io/playground/misc/typing-anxiety.html">
+
+<link rel="icon" type="image/png" sizes="32x32" href="typing-anxiety-assets/icon-32.png">
+<link rel="icon" type="image/svg+xml" href="typing-anxiety-assets/icon.svg">
+<link rel="apple-touch-icon" href="typing-anxiety-assets/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="pax">
+<meta property="og:title" content="typing…">
+<meta property="og:description" content="Someone is typing. They stop. They start again. No message ever arrives.">
+<meta property="og:url" content="https://pax.github.io/playground/misc/typing-anxiety.html">
+<meta property="og:image" content="https://pax.github.io/playground/misc/typing-anxiety-assets/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A chat bubble with three grey dots on a dark background, and the status text “typing…”.">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   :root {
     --bg: #0b141a;
@@ -260,6 +281,7 @@
     root.setProperty('--size', cfg.size);
     root.setProperty('--dot-speed', cfg.dotSpeed + 's');
     document.body.classList.toggle('light', cfg.theme === 'light');
+    document.querySelector('meta[name=theme-color]').content = cfg.theme === 'light' ? '#efeae2' : '#0b141a';
     document.body.classList.toggle('no-status', !cfg.showStatus);
     if (!cfg.hideCog) document.body.classList.remove('idle');
   }
