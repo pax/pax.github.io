@@ -1,4 +1,5 @@
 
+- [Typing..](https://pax.github.io/playground/misc/typing-anxiety.html)
 - [physio tracker](https://pax.github.io/playground/physio-tracker/) – audio foleys / soundboard
 - [b01ng](https://pax.github.io/b01ng/) – audio foleys / soundboard
 - [facturi utilități](https://pax.github.io/playground/utilitati/) – extrage date din facturi Digi, Orange, PPC, Engie
